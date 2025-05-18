@@ -2,9 +2,16 @@ package com.tilldawn.Control;
 
 import com.tilldawn.Main;
 import com.tilldawn.Model.GameAssetManager;
-import com.tilldawn.View.MainMenuView;
-import com.tilldawn.View.PreGameMenuView;
+import com.tilldawn.Model.User;
+import com.tilldawn.View.*;
 import com.tilldawn.View.RegisterMenuView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class RegisterMenuController {
     private RegisterMenuView view;
@@ -14,21 +21,61 @@ public class RegisterMenuController {
     }
 
     public void handleRegisterButton() {
-        if (view == null) return;
+        if (view != null) {
+            String username = view.getUsernameField().getText();
+            String password = view.getPasswordField().getText();
+            String answerOfSecurity = view.getAnswerSecurityQuestionField().getText();
 
-        String password = view.getPasswordField().getText();
-        if (!isPasswordValid(password)) {
-            System.out.println("The written password was not strong enough!");
-            return;
+            if(view.getPlayButton().isChecked()) {
+
+                if (username.equals("") || password.equals("") || answerOfSecurity.equals("")) {
+                    view.showError("do not leave any field empty");
+                }
+                else if (!isPasswordValid(password)) {
+                    view.showError("password format is invalid!");  // ❗️ Display validation error
+                }
+                else if (isUsernameTaken(username)) {
+                    view.showError("this user has already registered!");
+                }//register successfully
+                else {
+                    // ✅ ذخیره در فایل JSON
+                    User user = new User(username, password, answerOfSecurity);
+                    saveUserToJson(user);
+
+                    view.hideError();
+                    Main.getMain().getScreen().dispose();
+                    Main.getMain().setScreen(new LoginMenuView(
+                        new LoginMenuController(),
+                        GameAssetManager.getGameAssetManager().getSkin()));
+                }
+            }
+            if (view.getGoToLoginButton().isChecked()) {
+                view.hideError();
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new LoginMenuView(
+                    new LoginMenuController(),
+                    GameAssetManager.getGameAssetManager().getSkin()));
+            }
         }
-
-        // Proceed if password is valid
-        Main.getMain().getScreen().dispose();
-        Main.getMain().setScreen(new PreGameMenuView(new PreGameMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
+    }
+    public boolean isPasswordValid(String password) {
+        return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%&*()_]).{8,}$");
     }
 
-    public boolean isPasswordValid(String password) {
-
-        return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%&*()_])[A-Za-z\\d@#$%&*()_]{8,}$");
+    private void saveUserToJson(User user) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter("users/" + user.getUsername() + ".json")) {
+            gson.toJson(user, writer);
+        } catch (IOException e) {
+            System.out.println("Failed to save user: " + e.getMessage());
+        }
+    }
+    private boolean isUsernameTaken(String username) {
+        File usersDir = new File("users");
+        if (!usersDir.exists()) {
+            return false; // No users exist yet
+        }
+        File userFile = new File(usersDir, username + ".json");
+        return userFile.exists(); // Returns true if the file exists
     }
 }

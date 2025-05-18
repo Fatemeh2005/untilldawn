@@ -2,29 +2,36 @@ package com.tilldawn.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.MainMenuController;
-import com.tilldawn.Main;
 
 public class MainMenuView implements Screen {
     private Stage stage;
-    private final TextButton playButton;
+    private final TextButton SettingsMenuButton;
+    private final TextButton ProfileMenuButton;
+    private final TextButton pregameMenuButton;
+    private final TextButton scoreBoardMenuButton;
+    private final TextButton hintBoardMenuButton;
+    private final TextButton resumeSavedGameButton;
     private final Label gameTitle;
-    private final TextField field;
     public Table table;
     private final MainMenuController controller;
 
     public MainMenuView(MainMenuController controller, Skin skin) {
         this.controller = controller;
-        this.playButton = new TextButton("play", skin);
-        this.gameTitle = new Label("This is a title", skin);
-        this.field = new TextField("this is a field", skin);
+        this.SettingsMenuButton = new TextButton("settings", skin);
+        this.ProfileMenuButton = new TextButton("Go To profile", skin);
+        this.pregameMenuButton = new TextButton("Go To pregame", skin);
+        this.resumeSavedGameButton = new TextButton("resume saved game", skin);
+        this.scoreBoardMenuButton = new TextButton("Go To scoreboard menu", skin);
+        this.hintBoardMenuButton = new TextButton("Go To hint", skin);
+        this.gameTitle = new Label("Main menu", skin);
         this.table = new Table();
-
-        controller.setView(this);
     }
 
     @Override
@@ -34,11 +41,64 @@ public class MainMenuView implements Screen {
 
         table.setFillParent(true);
         table.center();
+
         table.add(gameTitle);
-        table.row().pad(10, 0 , 10 , 0);
-        table.add(field).width(600);
-        table.row().pad(10, 0 , 10 , 0);
-        table.add(playButton);
+        table.row().pad(10, 0, 10, 0);
+        table.add(SettingsMenuButton).width(600);
+        table.row().pad(10, 0, 10, 0);
+        table.add(ProfileMenuButton).width(600);
+        table.row().pad(10, 0, 10, 0);
+        table.add(pregameMenuButton).width(600);
+        table.row().pad(10, 0, 10, 0);
+        table.add(scoreBoardMenuButton).width(600);
+        table.row().pad(10, 0, 10, 0);
+        table.add(hintBoardMenuButton).width(600);
+        table.row().pad(10, 0, 10, 0);
+        table.add(resumeSavedGameButton);
+        table.row().pad(10, 0, 10, 0);
+
+        // Add listeners
+        SettingsMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+              //  controller.goToRegisterMenu();
+            }
+        });
+
+        ProfileMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+               // controller.goToProfileMenu();
+            }
+        });
+
+        pregameMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                controller.goToPregameMenu();
+            }
+        });
+
+        scoreBoardMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            //    controller.goToScoreboardMenu();
+            }
+        });
+
+        hintBoardMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            //    controller.goToHintBoard();
+            }
+        });
+
+        resumeSavedGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            //    controller.resumeSavedGame();
+            }
+        });
 
         stage.addActor(table);
     }
@@ -46,43 +106,21 @@ public class MainMenuView implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
-        Main.getBatch().begin();
-        Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        controller.handleMainMenuButtons();
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
-
+    public void resize(int i, int i1) {}
     @Override
-    public void pause() {
-
-    }
-
+    public void pause() {}
     @Override
-    public void resume() {
-
-    }
-
+    public void resume() {}
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
-
-    }
-
-    public TextButton getPlayButton() {
-        return playButton;
-    }
-
-    public TextField getField() {
-        return field;
+        stage.dispose();
     }
 }

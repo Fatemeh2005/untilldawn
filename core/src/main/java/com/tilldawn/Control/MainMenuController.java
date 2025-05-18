@@ -6,6 +6,7 @@ import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.Pregame;
 import com.tilldawn.View.MainMenuView;
 import com.tilldawn.View.PreGameMenuView;
+import com.tilldawn.View.RegisterMenuView;
 
 public class MainMenuController {
     private MainMenuView view;
@@ -14,12 +15,10 @@ public class MainMenuController {
         this.view = view;
     }
 
-    public void handleMainMenuButtons() {
-        if (view != null) {
-            if (view.getPlayButton().isChecked() && view.getField().getText().equals("kiarash")) {
-                Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new PreGameMenuView(new PreGameMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
-            }
-        }
+    public void goToPregameMenu(){
+        Main.getMain().getScreen().dispose();
+        Main.getMain().setScreen(new PreGameMenuView(
+            new PreGameMenuController(),
+            GameAssetManager.getGameAssetManager().getSkin()));
     }
 }

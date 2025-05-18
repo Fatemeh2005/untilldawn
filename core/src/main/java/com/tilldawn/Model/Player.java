@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import java.util.ArrayList;
 
 public class Player {
-    private Texture playerTexture = new Texture(GameAssetManager.getGameAssetManager().getCharacter1_idle0());
+    //private Texture playerTexture = new Texture(GameAssetManager.getGameAssetManager().getShana_idle0());
+    private Texture playerTexture = new Texture(GameAssetManager.getGameAssetManager().getDiamond_idle0());
     private Sprite playerSprite = new Sprite(playerTexture);
     private float posX = 0;
     private float posY = 0;

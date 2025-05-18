@@ -8,25 +8,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.tilldawn.Control.RegisterMenuController;
+import com.tilldawn.Control.LoginMenuController;
 
-public class RegisterMenuView implements Screen {
+public class LoginMenuView implements Screen {
     private Stage stage;
-    private final TextButton registerButton;
-    private final TextButton goToLoginButton;
+    private final TextButton loginButton;
+    private final TextButton playAsGuestButton;
+    private final TextButton forgotPasswordButton;
     private final Label gameTitle;
     private final TextField usernameField;
     private final TextField passwordField;
     private final TextField answerSecurityQuestionField;
-    private final Label errorLabel; // ✅ NEW
+    private final Label errorLabel;
     public Table table;
-    private final RegisterMenuController controller;
+    private final LoginMenuController controller;
 
-    public RegisterMenuView(RegisterMenuController controller, Skin skin) {
+    public LoginMenuView(LoginMenuController controller, Skin skin) {
         this.controller = controller;
-        this.registerButton = new TextButton("Register", skin);
-        this.goToLoginButton = new TextButton("Go To Login", skin);
-        this.gameTitle = new Label("Register", skin);
+        this.loginButton = new TextButton("Login", skin);
+        this.playAsGuestButton = new TextButton("Play as Guest", skin);
+        this.forgotPasswordButton = new TextButton("Forgot Password", skin);
+        forgotPasswordButton.setVisible(true); // Enable it for use
+
+        this.gameTitle = new Label("Login", skin);
         this.usernameField = new TextField("", skin);
         this.usernameField.setMessageText("Enter Username");
         this.passwordField = new TextField("", skin);
@@ -34,12 +38,10 @@ public class RegisterMenuView implements Screen {
         this.passwordField.setPasswordMode(true);
         this.passwordField.setPasswordCharacter('*');
         this.answerSecurityQuestionField = new TextField("", skin);
-        this.answerSecurityQuestionField.setMessageText("what is your favorite prime number?");
-
-        this.errorLabel = new Label("", skin); // ✅ NEW
-        this.errorLabel.setColor(1, 0, 0, 1);   // Red color
-        this.errorLabel.setVisible(false);     // Start hidden
-
+        this.answerSecurityQuestionField.setMessageText("What is your favorite prime number?");
+        this.errorLabel = new Label("", skin);
+        this.errorLabel.setColor(1, 0, 0, 1);
+        this.errorLabel.setVisible(false);
         this.table = new Table();
 
         controller.setView(this);
@@ -61,22 +63,32 @@ public class RegisterMenuView implements Screen {
         table.row().pad(10, 0, 10, 0);
         table.add(answerSecurityQuestionField).width(600);
         table.row().pad(10, 0, 10, 0);
-        table.add(registerButton);
+        table.add(loginButton);
         table.row().pad(10, 0, 10, 0);
-        table.add(goToLoginButton);
+        table.add(forgotPasswordButton);
         table.row().pad(10, 0, 10, 0);
-        table.add(errorLabel); // ✅ Show error label in layout
+        table.add(playAsGuestButton);
+        table.row().pad(10, 0, 10, 0);
+        table.add(errorLabel);
 
-        registerButton.addListener(new ClickListener() {
+        loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.handleRegisterButton();
+                controller.handleLoginButton();
             }
         });
-        getGoToLoginButton().addListener(new ClickListener() {
+
+        playAsGuestButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.handleRegisterButton();
+                controller.handleGuestLogin();
+            }
+        });
+
+        forgotPasswordButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                controller.handleForgotPassword();
             }
         });
 
@@ -90,48 +102,38 @@ public class RegisterMenuView implements Screen {
         stage.draw();
     }
 
-    @Override
-    public void resize(int i, int i1) {}
-    @Override
-    public void pause() {}
-    @Override
-    public void resume() {}
-    @Override
-    public void hide() {}
+    @Override public void resize(int i, int i1) {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
 
     @Override
     public void dispose() {
         stage.dispose();
     }
 
-    public TextField getUsernameField() {
-        return usernameField;
-    }
+    // Getters
+    public TextField getUsernameField() { return usernameField; }
+    public TextField getPasswordField() { return passwordField; }
+    public TextField getAnswerSecurityQuestionField() { return answerSecurityQuestionField; }
+    public Button getLoginButton() { return loginButton; }
+    public TextButton getPlayAsGuestButton() { return playAsGuestButton; }
+    public TextButton getForgotPasswordButton() { return forgotPasswordButton; }
 
-    public TextField getPasswordField() {
-        return passwordField;
-    }
-
-    public Button getPlayButton() {
-        return registerButton;
-    }
-
-    // ✅ Add method to show error
     public void showError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
     }
 
-    // ✅ Optional: hide error manually if needed
     public void hideError() {
         errorLabel.setVisible(false);
     }
 
-    public TextField getAnswerSecurityQuestionField() {
-        return answerSecurityQuestionField;
+    public void showForgotPasswordButton() {
+        forgotPasswordButton.setVisible(true);
     }
 
-    public TextButton getGoToLoginButton() {
-        return goToLoginButton;
+    public void hideForgotPasswordButton() {
+        forgotPasswordButton.setVisible(false);
     }
 }

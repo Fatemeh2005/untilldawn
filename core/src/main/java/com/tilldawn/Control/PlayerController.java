@@ -44,7 +44,8 @@ public class PlayerController {
 
 
     public void idleAnimation(){
-        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getCharacter1_idle_animation();
+        //Animation<Texture> animation = GameAssetManager.getGameAssetManager().getShana_idle_animation();
+        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
 
         player.getPlayerSprite().setRegion(animation.getKeyFrame(player.getTime()));
 
