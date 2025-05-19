@@ -25,20 +25,17 @@ public class WorldController {
     }
 
     public void update() {
+      //  float delta = Gdx.graphics.getDeltaTime();
         float delta = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
+        playerController.update();
 
-        // Draw background
-        backgroundX = playerController.getPlayer().getPosX();
-        backgroundY = playerController.getPlayer().getPosY();
-        Main.getBatch().draw(backgroundTexture, backgroundX, backgroundY);
-
-        // Spawn enemies every 3 seconds
         enemySpawnTimer += delta;
         if (enemySpawnTimer >= 3f) {
             spawnEnemy();
             enemySpawnTimer = 0;
         }
 
+        // Get player sprite position (now same as posX/posY)
         float playerX = playerController.getPlayer().getPosX();
         float playerY = playerController.getPlayer().getPosY();
 

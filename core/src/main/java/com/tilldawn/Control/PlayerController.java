@@ -21,26 +21,26 @@ public class PlayerController {
         handlePlayerInput();
     }
 
-
-    public void handlePlayerInput(){
-        if (Gdx.input.isKeyPressed(Input.Keys.W)){
-            player.setPosY(player.getPosY() - player.getSpeed());
+    public void handlePlayerInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            player.setPosY(player.getPosY() + player.getSpeed()); // ⬆️ Move up (now correct)
             idleAnimation(player.getAnimations());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)){
-            player.setPosX(player.getPosX() - player.getSpeed());
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            player.setPosY(player.getPosY() - player.getSpeed()); // ⬇️ Move down (now correct)
             idleAnimation(player.getAnimations());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)){
-            player.setPosY(player.getPosY() + player.getSpeed());
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.setPosX(player.getPosX() + player.getSpeed()); // ➡️ Move right (correct)
             idleAnimation(player.getAnimations());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)){
-            player.setPosX(player.getPosX() + player.getSpeed());
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.setPosX(player.getPosX() - player.getSpeed()); // ⬅️ Move left (correct)
             idleAnimation(player.getAnimations());
-            player.getPlayerSprite().flip(true, false);
+            player.getPlayerSprite().flip(true, false); // Flip sprite when moving left
         }
     }
+
 
 
     public void idleAnimation(Animation<Texture> animation){

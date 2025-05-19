@@ -30,11 +30,16 @@ public class Player {
     public Player(Animation<Texture> animations, PlayerTypes playerType) {
         playerTexture = new Texture(playerType.getAvatarImageAddress());
         this.playerSprite = new Sprite(playerTexture);
-        playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
-        playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
-        rect = new CollisionRect((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight(), playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
-        this.animations = animations;
 
+        // Initialize posX and posY to screen center
+        this.posX = (float) Gdx.graphics.getWidth() / 2;
+        this.posY = (float) Gdx.graphics.getHeight() / 2;
+
+        playerSprite.setPosition(posX, posY); // Sync sprite position
+        playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
+
+        rect = new CollisionRect(posX, posY, playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
+        this.animations = animations;
         this.playerType = playerType;
         this.speed = playerType.getSpeed();
         this.playerHealth = playerType.getHealth();
@@ -60,17 +65,10 @@ public class Player {
         return posX;
     }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
-    }
-
     public float getPosY() {
         return posY;
     }
 
-    public void setPosY(float posY) {
-        this.posY = posY;
-    }
 
     public float getPlayerHealth() {
         return playerHealth;
@@ -115,5 +113,14 @@ public class Player {
 
     public Animation<Texture> getAnimations() {
         return animations;
+    }
+    public void setPosX(float posX) {
+        this.posX = posX;
+        playerSprite.setX(posX); // Keep sprite in sync
+    }
+
+    public void setPosY(float posY) {
+        this.posY = posY;
+        playerSprite.setY(posY); // Keep sprite in sync
     }
 }
