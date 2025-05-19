@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.LoginMenuController;
+import com.tilldawn.Model.PlayerTypes;
 
 public class LoginMenuView implements Screen {
     private Stage stage;
@@ -22,8 +23,9 @@ public class LoginMenuView implements Screen {
     private final Label errorLabel;
     public Table table;
     private final LoginMenuController controller;
+    private PlayerTypes avatar;
 
-    public LoginMenuView(LoginMenuController controller, Skin skin) {
+    public LoginMenuView(LoginMenuController controller, Skin skin, PlayerTypes avatar) {
         this.controller = controller;
         this.loginButton = new TextButton("Login", skin);
         this.playAsGuestButton = new TextButton("Play as Guest", skin);
@@ -43,6 +45,7 @@ public class LoginMenuView implements Screen {
         this.errorLabel.setColor(1, 0, 0, 1);
         this.errorLabel.setVisible(false);
         this.table = new Table();
+        this.avatar = avatar;
 
         controller.setView(this);
     }

@@ -1,8 +1,11 @@
 package com.tilldawn.Control;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.google.gson.Gson;
 import com.tilldawn.Main;
 import com.tilldawn.Model.GameAssetManager;
+import com.tilldawn.Model.PlayerTypes;
 import com.tilldawn.Model.User;
 import com.tilldawn.View.LoginMenuView;
 import com.tilldawn.View.MainMenuView;
@@ -12,6 +15,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class LoginMenuController {
     private LoginMenuView view;
@@ -26,14 +31,6 @@ public class LoginMenuController {
             String password = view.getPasswordField().getText();
             String answerOfSecurity = view.getAnswerSecurityQuestionField().getText();
 
-            if(view.getPlayAsGuestButton().isChecked()){
-                view.hideError();
-                Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new MainMenuView(
-                    new MainMenuController(),
-                    GameAssetManager.getGameAssetManager().getSkin()));
-            }
-
             if (username.equals("") || password.equals("") || answerOfSecurity.equals("")) {
                 view.showError("do not leave any field empty");
                 return;
@@ -47,22 +44,76 @@ public class LoginMenuController {
             } else if (!user.getAnswerOfSecurity().equals(answerOfSecurity)) {
                 view.showError("security answer is incorrect!");
             } else {
+                Animation<Texture>animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
+                switch (user.getAvatarImageAddress()) {
+                    case "Diamond/Idle_0.png":
+                        animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
+                        break;
+                    case "Shana/Idle_0.png":
+
+                        animations = GameAssetManager.getGameAssetManager().getShana_idle_frames();
+                        break;
+                    case "Dasher/Idle_0.png":
+
+                        animations = GameAssetManager.getGameAssetManager().getDasher_idle_frames();
+                        break;
+                    case "Scarlet/Idle_0.png":
+
+                        animations = GameAssetManager.getGameAssetManager().getScarlet_idle_frames();
+                        break;
+                    case "Lilith/Idle_0.png":
+
+                        animations = GameAssetManager.getGameAssetManager().getLilith_idle_frames();
+                        break;
+
+                }
                 view.hideError();
+
                 Main.getMain().getScreen().dispose();
                 Main.getMain().setScreen(new MainMenuView(
                     new MainMenuController(),
-                    GameAssetManager.getGameAssetManager().getSkin()));
+                    GameAssetManager.getGameAssetManager().getSkin(), PlayerTypes.findPlayerTypeWithAddress(user.getAvatarImageAddress()), animations, user));
 
             }
         }
     }
 
     public void handleGuestLogin() {
+        String name = "";
+        Animation<Texture> animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
+        Random random = new Random();
+        //make it 5
+        int randomNumber = random.nextInt(5);
+
+        switch (randomNumber) {
+            case 0:
+                name = GameAssetManager.getGameAssetManager().getDiamond_idle0();
+                animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
+                break;
+            case 1:
+                name = GameAssetManager.getGameAssetManager().getShana_idle0();
+                animations = GameAssetManager.getGameAssetManager().getShana_idle_frames();
+                break;
+            case 2:
+                name = GameAssetManager.getGameAssetManager().getDasher_idle0();
+                animations = GameAssetManager.getGameAssetManager().getDasher_idle_frames();
+                break;
+            case 3:
+                name = GameAssetManager.getGameAssetManager().getScarlet_idle0();
+                animations = GameAssetManager.getGameAssetManager().getScarlet_idle_frames();
+                break;
+            case 4:
+                name = GameAssetManager.getGameAssetManager().getLilith_idle0();
+                animations = GameAssetManager.getGameAssetManager().getLilith_idle_frames();
+                break;
+
+        }
+        //TODO:null passed here!!
         view.hideError();
         Main.getMain().getScreen().dispose();
         Main.getMain().setScreen(new MainMenuView(
             new MainMenuController(),
-            GameAssetManager.getGameAssetManager().getSkin()));
+            GameAssetManager.getGameAssetManager().getSkin(), PlayerTypes.findPlayerTypeWithAddress(name), animations, null));
     }
 
     public void handleForgotPassword() {

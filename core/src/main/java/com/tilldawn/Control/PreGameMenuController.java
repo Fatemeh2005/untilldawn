@@ -1,10 +1,15 @@
 package com.tilldawn.Control;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.tilldawn.Main;
 import com.tilldawn.Model.GameAssetManager;
+import com.tilldawn.Model.PlayerTypes;
 import com.tilldawn.Model.Pregame;
 import com.tilldawn.View.GameView;
 import com.tilldawn.View.PreGameMenuView;
+
+import java.util.ArrayList;
 
 public class PreGameMenuController {
     private PreGameMenuView view;
@@ -16,10 +21,10 @@ public class PreGameMenuController {
         this.pregame = new Pregame();
     }
 
-    public void handlePreGameMenuButtons() {
+    public void handlePreGameMenuButtons(PlayerTypes Avatar, Animation<Texture> animations) {
         if (view != null) {
             Main.getMain().getScreen().dispose();
-            Main.getMain().setScreen(new GameView(new GameController(), GameAssetManager.getGameAssetManager().getSkin()));
+            Main.getMain().setScreen(new GameView(new GameController(), GameAssetManager.getGameAssetManager().getSkin(), Avatar, animations));
         }
     }
 

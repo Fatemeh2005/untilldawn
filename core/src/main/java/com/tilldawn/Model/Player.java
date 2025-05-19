@@ -2,20 +2,23 @@ package com.tilldawn.Model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.ArrayList;
 
 public class Player {
-    //private Texture playerTexture = new Texture(GameAssetManager.getGameAssetManager().getShana_idle0());
-    private Texture playerTexture = new Texture(GameAssetManager.getGameAssetManager().getDiamond_idle0());
-    private Sprite playerSprite = new Sprite(playerTexture);
+
+    private Texture playerTexture ;
+    private Sprite playerSprite ;
+    private PlayerTypes playerType ;
     private float posX = 0;
     private float posY = 0;
-    private float playerHealth = 100;
+    private float playerHealth;
     private CollisionRect rect ;
     private float time = 0;
-    private float speed = 5;
+    private float speed ;
+    private Animation<Texture>animations;
 
     public float getSpeed() {
         return speed;
@@ -24,10 +27,17 @@ public class Player {
     private boolean isPlayerIdle = true;
     private boolean isPlayerRunning = false;
 
-    public Player(){
+    public Player(Animation<Texture> animations, PlayerTypes playerType) {
+        playerTexture = new Texture(playerType.getAvatarImageAddress());
+        this.playerSprite = new Sprite(playerTexture);
         playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
         playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
         rect = new CollisionRect((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight(), playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
+        this.animations = animations;
+
+        this.playerType = playerType;
+        this.speed = playerType.getSpeed();
+        this.playerHealth = playerType.getHealth();
     }
 
     public Texture getPlayerTexture() {
@@ -103,4 +113,7 @@ public class Player {
         this.time = time;
     }
 
+    public Animation<Texture> getAnimations() {
+        return animations;
+    }
 }

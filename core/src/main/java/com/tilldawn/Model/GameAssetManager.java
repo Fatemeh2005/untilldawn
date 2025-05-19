@@ -9,19 +9,19 @@ public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
     private final Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
 
+    // Shana assets
     private final String Shana_idle0 = "Shana/Idle_0.png";
     private final String Shana_idle1 = "Shana/Idle_1.png";
     private final String Shana_idle2 = "Shana/Idle_2.png";
     private final String Shana_idle3 = "Shana/Idle_3.png";
     private final String Shana_idle4 = "Shana/Idle_4.png";
-    private final String Shana_idle5 = "Shana/Idle_5.png";
     private final Texture Shana_idle0_tex = new Texture(Shana_idle0);
     private final Texture Shana_idle1_tex = new Texture(Shana_idle1);
     private final Texture Shana_idle2_tex = new Texture(Shana_idle2);
     private final Texture Shana_idle3_tex = new Texture(Shana_idle3);
     private final Texture Shana_idle4_tex = new Texture(Shana_idle4);
-    private final Texture Shana_idle5_tex = new Texture(Shana_idle5);
 
+    // Diamond assets
     private final String Diamond_idle0 = "Diamond/Idle_0.png";
     private final String Diamond_idle1 = "Diamond/Idle_1.png";
     private final String Diamond_idle2 = "Diamond/Idle_2.png";
@@ -32,8 +32,88 @@ public class GameAssetManager {
     private final Texture Diamond_idle2_tex = new Texture(Diamond_idle2);
     private final Texture Diamond_idle3_tex = new Texture(Diamond_idle3);
     private final Texture Diamond_idle4_tex = new Texture(Diamond_idle4);
-    private final Animation<Texture> Shana_idle_frames = new Animation<>(0.1f, Shana_idle0_tex, Shana_idle1_tex, Shana_idle2_tex, Shana_idle3_tex, Shana_idle4_tex, Shana_idle5_tex);
+
+    // Dasher assets
+    private final String Dasher_idle0 = "Dasher/Idle_0.png";
+    private final String Dasher_idle1 = "Dasher/Idle_1.png";
+    private final String Dasher_idle2 = "Dasher/Idle_2.png";
+    private final String Dasher_idle3 = "Dasher/Idle_3.png";
+    private final String Dasher_idle4 = "Dasher/Idle_4.png";
+    private final Texture Dasher_idle0_tex = new Texture(Dasher_idle0);
+    private final Texture Dasher_idle1_tex = new Texture(Dasher_idle1);
+    private final Texture Dasher_idle2_tex = new Texture(Dasher_idle2);
+    private final Texture Dasher_idle3_tex = new Texture(Dasher_idle3);
+    private final Texture Dasher_idle4_tex = new Texture(Dasher_idle4);
+
+    // Lilith assets
+    private final String Lilith_idle0 = "Lilith/Idle_0.png";
+    private final String Lilith_idle1 = "Lilith/Idle_1.png";
+    private final String Lilith_idle2 = "Lilith/Idle_2.png";
+    private final String Lilith_idle3 = "Lilith/Idle_3.png";
+    private final String Lilith_idle4 = "Lilith/Idle_4.png";
+    private final Texture Lilith_idle0_tex = new Texture(Lilith_idle0);
+    private final Texture Lilith_idle1_tex = new Texture(Lilith_idle1);
+    private final Texture Lilith_idle2_tex = new Texture(Lilith_idle2);
+    private final Texture Lilith_idle3_tex = new Texture(Lilith_idle3);
+    private final Texture Lilith_idle4_tex = new Texture(Lilith_idle4);
+
+    // Scarlet assets
+    private final String Scarlet_idle0 = "Scarlet/Idle_0.png";
+    private final String Scarlet_idle1 = "Scarlet/Idle_1.png";
+    private final String Scarlet_idle2 = "Scarlet/Idle_2.png";
+    private final String Scarlet_idle3 = "Scarlet/Idle_3.png";
+    private final String Scarlet_idle4 = "Scarlet/Idle_4.png";
+    private final Texture Scarlet_idle0_tex = new Texture(Scarlet_idle0);
+    private final Texture Scarlet_idle1_tex = new Texture(Scarlet_idle1);
+    private final Texture Scarlet_idle2_tex = new Texture(Scarlet_idle2);
+    private final Texture Scarlet_idle3_tex = new Texture(Scarlet_idle3);
+    private final Texture Scarlet_idle4_tex = new Texture(Scarlet_idle4);
+
+
+    //tentacle monster
+    private final String tentacle0 = "tentacleMonster/BrainMonster_0.png";
+    private final String tentacle1 = "tentacleMonster/BrainMonster_1.png";
+    private final String tentacle2 = "tentacleMonster/BrainMonster_2.png";
+    private final String tentacle3 = "tentacleMonster/BrainMonster_3.png";
+    private final Texture tentacle0_tex = new Texture(tentacle0);
+    private final Texture tentacle1_tex = new Texture(tentacle1);
+    private final Texture tentacle2_tex = new Texture(tentacle2);
+    private final Texture tentacle3_tex = new Texture(tentacle3);
+
+    //eyeBat monster
+    private final String eyeBat0 = "eyeBat/T_EyeBat_0.png";
+    private final String eyeBat1 = "eyeBat/T_EyeBat_1.png";
+    private final String eyeBat2 = "eyeBat/T_EyeBat_2.png";
+    private final String eyeBat3 = "eyeBat/T_EyeBat_3.png";
+    private final Texture eyeBat0_tex = new Texture(eyeBat0);
+    private final Texture eyeBat1_tex = new Texture(eyeBat1);
+    private final Texture eyeBat2_tex = new Texture(eyeBat2);
+    private final Texture eyeBat3_tex = new Texture(eyeBat3);
+
+    //elder monster
+    private final String elder0 = "Elder/0.png";
+    private final String elder1 = "Elder/1.png";
+    private final String elder2 = "Elder/2.png";
+    private final String elder3 = "Elder/3.png";
+    private final String elder4 = "Elder/4.png";
+    private final Texture elder0_tex = new Texture(elder0);
+    private final Texture elder1_tex = new Texture(elder1);
+    private final Texture elder2_tex = new Texture(elder2);
+    private final Texture elder3_tex = new Texture(elder3);
+    private final Texture elder4_tex = new Texture(elder4);
+
+    //tree
+    private final String tree = "T_TreeMonsterWalking.png";
+    private final Texture tree_tex = new Texture(tree);
+
+    // Animations
+    private final Animation<Texture> Shana_idle_frames = new Animation<>(0.1f, Shana_idle0_tex, Shana_idle1_tex, Shana_idle2_tex, Shana_idle3_tex, Shana_idle4_tex);
     private final Animation<Texture> Diamond_idle_frames = new Animation<>(0.1f, Diamond_idle0_tex, Diamond_idle1_tex, Diamond_idle2_tex, Diamond_idle3_tex, Diamond_idle4_tex);
+    private final Animation<Texture> Dasher_idle_frames = new Animation<>(0.1f, Dasher_idle0_tex, Dasher_idle1_tex, Dasher_idle2_tex, Dasher_idle3_tex, Dasher_idle4_tex);
+    private final Animation<Texture> Lilith_idle_frames = new Animation<>(0.1f, Lilith_idle0_tex, Lilith_idle1_tex, Lilith_idle2_tex, Lilith_idle3_tex, Lilith_idle4_tex);
+    private final Animation<Texture> Scarlet_idle_frames = new Animation<>(0.1f, Scarlet_idle0_tex, Scarlet_idle1_tex, Scarlet_idle2_tex, Scarlet_idle3_tex, Scarlet_idle4_tex);
+    private final Animation<Texture> eyeBat_frames= new Animation<>(0.1f, eyeBat0_tex, eyeBat1_tex, eyeBat2_tex, eyeBat3_tex);
+    private final Animation <Texture> tentacle_frames = new Animation<>(0.1f,tentacle0_tex, tentacle1_tex, tentacle2_tex, tentacle3_tex);
 
     private final String smg = "smg/SMGStill.png";
     private final Texture smgTexture = new Texture(smg);
@@ -82,5 +162,41 @@ public class GameAssetManager {
 
     public String getDiamond_idle0() {
         return Diamond_idle0;
+    }
+
+    public Animation<Texture> getDasher_idle_frames() {
+        return Dasher_idle_frames;
+    }
+
+    public Animation<Texture> getScarlet_idle_frames() {
+        return Scarlet_idle_frames;
+    }
+
+    public Animation<Texture> getLilith_idle_frames() {
+        return Lilith_idle_frames;
+    }
+
+    public Animation<Texture> getShana_idle_frames() {
+        return Shana_idle_frames;
+    }
+
+    public String getLilith_idle0() {
+        return Lilith_idle0;
+    }
+
+    public String getDasher_idle0() {
+        return Dasher_idle0;
+    }
+
+    public String getScarlet_idle0() {
+        return Scarlet_idle0;
+    }
+
+    public Animation<Texture> getEyeBat_frames() {
+        return eyeBat_frames;
+    }
+
+    public Animation<Texture> getTentacle_frames() {
+        return tentacle_frames;
     }
 }

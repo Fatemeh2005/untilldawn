@@ -2,6 +2,8 @@ package com.tilldawn.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
@@ -9,6 +11,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.PreGameMenuController;
 import com.tilldawn.Main;
+import com.tilldawn.Model.PlayerTypes;
+
+import java.util.ArrayList;
 
 public class PreGameMenuView implements Screen {
 
@@ -18,13 +23,17 @@ public class PreGameMenuView implements Screen {
     private final SelectBox selectHero;
     public Table table;
     private PreGameMenuController controller;
+    private PlayerTypes Avatar;
+    private Animation<Texture> animations;
 
-    public PreGameMenuView(PreGameMenuController controller, Skin skin) {
+    public PreGameMenuView(PreGameMenuController controller, Skin skin, PlayerTypes Avatar, Animation<Texture> animations) {
         this.gameTitle = new Label("Pregame Menu", skin);
         this.selectHero = new SelectBox<>(skin);
         this.playButton = new TextButton("Play", skin);
         this.table = new Table();
         this.controller = controller;
+        this.Avatar = Avatar;
+        this.animations = animations;
         controller.setView(this);
     }
 
@@ -60,7 +69,7 @@ public class PreGameMenuView implements Screen {
         Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        controller.handlePreGameMenuButtons();
+        controller.handlePreGameMenuButtons(Avatar, animations);
     }
 
     @Override

@@ -18,10 +18,6 @@ public class PlayerController {
     public void update(){
         player.getPlayerSprite().draw(Main.getBatch());
 
-        if(player.isPlayerIdle()){
-            idleAnimation();
-        }
-
         handlePlayerInput();
     }
 
@@ -29,23 +25,25 @@ public class PlayerController {
     public void handlePlayerInput(){
         if (Gdx.input.isKeyPressed(Input.Keys.W)){
             player.setPosY(player.getPosY() - player.getSpeed());
+            idleAnimation(player.getAnimations());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)){
             player.setPosX(player.getPosX() - player.getSpeed());
+            idleAnimation(player.getAnimations());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)){
             player.setPosY(player.getPosY() + player.getSpeed());
+            idleAnimation(player.getAnimations());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)){
             player.setPosX(player.getPosX() + player.getSpeed());
+            idleAnimation(player.getAnimations());
             player.getPlayerSprite().flip(true, false);
         }
     }
 
 
-    public void idleAnimation(){
-        //Animation<Texture> animation = GameAssetManager.getGameAssetManager().getShana_idle_animation();
-        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
+    public void idleAnimation(Animation<Texture> animation){
 
         player.getPlayerSprite().setRegion(animation.getKeyFrame(player.getTime()));
 

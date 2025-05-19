@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -11,14 +13,17 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tilldawn.Control.GameController;
 import com.tilldawn.Main;
+import com.tilldawn.Model.PlayerTypes;
+
+import java.util.ArrayList;
 
 public class GameView implements Screen, InputProcessor {
     private Stage stage;
     private GameController controller;
 
-    public GameView(GameController controller, Skin skin) {
+    public GameView(GameController controller, Skin skin, PlayerTypes type, Animation<Texture> animations) {
         this.controller = controller;
-        controller.setView(this);
+        controller.setView(this, type, animations);
     }
 
     @Override
