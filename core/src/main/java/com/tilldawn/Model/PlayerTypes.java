@@ -9,7 +9,7 @@ public enum PlayerTypes {
 
     LILITH(5, 3, GameAssetManager.getGameAssetManager().getLilith_idle0()),
 
-    DASHER(2, 10, GameAssetManager.getGameAssetManager().getDasher_idle0());
+    DASHER(2, 7, GameAssetManager.getGameAssetManager().getDasher_idle0());
 
 
     private final int health;

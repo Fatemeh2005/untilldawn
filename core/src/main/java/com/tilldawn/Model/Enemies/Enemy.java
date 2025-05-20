@@ -21,13 +21,12 @@ public class Enemy {
     public void update(float delta, float playerX, float playerY) {
         float dx = playerX - x;
         float dy = playerY - y;
-        float dist = (float) Math.sqrt(dx * dx + dy * dy);
+        float dist = (float) Math.sqrt(dx*dx + dy*dy);
 
-        if (dist > 0.001f) {
-            x += (dx / dist) * speed * delta;
-            y += (dy / dist) * speed * delta;
+        if (dist > 10f) { // Don't move if very close
+            x += (dx/dist) * speed * delta;
+            y += (dy/dist) * speed * delta;
         }
-
         stateTime += delta;
     }
 
