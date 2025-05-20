@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.tilldawn.Model.Enemies.Enemy;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,10 @@ public class Player {
     private float time = 0;
     private float speed ;
     private Animation<Texture>animations;
+
+
+    private float lastDamageTime = 0f; // Time since last damage
+    private final float damageCooldown = 1f; // 1 second between hits
 
     public float getSpeed() {
         return speed;
@@ -43,6 +48,7 @@ public class Player {
         this.playerType = playerType;
         this.speed = playerType.getSpeed();
         this.playerHealth = playerType.getHealth();
+        rect = new CollisionRect(posX, posY, playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
     }
 
     public Texture getPlayerTexture() {
@@ -117,10 +123,29 @@ public class Player {
     public void setPosX(float posX) {
         this.posX = posX;
         playerSprite.setX(posX); // Keep sprite in sync
+        rect.move(posX, posY); // Sync collision box
     }
 
     public void setPosY(float posY) {
         this.posY = posY;
         playerSprite.setY(posY); // Keep sprite in sync
+        rect.move(posX, posY); // Sync collision box
+    }
+
+    public void takeDamageIfInRange(Enemy enemy, float damage, float range) {
+        float dx = enemy.getX() - posX;
+        float dy = enemy.getY() - posY;
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < range && time - lastDamageTime > damageCooldown) {
+            playerHealth -= damage;
+            if (playerHealth < 0) playerHealth = 0;
+            lastDamageTime = time;
+        }
+    }
+
+    public void update(float delta) {
+        time += delta;
+        rect.move(posX, posY);
     }
 }

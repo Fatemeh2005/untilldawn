@@ -29,6 +29,7 @@ public class WorldController {
     }
 
     public void update() {
+
         float delta = Gdx.graphics.getDeltaTime();
 
         // Update camera
@@ -54,18 +55,27 @@ public class WorldController {
             Enemy enemy = enemies.get(i);
             enemy.update(delta, playerX, playerY);
 
+            // 💥 Damage player if enemy is close
+            playerController.getPlayer().takeDamageIfInRange(enemy, 0.5f, 60f); // 60 pixels range, 0.5 damage
+
             if (isFarOffScreen(enemy.getX(), enemy.getY())) {
                 enemies.remove(i);
                 i--;
             }
         }
+
+        // Update player
+        playerController.getPlayer().update(delta);
     }
+
 
     private void spawnEnemy() {
         Random rand = new Random();
         float spawnX = rand.nextBoolean() ? -64 : Gdx.graphics.getWidth() + 64;
         float spawnY = rand.nextFloat() * Gdx.graphics.getHeight();
         Animation<Texture> animation = GameAssetManager.getGameAssetManager().getTentacle_frames();
+        //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getEyeBat_frames();
+        //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getElder_frames();
         float speed = 40 + rand.nextFloat() * 60;
         enemies.add(new Enemy(spawnX, spawnY, speed, animation));
     }

@@ -3,103 +3,75 @@ package com.tilldawn.View;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tilldawn.Control.GameController;
 import com.tilldawn.Main;
 import com.tilldawn.Model.PlayerTypes;
-
-import java.util.ArrayList;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 public class GameView implements Screen, InputProcessor {
-    private Stage stage;
     private GameController controller;
+    private Stage stage;
 
     public GameView(GameController controller, Skin skin, PlayerTypes type, Animation<Texture> animations) {
         this.controller = controller;
-        controller.setView(this, type, animations);
-    }
-
-    @Override
-    public void show() {
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(this);
+        this.controller.setView(this, type, animations);
+        this.stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         Main.getBatch().begin();
         controller.updateGame();
+
+        controller.renderWorld(Main.getBatch());
         Main.getBatch().end();
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+
+        stage.act(delta);
         stage.draw();
 
     }
 
     @Override
     public void resize(int width, int height) {
-
+        controller.getWorldController().resize(width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
+    public boolean keyDown(int i) {
         return false;
     }
 
     @Override
-    public boolean keyUp(int keycode) {
+    public boolean keyUp(int i) {
         return false;
     }
 
     @Override
-    public boolean keyTyped(char character) {
+    public boolean keyTyped(char c) {
         return false;
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        controller.getWeaponController().handleWeaponShoot(screenX, screenY);
+    public boolean touchUp(int i, int i1, int i2, int i3) {
         return false;
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    public boolean touchCancelled(int i, int i1, int i2, int i3) {
         return false;
     }
 
     @Override
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    public boolean touchDragged(int i, int i1, int i2) {
         return false;
     }
 
@@ -110,7 +82,19 @@ public class GameView implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean scrolled(float amountX, float amountY) {
+    public boolean scrolled(float v, float v1) {
         return false;
     }
+
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        controller.getWeaponController().handleWeaponShoot(screenX, screenY);
+        return false;
+    }
+
+    // Other required Screen methods...
+    @Override public void show() {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
+    @Override public void dispose() {}
 }

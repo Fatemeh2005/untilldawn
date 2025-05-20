@@ -114,6 +114,7 @@ public class GameAssetManager {
     private final Animation<Texture> Scarlet_idle_frames = new Animation<>(0.1f, Scarlet_idle0_tex, Scarlet_idle1_tex, Scarlet_idle2_tex, Scarlet_idle3_tex, Scarlet_idle4_tex);
     private final Animation<Texture> eyeBat_frames= new Animation<>(0.1f, eyeBat0_tex, eyeBat1_tex, eyeBat2_tex, eyeBat3_tex);
     private final Animation <Texture> tentacle_frames = new Animation<>(0.1f,tentacle0_tex, tentacle1_tex, tentacle2_tex, tentacle3_tex);
+    private final Animation<Texture> elder_frames = new Animation<>(0.1f, elder0_tex, elder1_tex, elder2_tex, elder3_tex, elder4_tex);
 
     private final String smg = "smg/SMGStill.png";
     private final Texture smgTexture = new Texture(smg);
@@ -198,5 +199,9 @@ public class GameAssetManager {
 
     public Animation<Texture> getTentacle_frames() {
         return tentacle_frames;
+    }
+
+    public Animation<Texture> getElder_frames() {
+        return elder_frames;
     }
 }
