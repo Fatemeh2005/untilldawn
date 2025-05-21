@@ -14,7 +14,7 @@ public class Player {
     private PlayerTypes playerType ;
     private float posX = 0;
     private float posY = 0;
-    private int playerHealth;
+    private float playerHealth;
     private CollisionRect rect ;
     private float time = 0;
     private float speed ;
@@ -76,11 +76,11 @@ public class Player {
     }
 
 
-    public int getPlayerHealth() {
+    public float getPlayerHealth() {
         return playerHealth;
     }
 
-    public void setPlayerHealth(int playerHealth) {
+    public void setPlayerHealth(float playerHealth) {
         this.playerHealth = playerHealth;
     }
 
@@ -155,13 +155,5 @@ public class Player {
 
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
-    }
-
-    public PlayerTypes getPlayerType() {
-        return playerType;
-    }
-
-    public void setPlayerType(PlayerTypes playerType) {
-        this.playerType = playerType;
     }
 }

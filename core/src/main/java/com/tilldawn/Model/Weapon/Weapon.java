@@ -4,6 +4,7 @@ package com.tilldawn.Model.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.tilldawn.Model.Bullet;
 import com.tilldawn.Model.GameAssetManager;
 
 import java.util.ArrayList;
