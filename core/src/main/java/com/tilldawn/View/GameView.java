@@ -3,7 +3,9 @@ package com.tilldawn.View;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -16,23 +18,30 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 public class GameView implements Screen, InputProcessor {
     private GameController controller;
     private Stage stage;
+    private OrthographicCamera camera;
 
     public GameView(GameController controller, Skin skin, PlayerTypes type, Animation<Texture> animations) {
         this.controller = controller;
         this.controller.setView(this, type, animations);
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        Main.getBatch().setProjectionMatrix(camera.combined);
+
         Main.getBatch().begin();
-        controller.updateGame();
 
         controller.renderWorld(Main.getBatch());
+
+        controller.updateGame(camera);
         Main.getBatch().end();
+
 
         stage.act(delta);
         stage.draw();

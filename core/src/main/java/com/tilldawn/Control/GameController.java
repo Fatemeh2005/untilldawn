@@ -1,6 +1,7 @@
     package com.tilldawn.Control;
 
     import com.badlogic.gdx.Gdx;
+    import com.badlogic.gdx.graphics.Camera;
     import com.badlogic.gdx.graphics.Texture;
     import com.badlogic.gdx.graphics.g2d.Animation;
     import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,18 +24,18 @@
             this.weaponController = new WeaponController(new Weapon());
         }
 
-        public void updateGame() {
+        public void updateGame(Camera camera) {
             if (view != null) {
-                worldController.update();
+                worldController.update(camera);
                 playerController.update();
-                weaponController.update();
+                weaponController.update(playerController);
             }
         }
 
         public void renderWorld(SpriteBatch batch) {
-            worldController.render(batch);
-            playerController.render(batch);
-            weaponController.update();
+            worldController.render();
+            //playerController.render(batch);
+            //weaponController.update();
         }
 
         public PlayerController getPlayerController() {

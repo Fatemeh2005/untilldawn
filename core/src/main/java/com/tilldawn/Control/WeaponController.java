@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Bullet;
+import com.tilldawn.Model.Player;
 import com.tilldawn.Model.Weapon;
 
 import java.util.ArrayList;
@@ -18,7 +19,10 @@ public class WeaponController {
         this.weapon = weapon;
     }
 
-    public void update(){
+    public void update(PlayerController playerController){
+        Player player = playerController.getPlayer();
+        weapon.getSmgSprite().setX(player.getPosX() + 30);
+        weapon.getSmgSprite().setY(player.getPosY() + 30);
         weapon.getSmgSprite().draw(Main.getBatch());
         updateBullets();
     }

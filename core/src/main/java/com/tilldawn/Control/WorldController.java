@@ -1,6 +1,7 @@
 package com.tilldawn.Control;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -17,18 +18,16 @@ public class WorldController {
     private Texture backgroundTexture;
     private ArrayList<Enemy> enemies = new ArrayList<>();
     private float enemySpawnTimer = 0;
-    private OrthographicCamera camera;
     private float worldWidth = 2000;
     private float worldHeight = 2000;
 
     public WorldController(PlayerController playerController) {
         this.backgroundTexture = new Texture("background.png");
         this.playerController = playerController;
-        this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
     }
 
-    public void update() {
+    public void update(Camera camera) {
 
         float delta = Gdx.graphics.getDeltaTime();
 
@@ -86,18 +85,17 @@ public class WorldController {
             y < -margin || y > worldHeight + margin;
     }
 
-    public void render(SpriteBatch batch) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
+    public void render() {
+        Main.getBatch().draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
         for (Enemy enemy : enemies) {
-            enemy.render(batch);
+            enemy.render(Main.getBatch());
         }
     }
 
     public void resize(int width, int height) {
-        camera.viewportWidth = width;
+        /*camera.viewportWidth = width;
         camera.viewportHeight = height;
-        camera.update();
+        camera.update();*/
     }
 
     public void dispose() {

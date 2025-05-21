@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.tilldawn.Main;
 import com.tilldawn.Model.Player;
 
 public class PlayerController {
@@ -16,6 +17,8 @@ public class PlayerController {
 
     public void update() {
         handlePlayerInput();
+        player.getPlayerSprite().setPosition(player.getPosX() , player.getPosY());
+        player.getPlayerSprite().draw(Main.getBatch());
     }
 
 public void handlePlayerInput() {
@@ -45,6 +48,8 @@ public void handlePlayerInput() {
     public Player getPlayer() {
         return player;
     }
+
+
     public void idleAnimation(Animation<Texture> animation){
 
         player.getPlayerSprite().setRegion(animation.getKeyFrame(player.getTime()));

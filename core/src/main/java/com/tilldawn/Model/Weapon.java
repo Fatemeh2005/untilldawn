@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Weapon {
+    private int xPosition;
+    private int yPosition;
     private final Texture smgTexture = new Texture(GameAssetManager.getGameAssetManager().getSmg());
     private Sprite smgSprite = new Sprite(smgTexture);
     private int ammo = 30;
