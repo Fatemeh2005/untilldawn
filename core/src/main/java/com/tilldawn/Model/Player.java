@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.tilldawn.Model.Enemies.Enemy;
-
-import java.util.ArrayList;
+import com.tilldawn.Model.Weapon.Weapon;
 
 public class Player {
 
@@ -20,6 +19,7 @@ public class Player {
     private float time = 0;
     private float speed ;
     private Animation<Texture>animations;
+    private Weapon weapon;
 
 
     private float lastDamageTime = 0f; // Time since last damage

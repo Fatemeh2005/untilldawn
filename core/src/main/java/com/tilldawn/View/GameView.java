@@ -3,12 +3,9 @@ package com.tilldawn.View;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.tilldawn.Control.GameController;
 import com.tilldawn.Main;
 import com.tilldawn.Model.PlayerTypes;
@@ -20,11 +17,11 @@ public class GameView implements Screen, InputProcessor {
     private Stage stage;
     private OrthographicCamera camera;
 
-    public GameView(GameController controller, Skin skin, PlayerTypes type, Animation<Texture> animations) {
+    public GameView(GameController controller, PlayerTypes type, Animation<Texture> animations) {
+        Gdx.input.setInputProcessor(this);
         this.controller = controller;
         this.controller.setView(this, type, animations);
         this.stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }

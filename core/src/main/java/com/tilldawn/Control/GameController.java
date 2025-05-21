@@ -1,13 +1,13 @@
     package com.tilldawn.Control;
 
-    import com.badlogic.gdx.Gdx;
     import com.badlogic.gdx.graphics.Camera;
     import com.badlogic.gdx.graphics.Texture;
     import com.badlogic.gdx.graphics.g2d.Animation;
     import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+    import com.tilldawn.Model.Game;
     import com.tilldawn.Model.Player;
     import com.tilldawn.Model.PlayerTypes;
-    import com.tilldawn.Model.Weapon;
+    import com.tilldawn.Model.Weapon.Weapon;
     import com.tilldawn.View.GameView;
 
     public class GameController {
@@ -19,7 +19,8 @@
         public void setView(GameView view, PlayerTypes type, Animation<Texture> animation) {
             this.view = view;
             Player player = new Player(animation, type);
-            this.playerController = new PlayerController(player);
+            Game.setPlayer(player);
+            this.playerController = new PlayerController();
             this.worldController = new WorldController(playerController);
             this.weaponController = new WeaponController(new Weapon());
         }

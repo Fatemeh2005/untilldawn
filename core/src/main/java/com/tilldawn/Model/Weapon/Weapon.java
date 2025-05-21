@@ -1,12 +1,13 @@
-package com.tilldawn.Model;
+package com.tilldawn.Model.Weapon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.tilldawn.Model.GameAssetManager;
 
 public class Weapon {
-    private int xPosition;
-    private int yPosition;
+//    private int xPosition;
+//    private int yPosition;
     private final Texture smgTexture = new Texture(GameAssetManager.getGameAssetManager().getSmg());
     private Sprite smgSprite = new Sprite(smgTexture);
     private int ammo = 30;

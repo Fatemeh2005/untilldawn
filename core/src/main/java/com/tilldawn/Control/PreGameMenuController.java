@@ -24,7 +24,7 @@ public class PreGameMenuController {
     public void handlePreGameMenuButtons(PlayerTypes Avatar, Animation<Texture> animations) {
         if (view != null) {
             Main.getMain().getScreen().dispose();
-            Main.getMain().setScreen(new GameView(new GameController(), GameAssetManager.getGameAssetManager().getSkin(), Avatar, animations));
+            Main.getMain().setScreen(new GameView(new GameController(), Avatar, animations));
         }
     }
 
