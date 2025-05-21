@@ -11,7 +11,6 @@ import com.tilldawn.Model.Player;
 
 public class PlayerController {
 
-
     public void update() {
         handlePlayerInput();
         Game.getPlayer().getPlayerSprite().setPosition(Game.getPlayer().getPosX() , Game.getPlayer().getPosY());
@@ -40,10 +39,6 @@ public void handlePlayerInput() {
 
     public void render(SpriteBatch batch) {
         Game.getPlayer().getPlayerSprite().draw(batch);
-    }
-
-    public Player getPlayer() {
-        return Game.getPlayer();
     }
 
 

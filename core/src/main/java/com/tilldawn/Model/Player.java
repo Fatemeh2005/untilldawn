@@ -19,7 +19,7 @@ public class Player {
     private float time = 0;
     private float speed ;
     private Animation<Texture>animations;
-    private Weapon weapon;
+    private Weapon weapon = new Weapon();
 
 
     private float lastDamageTime = 0f; // Time since last damage
@@ -147,5 +147,13 @@ public class Player {
     public void update(float delta) {
         time += delta;
         rect.move(posX, posY);
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 }

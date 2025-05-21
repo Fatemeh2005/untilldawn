@@ -5,25 +5,27 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
+import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class WorldController {
-    private PlayerController playerController;
+    private WeaponController weaponController;
     private Texture backgroundTexture;
-    private ArrayList<Enemy> enemies = new ArrayList<>();
     private float enemySpawnTimer = 0;
     private float worldWidth = 2000;
     private float worldHeight = 2000;
 
-    public WorldController(PlayerController playerController) {
+    public WorldController( ) {
         this.backgroundTexture = new Texture("background.png");
-        this.playerController = playerController;
+        this.weaponController = new WeaponController();
 
     }
 
@@ -33,8 +35,8 @@ public class WorldController {
 
         // Update camera
         camera.position.set(
-            playerController.getPlayer().getPosX(),
-            playerController.getPlayer().getPosY(),
+            Game.getPlayer().getPosX(),
+            Game.getPlayer().getPosY(),
             0
         );
         camera.update();
@@ -47,24 +49,25 @@ public class WorldController {
         }
 
         // Update enemies
-        float playerX = playerController.getPlayer().getPosX();
-        float playerY = playerController.getPlayer().getPosY();
+        float playerX = Game.getPlayer().getPosX();
+        float playerY = Game.getPlayer().getPosY();
 
-        for (int i = 0; i < enemies.size(); i++) {
-            Enemy enemy = enemies.get(i);
+        for (int i = 0; i < Game.getEnemies().size(); i++) {
+            Enemy enemy = Game.getEnemies().get(i);
             enemy.update(delta, playerX, playerY);
 
             // 💥 Damage player if enemy is close
-            playerController.getPlayer().takeDamageIfInRange(enemy, 0.5f, 60f); // 60 pixels range, 0.5 damage
+            Game.getPlayer().takeDamageIfInRange(enemy, 0.5f, 60f); // 60 pixels range, 0.5 damage
 
             if (isFarOffScreen(enemy.getX(), enemy.getY())) {
-                enemies.remove(i);
+                Game.getEnemies().remove(i);
                 i--;
             }
         }
 
         // Update player
-        playerController.getPlayer().update(delta);
+        Game.getPlayer().update(delta);
+        weaponController.update();
     }
 
 
@@ -76,7 +79,7 @@ public class WorldController {
         //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getEyeBat_frames();
         //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getElder_frames();
         float speed = 40 + rand.nextFloat() * 60;
-        enemies.add(new Enemy(spawnX, spawnY, speed, animation));
+        Game.getEnemies().add(new Enemy(spawnX, spawnY, speed, animation));
     }
 
     private boolean isFarOffScreen(float x, float y) {
@@ -87,15 +90,9 @@ public class WorldController {
 
     public void render() {
         Main.getBatch().draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy : Game.getEnemies()) {
             enemy.render(Main.getBatch());
         }
-    }
-
-    public void resize(int width, int height) {
-        /*camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();*/
     }
 
     public void dispose() {

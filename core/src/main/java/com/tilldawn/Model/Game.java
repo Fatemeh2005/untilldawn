@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Game {
     private static Player player;
 
-    private static ArrayList<Enemy> enemies;
+    private static ArrayList<Enemy> enemies = new ArrayList<>();
 
     public static Player getPlayer() {
         return player;

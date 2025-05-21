@@ -12,6 +12,9 @@ public class Enemy {
     private Animation<Texture> animation;
     private CollisionRect rect;
 
+    //TODO:this should change by enemy type
+    private int hp = 100;
+
     public Enemy(float x, float y, float speed, Animation<Texture> animation) {
         this.x = x;
         this.y = y;
@@ -45,4 +48,12 @@ public class Enemy {
     public float getY() { return y; }
 
     public CollisionRect getRect() { return rect; }
+
+    public void takeDamage(int damage) {
+        hp -= damage;
+    }
+
+    public boolean isDead() {
+        return hp <= 0;
+    }
 }

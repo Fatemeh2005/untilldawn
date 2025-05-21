@@ -21,15 +21,15 @@
             Player player = new Player(animation, type);
             Game.setPlayer(player);
             this.playerController = new PlayerController();
-            this.worldController = new WorldController(playerController);
-            this.weaponController = new WeaponController(new Weapon());
+            this.worldController = new WorldController();
+            this.weaponController = new WeaponController();
         }
 
         public void updateGame(Camera camera) {
             if (view != null) {
                 worldController.update(camera);
                 playerController.update();
-                weaponController.update(playerController);
+                weaponController.update();
             }
         }
 
