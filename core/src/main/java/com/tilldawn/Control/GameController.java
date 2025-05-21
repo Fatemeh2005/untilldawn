@@ -19,8 +19,8 @@
         public void setView(GameView view) {
             this.view = view;
             this.playerController = new PlayerController();
-            this.worldController = new WorldController();
-            this.weaponController = new WeaponController();
+            this.worldController = new WorldController(view);
+            this.weaponController = new WeaponController(view.getCamera());
         }
 
         public void updateGame(Camera camera) {
@@ -34,7 +34,7 @@
         public void renderWorld() {
             worldController.render();
             //playerController.render(batch);
-            //weaponController.update();
+           // weaponController.update();
         }
 
         public PlayerController getPlayerController() {
@@ -48,4 +48,5 @@
         public WorldController getWorldController() {
             return worldController;
         }
+
     }

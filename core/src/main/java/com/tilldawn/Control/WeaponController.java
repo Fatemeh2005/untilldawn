@@ -1,19 +1,27 @@
 package com.tilldawn.Control;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.tilldawn.Main;
-import com.tilldawn.Model.Bullet;
 import com.tilldawn.Model.Enemies.Enemy;
-import com.tilldawn.Model.Game;
+import com.tilldawn.Model.*;
 import com.tilldawn.Model.Weapon.*;
 import com.tilldawn.Model.Player;
+import com.tilldawn.View.GameView;
 
 import java.util.ArrayList;
 
 public class WeaponController {
+
+    private OrthographicCamera camera;
+
+    public WeaponController(OrthographicCamera camera) {
+        this.camera = camera;
+    }
 
     public void update(){
         Game.getPlayer().getWeapon().getSmgSprite().setX(Game.getPlayer().getPosX() + 30);
@@ -33,10 +41,22 @@ public class WeaponController {
         weaponSprite.setRotation((float) (3.14 - angle * MathUtils.radiansToDegrees));
     }
 
-    public void handleWeaponShoot(int x, int y){
-        Game.getPlayer().getWeapon().getBullets().add(new Bullet(x, y));
+    public void handleWeaponShoot(int screenX, int screenY) {
+        // Convert mouse position to world coordinates
+        Vector3 worldMouse = camera.unproject(new Vector3(screenX, screenY, 0));
+
+        // Get player's actual world position
+        float playerX = Game.getPlayer().getPosX();
+        float playerY = Game.getPlayer().getPosY();
+
+        // Create a bullet from the player's world position to the world mouse position
+        Bullet bullet = new Bullet(playerX, playerY, worldMouse.x, worldMouse.y);
+
+        Game.getPlayer().getWeapon().getBullets().add(bullet);
         Game.getPlayer().getWeapon().setAmmo(Game.getPlayer().getWeapon().getAmmo() - 1);
     }
+
+
 
 
     public void updateBullets() {
@@ -47,14 +67,9 @@ public class WeaponController {
             Sprite sprite = bullet.getSprite();
             sprite.draw(Main.getBatch());
 
-            bullet.getSprite().draw(Main.getBatch());
-            Vector2 direction = new Vector2(
-                Gdx.graphics.getWidth()/2f - bullet.getX(),
-                Gdx.graphics.getHeight()/2f - bullet.getY()
-            ).nor();
-
-            bullet.getSprite().setX(bullet.getSprite().getX() - direction.x * 5);
-            bullet.getSprite().setY(bullet.getSprite().getY() + direction.y * 5);
+            Vector2 dir = bullet.getDirection();
+            sprite.setX(sprite.getX() + dir.x * 5);
+            sprite.setY(sprite.getY() + dir.y * 5);
 
             // Bullet collision with enemies
             for (int i = 0; i < enemies.size(); i++) {
@@ -75,5 +90,7 @@ public class WeaponController {
 
         Game.getPlayer().getWeapon().getBullets().removeAll(bulletsToRemove);
     }
+
+
 
 }

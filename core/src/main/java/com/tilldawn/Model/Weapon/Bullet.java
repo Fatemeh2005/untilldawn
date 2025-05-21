@@ -1,41 +1,39 @@
-package com.tilldawn.Model;
+package com.tilldawn.Model.Weapon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.tilldawn.Model.Game;
+import com.tilldawn.Model.GameAssetManager;
 
 public class Bullet {
-    private Texture texture = new Texture(GameAssetManager.getGameAssetManager().getBullet());
-    private Sprite sprite = new Sprite(texture);
+
+    private Texture texture;
+    private Sprite sprite;
+    private Vector2 direction;
     private int damage = 5;
-    private int x;
-    private int y;
 
-    public Bullet(int x, int y){
-        sprite.setSize(20 , 20);
-        this.x = x;
-        this.y = y;
-        sprite.setX((float) Gdx.graphics.getWidth() / 2);
-        sprite.setY((float) Gdx.graphics.getHeight() / 2);
-    }
+    public Bullet(float startX, float startY, float targetX, float targetY) {
+        this.texture = new Texture(GameAssetManager.getGameAssetManager().getBullet());
+        this.sprite = new Sprite(texture);
+        this.sprite.setSize(20, 20);
+        this.sprite.setPosition(startX, startY);
 
-    public Texture getTexture() {
-        return texture;
+        Vector2 dir = new Vector2(targetX - startX, targetY - startY);
+        this.direction = dir.nor();
     }
 
     public Sprite getSprite() {
         return sprite;
     }
 
+    public Vector2 getDirection() {
+        return direction;
+    }
+
     public int getDamage() {
         return damage;
     }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
 }
+
