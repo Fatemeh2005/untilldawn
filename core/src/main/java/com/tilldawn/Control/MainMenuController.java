@@ -29,7 +29,7 @@ public class MainMenuController {
             GameAssetManager.getGameAssetManager().getSkin()));
     }
 
-    public void goToProfileMenu(User name) {
+    public  void goToProfileMenu(User name) {
         Main.getMain().getScreen().dispose();
         Main.getMain().setScreen(new ProfileMenuView(
             new ProfileMenuController(),
