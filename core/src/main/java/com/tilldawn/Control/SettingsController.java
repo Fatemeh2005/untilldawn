@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
-import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.MainMenuView;
 
 public class SettingsController {
-    private Preferences prefs = Gdx.app.getPreferences("GameSettings");
+    private final Preferences prefs = Gdx.app.getPreferences("GameSettings");
 
     public float getMusicVolume() {
         return prefs.getFloat("musicVolume", 1f);
