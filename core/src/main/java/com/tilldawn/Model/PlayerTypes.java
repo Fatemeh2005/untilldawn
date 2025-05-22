@@ -1,15 +1,15 @@
 package com.tilldawn.Model;
 
 public enum PlayerTypes {
-    SHANA(4, 4, GameAssetManager.getGameAssetManager().getShana_idle0()),
+    SHANA(5, 4, GameAssetManager.getGameAssetManager().getShana_idle0()),
 
     DIAMOND(7, 1, GameAssetManager.getGameAssetManager().getDiamond_idle0()),
 
-    SCARLET(3, 5, GameAssetManager.getGameAssetManager().getScarlet_idle0()),
+    SCARLET(4, 5, GameAssetManager.getGameAssetManager().getScarlet_idle0()),
 
-    LILITH(5, 3, GameAssetManager.getGameAssetManager().getLilith_idle0()),
+    LILITH(6, 3, GameAssetManager.getGameAssetManager().getLilith_idle0()),
 
-    DASHER(2, 7, GameAssetManager.getGameAssetManager().getDasher_idle0());
+    DASHER(3, 7, GameAssetManager.getGameAssetManager().getDasher_idle0());
 
 
     private final int health;

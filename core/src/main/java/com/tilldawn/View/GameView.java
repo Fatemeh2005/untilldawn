@@ -17,10 +17,10 @@ public class GameView implements Screen, InputProcessor {
     private Stage stage;
     private OrthographicCamera camera;
 
-    public GameView(GameController controller, PlayerTypes type, Animation<Texture> animations) {
+    public GameView(GameController controller) {
         Gdx.input.setInputProcessor(this);
         this.controller = controller;
-        this.controller.setView(this, type, animations);
+        this.controller.setView(this);
         this.stage = new Stage();
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -34,7 +34,7 @@ public class GameView implements Screen, InputProcessor {
 
         Main.getBatch().begin();
 
-        controller.renderWorld(Main.getBatch());
+        controller.renderWorld();
 
         controller.updateGame(camera);
         Main.getBatch().end();

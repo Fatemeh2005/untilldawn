@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.MainMenuController;
+import com.tilldawn.Main;
+import com.tilldawn.Model.Game;
 import com.tilldawn.Model.PlayerTypes;
 import com.tilldawn.Model.User;
 
@@ -25,14 +27,13 @@ public class MainMenuView implements Screen {
     private final Label gameTitle;
     public Table table;
     private final MainMenuController controller;
-    private PlayerTypes Avatar;
     private Animation<Texture> animations;
-    private User currentUser;
+    private User currentUser = Game.getCurrentUser();
     private Image avatarImage;
     private Label usernameLabel;
     private Label scoreLabel;
 
-    public MainMenuView(MainMenuController controller, Skin skin, PlayerTypes Avatar, Animation<Texture> animations, User currentUser) {
+    public MainMenuView(MainMenuController controller, Skin skin) {
         this.controller = controller;
         this.SettingsMenuButton = new TextButton("settings", skin);
         this.ProfileMenuButton = new TextButton("Go To profile", skin);
@@ -42,9 +43,6 @@ public class MainMenuView implements Screen {
         this.hintBoardMenuButton = new TextButton("Go To hint", skin);
         this.gameTitle = new Label("Main menu", skin);
         this.table = new Table();
-        this.animations = animations;
-        this.currentUser = currentUser;
-        this.Avatar = Avatar;
 
         if(currentUser != null) {
         Texture avatarTexture = new Texture(Gdx.files.internal(currentUser.getAvatarImageAddress()));
@@ -86,7 +84,7 @@ public class MainMenuView implements Screen {
         SettingsMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //  controller.goToRegisterMenu();
+                Main.getMain().setScreen(new SettingsMenuView());
             }
         });
 
@@ -100,7 +98,7 @@ public class MainMenuView implements Screen {
         pregameMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.goToPregameMenu(Avatar, animations);
+                controller.goToPregameMenu();
             }
         });
 
