@@ -16,10 +16,8 @@
         private WeaponController weaponController;
         private GameView view;
 
-        public void setView(GameView view, PlayerTypes type, Animation<Texture> animation) {
+        public void setView(GameView view) {
             this.view = view;
-            Player player = new Player(animation, type);
-            Game.setPlayer(player);
             this.playerController = new PlayerController();
             this.worldController = new WorldController();
             this.weaponController = new WeaponController();
@@ -33,7 +31,7 @@
             }
         }
 
-        public void renderWorld(SpriteBatch batch) {
+        public void renderWorld() {
             worldController.render();
             //playerController.render(batch);
             //weaponController.update();

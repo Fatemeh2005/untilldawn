@@ -3,6 +3,7 @@ package com.tilldawn.Control;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.tilldawn.Main;
+import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.PlayerTypes;
 import com.tilldawn.Model.Pregame;
@@ -21,10 +22,10 @@ public class PreGameMenuController {
         this.pregame = new Pregame();
     }
 
-    public void handlePreGameMenuButtons(PlayerTypes Avatar, Animation<Texture> animations) {
+    public void handlePreGameMenuButtons() {
         if (view != null) {
             Main.getMain().getScreen().dispose();
-            Main.getMain().setScreen(new GameView(new GameController(), Avatar, animations));
+            Main.getMain().setScreen(new GameView(new GameController()));
         }
     }
 

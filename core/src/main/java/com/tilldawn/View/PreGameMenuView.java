@@ -23,17 +23,13 @@ public class PreGameMenuView implements Screen {
     private final SelectBox selectHero;
     public Table table;
     private PreGameMenuController controller;
-    private PlayerTypes Avatar;
-    private Animation<Texture> animations;
 
-    public PreGameMenuView(PreGameMenuController controller, Skin skin, PlayerTypes Avatar, Animation<Texture> animations) {
+    public PreGameMenuView(PreGameMenuController controller, Skin skin) {
         this.gameTitle = new Label("Pregame Menu", skin);
         this.selectHero = new SelectBox<>(skin);
         this.playButton = new TextButton("Play", skin);
         this.table = new Table();
         this.controller = controller;
-        this.Avatar = Avatar;
-        this.animations = animations;
         controller.setView(this);
     }
 
@@ -69,7 +65,7 @@ public class PreGameMenuView implements Screen {
         Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        controller.handlePreGameMenuButtons(Avatar, animations);
+        controller.handlePreGameMenuButtons();
     }
 
     @Override

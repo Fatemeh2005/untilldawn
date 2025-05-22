@@ -9,6 +9,8 @@ public class Game {
 
     private static ArrayList<Enemy> enemies = new ArrayList<>();
 
+    private static User currentUser;
+
     public static Player getPlayer() {
         return player;
     }
@@ -23,5 +25,13 @@ public class Game {
 
     public static void setEnemies(ArrayList<Enemy> enemies) {
         Game.enemies = enemies;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        Game.currentUser = currentUser;
     }
 }

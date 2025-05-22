@@ -22,11 +22,11 @@ public class MainMenuController {
         this.view = view;
     }
 
-    public void goToPregameMenu(PlayerTypes type, Animation<Texture> animations) {
+    public void goToPregameMenu() {
         Main.getMain().getScreen().dispose();
         Main.getMain().setScreen(new PreGameMenuView(
             new PreGameMenuController(),
-            GameAssetManager.getGameAssetManager().getSkin(), type, animations));
+            GameAssetManager.getGameAssetManager().getSkin()));
     }
 
     public void goToProfileMenu(User name) {

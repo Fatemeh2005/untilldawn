@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.google.gson.Gson;
 import com.tilldawn.Main;
-import com.tilldawn.Model.GameAssetManager;
-import com.tilldawn.Model.PlayerTypes;
-import com.tilldawn.Model.User;
+import com.tilldawn.Model.*;
 import com.tilldawn.View.LoginMenuView;
 import com.tilldawn.View.MainMenuView;
 import com.tilldawn.View.PreGameMenuView;
@@ -67,12 +65,15 @@ public class LoginMenuController {
                         break;
 
                 }
+                Player newPlayer = new Player(animations, PlayerTypes.findPlayerTypeWithAddress(user.getAvatarImageAddress()));
+                Game.setPlayer(newPlayer);
                 view.hideError();
 
                 Main.getMain().getScreen().dispose();
+                Game.setCurrentUser(user);
                 Main.getMain().setScreen(new MainMenuView(
                     new MainMenuController(),
-                    GameAssetManager.getGameAssetManager().getSkin(), PlayerTypes.findPlayerTypeWithAddress(user.getAvatarImageAddress()), animations, user));
+                    GameAssetManager.getGameAssetManager().getSkin()));
 
             }
         }
@@ -109,11 +110,13 @@ public class LoginMenuController {
 
         }
         //TODO:null passed here!!
+        Player newPlayer = new Player(animations, PlayerTypes.findPlayerTypeWithAddress(name));
+        Game.setPlayer(newPlayer);
         view.hideError();
         Main.getMain().getScreen().dispose();
         Main.getMain().setScreen(new MainMenuView(
             new MainMenuController(),
-            GameAssetManager.getGameAssetManager().getSkin(), PlayerTypes.findPlayerTypeWithAddress(name), animations, null));
+            GameAssetManager.getGameAssetManager().getSkin()));
     }
 
     public void handleForgotPassword() {
