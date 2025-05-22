@@ -12,12 +12,12 @@ public class Player {
     private Texture playerTexture ;
     private Sprite playerSprite ;
     private PlayerTypes playerType ;
-    private float posX = 0;
-    private float posY = 0;
+    private int posX = 0;
+    private int posY = 0;
     private int playerHealth;
     private CollisionRect rect ;
     private float time = 0;
-    private float speed ;
+    private int speed ;
     private Animation<Texture>animations;
     private Weapon weapon = new Weapon();
 
@@ -25,7 +25,7 @@ public class Player {
     private float lastDamageTime = 0f; // Time since last damage
     private final float damageCooldown = 1f; // 1 second between hits
 
-    public float getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
@@ -37,8 +37,8 @@ public class Player {
         this.playerSprite = new Sprite(playerTexture);
 
         // Initialize posX and posY to screen center
-        this.posX = (float) Gdx.graphics.getWidth() / 2;
-        this.posY = (float) Gdx.graphics.getHeight() / 2;
+        this.posX =  Gdx.graphics.getWidth() / 2;
+        this.posY =  Gdx.graphics.getHeight() / 2;
 
         playerSprite.setPosition(posX, posY); // Sync sprite position
         playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
@@ -67,11 +67,11 @@ public class Player {
         this.playerSprite = playerSprite;
     }
 
-    public float getPosX() {
+    public int getPosX() {
         return posX;
     }
 
-    public float getPosY() {
+    public int getPosY() {
         return posY;
     }
 
@@ -120,13 +120,13 @@ public class Player {
     public Animation<Texture> getAnimations() {
         return animations;
     }
-    public void setPosX(float posX) {
+    public void setPosX(int posX) {
         this.posX = posX;
         playerSprite.setX(posX); // Keep sprite in sync
         rect.move(posX, posY); // Sync collision box
     }
 
-    public void setPosY(float posY) {
+    public void setPosY(int posY) {
         this.posY = posY;
         playerSprite.setY(posY); // Keep sprite in sync
         rect.move(posX, posY); // Sync collision box

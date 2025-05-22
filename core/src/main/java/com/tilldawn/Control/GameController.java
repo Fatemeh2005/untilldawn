@@ -19,8 +19,8 @@
         public void setView(GameView view) {
             this.view = view;
             this.playerController = new PlayerController();
-            this.worldController = new WorldController();
-            this.weaponController = new WeaponController();
+            this.worldController = new WorldController(view);
+            this.weaponController = new WeaponController(view);
         }
 
         public void updateGame(Camera camera) {

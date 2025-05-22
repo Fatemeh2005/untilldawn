@@ -15,14 +15,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 public class GameView implements Screen, InputProcessor {
     private GameController controller;
     private Stage stage;
-    private OrthographicCamera camera;
+    private OrthographicCamera camera = new OrthographicCamera();
 
     public GameView(GameController controller) {
         Gdx.input.setInputProcessor(this);
         this.controller = controller;
         this.controller.setView(this);
         this.stage = new Stage();
-        this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
@@ -102,4 +101,8 @@ public class GameView implements Screen, InputProcessor {
     @Override public void resume() {}
     @Override public void hide() {}
     @Override public void dispose() {}
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 }

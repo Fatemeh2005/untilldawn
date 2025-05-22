@@ -12,6 +12,7 @@ import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
+import com.tilldawn.View.GameView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,9 +24,9 @@ public class WorldController {
     private float worldWidth = 2000;
     private float worldHeight = 2000;
 
-    public WorldController( ) {
+    public WorldController(GameView view) {
         this.backgroundTexture = new Texture("background.png");
-        this.weaponController = new WeaponController();
+        this.weaponController = new WeaponController(view);
 
     }
 
