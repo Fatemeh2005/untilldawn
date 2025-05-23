@@ -10,18 +10,20 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
+import com.tilldawn.Model.Enemies.EyeBat;
+import com.tilldawn.Model.Enemies.TentacleMonster;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.GameView;
 import com.tilldawn.View.WinGameMenu;
-import com.tilldawn.View.loseGameMenu;
 
 import java.util.Random;
 
 public class WorldController {
     private WeaponController weaponController;
     private Texture backgroundTexture;
-    private float enemySpawnTimer = 0;
+    private float tentacleSpawnTimer = 0;
+    private float eyeBatSpawnTimer = 0;
     private float worldWidth = 20000;
     private float worldHeight = 20000;
     private float totalGameTime = 0;
@@ -46,7 +48,8 @@ public class WorldController {
 
         // Track time
         totalGameTime += delta;
-        enemySpawnTimer += delta;
+        tentacleSpawnTimer += delta;
+        eyeBatSpawnTimer += delta;
 
         // Update camera
         camera.position.set(
@@ -57,12 +60,19 @@ public class WorldController {
         camera.update();
 
         // Spawn i/30 enemies every 3 seconds
-        if (enemySpawnTimer >= 3f) {
+        if (tentacleSpawnTimer >= 3f) {
             int enemiesToSpawn = (int)(totalGameTime / 30f);
             for (int i = 0; i < enemiesToSpawn; i++) {
-                spawnEnemy();
+                spawnTentacle();
             }
-            enemySpawnTimer = 0;
+            tentacleSpawnTimer = 0;
+        }
+        if(eyeBatSpawnTimer >= 10f && Game.getElapsedTimeInSeconds() >= Game.getSelectedGameTimeInMinutes()*60f/4f){
+            int enemiesToSpawn = (int)((4 * Game.getElapsedTimeInSeconds() - Game.getSelectedGameTimeInMinutes()*60f + 30f) / 30f);
+            for (int i = 0; i < enemiesToSpawn; i++) {
+                spawnEyeBat();
+            }
+            eyeBatSpawnTimer = 0;
         }
 
         // Update enemies
@@ -104,53 +114,82 @@ public class WorldController {
 
     //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getEyeBat_frames();
     //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getElder_frames();
-    private void spawnEnemy() {
+    private void spawnTentacle() {
         Random rand = new Random();
-        float playerX = Game.getPlayer().getPosX();
-        float playerY = Game.getPlayer().getPosY();
 
-        // Distance from player for spawning
-        float minDistance = 500f;
-        float maxDistance = 800f;
-
-        // Get camera
-        Camera cam = GameView.getCamera(); // Make sure this is passed or accessible
+        // Camera boundaries
+        Camera cam = GameView.getCamera();
         float camLeft = cam.position.x - cam.viewportWidth / 2f;
         float camRight = cam.position.x + cam.viewportWidth / 2f;
         float camBottom = cam.position.y - cam.viewportHeight / 2f;
         float camTop = cam.position.y + cam.viewportHeight / 2f;
 
-        float spawnX, spawnY;
+        float spawnX = 0, spawnY = 0;
 
-        for (int tries = 0; tries < 20; tries++) {
-            float angle = rand.nextFloat() * 360f;
-            float radians = (float) Math.toRadians(angle);
-            float distance = minDistance + rand.nextFloat() * (maxDistance - minDistance);
+        // Choose a random direction to spawn from: 0 = left, 1 = right, 2 = top, 3 = bottom
+        int dir = rand.nextInt(4);
 
-            spawnX = playerX + (float) Math.cos(radians) * distance;
-            spawnY = playerY + (float) Math.sin(radians) * distance;
-
-            // Make sure it's truly offscreen (entirely outside both axes)
-            boolean offscreenX = spawnX < camLeft - 50 || spawnX > camRight + 50;
-            boolean offscreenY = spawnY < camBottom - 50 || spawnY > camTop + 50;
-
-            if (offscreenX || offscreenY) {
-                // ✅ Valid spawn
-                Animation<Texture> animation = GameAssetManager.getGameAssetManager().getTentacle_frames();
-                float speed = 40 + rand.nextFloat() * 60;
-                Game.getEnemies().add(new Enemy(spawnX, spawnY, speed, animation));
-                return;
-            }
+        switch (dir) {
+            case 0: // Left
+                spawnX = camLeft - 100;
+                spawnY = camBottom + rand.nextFloat() * cam.viewportHeight;
+                break;
+            case 1: // Right
+                spawnX = camRight + 100;
+                spawnY = camBottom + rand.nextFloat() * cam.viewportHeight;
+                break;
+            case 2: // Top
+                spawnX = camLeft + rand.nextFloat() * cam.viewportWidth;
+                spawnY = camTop + 100;
+                break;
+            case 3: // Bottom
+                spawnX = camLeft + rand.nextFloat() * cam.viewportWidth;
+                spawnY = camBottom - 100;
+                break;
         }
 
-        // Fallback (very rare)
         Animation<Texture> animation = GameAssetManager.getGameAssetManager().getTentacle_frames();
-        float fallbackX = playerX + maxDistance;
-        float fallbackY = playerY;
-        float speed = 50f;
-        Game.getEnemies().add(new Enemy(fallbackX, fallbackY, speed, animation));
+        float speed = 40 + rand.nextFloat() * 60;
+        Game.getEnemies().add(new TentacleMonster(spawnX, spawnY, speed, animation));
     }
+    private void spawnEyeBat() {
+        Random rand = new Random();
 
+        // Camera boundaries
+        Camera cam = GameView.getCamera();
+        float camLeft = cam.position.x - cam.viewportWidth / 2f;
+        float camRight = cam.position.x + cam.viewportWidth / 2f;
+        float camBottom = cam.position.y - cam.viewportHeight / 2f;
+        float camTop = cam.position.y + cam.viewportHeight / 2f;
+
+        float spawnX = 0, spawnY = 0;
+
+        // Choose a random direction to spawn from: 0 = left, 1 = right, 2 = top, 3 = bottom
+        int dir = rand.nextInt(4);
+
+        switch (dir) {
+            case 0: // Left
+                spawnX = camLeft - 100;
+                spawnY = camBottom + rand.nextFloat() * cam.viewportHeight;
+                break;
+            case 1: // Right
+                spawnX = camRight + 100;
+                spawnY = camBottom + rand.nextFloat() * cam.viewportHeight;
+                break;
+            case 2: // Top
+                spawnX = camLeft + rand.nextFloat() * cam.viewportWidth;
+                spawnY = camTop + 100;
+                break;
+            case 3: // Bottom
+                spawnX = camLeft + rand.nextFloat() * cam.viewportWidth;
+                spawnY = camBottom - 100;
+                break;
+        }
+
+        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getEyeBat_frames();
+        float speed = 40 + rand.nextFloat() * 60;
+        Game.getEnemies().add(new EyeBat(spawnX, spawnY, speed, animation));
+    }
 
 
     private boolean isFarOffScreen(float x, float y) {
@@ -208,7 +247,6 @@ public class WorldController {
         layout.setText(font, timeStr);
 
         float textWidth = layout.width;
-        float textHeight = layout.height;
 
         float x = camRight - textWidth - 16; // 16px margin from right
         float y = camTop - 16; // 16px from top
