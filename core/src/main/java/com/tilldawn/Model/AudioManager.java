@@ -2,6 +2,9 @@ package com.tilldawn.Model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+
+
 import java.util.Random;
 
 public class AudioManager {
@@ -12,10 +15,12 @@ public class AudioManager {
     private boolean isMuted = false;
     private float musicVolume;
     private float sfxVolume;
+    private Sound shootSound;
 
     private AudioManager() {
         musicVolume = getStoredVolume("musicVolume", 1f);
         sfxVolume = getStoredVolume("sfxVolume", 1f);
+        shootSound = Gdx.audio.newSound(Gdx.files.internal("audio/single_shot.wav"));
 
         tracks = new Music[2];
         for (int i = 0; i < tracks.length; i++) {
@@ -28,7 +33,6 @@ public class AudioManager {
         currentMusic.setVolume(isMuted ? 0f : musicVolume);
         currentMusic.play();
 
-        //  Gdx.app.log("AudioManager", "Now playing track: " + currentTrackIndex);
     }
 
     public static AudioManager getInstance() {
@@ -100,6 +104,12 @@ public class AudioManager {
         this.musicVolume = volume;
         if (!isMuted && currentMusic != null) {
             currentMusic.setVolume(volume);
+        }
+    }
+
+    public void playShootSound() {
+        if (!isMuted && shootSound != null) {
+            shootSound.play(sfxVolume);
         }
     }
 

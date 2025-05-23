@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tilldawn.Main;
+import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Weapon.Bullet;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
@@ -38,10 +39,6 @@ public class WeaponController {
         weaponSprite.setRotation((float) (3.14 - angle * MathUtils.radiansToDegrees));
     }
 
-//    public void handleWeaponShoot(int x, int y){
-//        Game.getPlayer().getWeapon().getBullets().add(new Bullet(x, y));
-//        Game.getPlayer().getWeapon().setAmmo(Game.getPlayer().getWeapon().getAmmo() - 1);
-//    }
 public void handleWeaponShoot(int mouseX, int mouseY) {
     // Convert screen coordinates to world coordinates
     Vector3 mouseWorld = new Vector3(mouseX, mouseY, 0);
@@ -65,6 +62,8 @@ public void handleWeaponShoot(int mouseX, int mouseY) {
     bullet.setDirection(direction);
 
     Game.getPlayer().getWeapon().getBullets().add(bullet);
+    // Play shooting sound
+    AudioManager.getInstance().playShootSound();
     Game.getPlayer().getWeapon().setAmmo(Game.getPlayer().getWeapon().getAmmo() - 1);
 }
 

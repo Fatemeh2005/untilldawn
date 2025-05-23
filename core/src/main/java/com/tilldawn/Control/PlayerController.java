@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
@@ -14,31 +15,50 @@ import java.util.ArrayList;
 
 public class PlayerController {
 
+    // Constants for background dimensions
+    private final float WORLD_WIDTH = 20000;
+    private final float WORLD_HEIGHT = 20000;
+
+    // Also define your player's sprite dimensions
+    private final float PLAYER_WIDTH = Game.getPlayer().getPlayerSprite().getWidth();
+    private final float PLAYER_HEIGHT = Game.getPlayer().getPlayerSprite().getHeight();
+
     public void update() {
         handlePlayerInput();
         Game.getPlayer().getPlayerSprite().setPosition(Game.getPlayer().getPosX() , Game.getPlayer().getPosY());
         Game.getPlayer().getPlayerSprite().draw(Main.getBatch());
     }
 
-public void handlePlayerInput() {
-    if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-        Game.getPlayer().setPosY(Game.getPlayer().getPosY() + Game.getPlayer().getSpeed()); // ⬆️ Move up (now correct)
-        idleAnimation(Game.getPlayer().getAnimations());
+    public void handlePlayerInput() {
+        int newX = Game.getPlayer().getPosX();
+        int newY = Game.getPlayer().getPosY();
+        int speed = Game.getPlayer().getSpeed();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            newY += speed;
+            idleAnimation(Game.getPlayer().getAnimations());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            newY -= speed;
+            idleAnimation(Game.getPlayer().getAnimations());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            newX += speed;
+            idleAnimation(Game.getPlayer().getAnimations());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            newX -= speed;
+            idleAnimation(Game.getPlayer().getAnimations());
+            Game.getPlayer().getPlayerSprite().flip(true, false);
+        }
+
+        // Clamp new position to stay within background/world
+        newX = (int) MathUtils.clamp(newX, 0, WORLD_WIDTH - PLAYER_WIDTH);
+        newY = (int) MathUtils.clamp(newY, 0, WORLD_HEIGHT - PLAYER_HEIGHT);
+
+        Game.getPlayer().setPosX(newX);
+        Game.getPlayer().setPosY(newY);
     }
-    if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-        Game.getPlayer().setPosY(Game.getPlayer().getPosY() - Game.getPlayer().getSpeed()); // ⬇️ Move down (now correct)
-        idleAnimation(Game.getPlayer().getAnimations());
-    }
-    if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-        Game.getPlayer().setPosX(Game.getPlayer().getPosX() + Game.getPlayer().getSpeed()); // ➡️ Move right (correct)
-        idleAnimation(Game.getPlayer().getAnimations());
-    }
-    if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-        Game.getPlayer().setPosX(Game.getPlayer().getPosX() - Game.getPlayer().getSpeed()); // ⬅️ Move left (correct)
-        idleAnimation(Game.getPlayer().getAnimations());
-        Game.getPlayer().getPlayerSprite().flip(true, false); // Flip sprite when moving left
-    }
-}
 
     public void render(SpriteBatch batch) {
         Game.getPlayer().getPlayerSprite().draw(batch);
