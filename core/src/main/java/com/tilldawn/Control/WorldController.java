@@ -2,13 +2,19 @@ package com.tilldawn.Control;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.GameView;
+import com.tilldawn.View.WinGameMenu;
+import com.tilldawn.View.loseGameMenu;
 
 import java.util.Random;
 
@@ -19,12 +25,19 @@ public class WorldController {
     private float worldWidth = 20000;
     private float worldHeight = 20000;
     private float totalGameTime = 0;
+    private boolean victoryHandled = false;
     private Texture heart = new Texture("assets/heart.png");
+
+    private BitmapFont font = new BitmapFont(); // Default font
+    private GlyphLayout layout = new GlyphLayout(); // To calculate text width
+
 
 
     public WorldController(GameView view) {
         this.backgroundTexture = new Texture("background.png");
         this.weaponController = new WeaponController(view);
+        font.setColor(Color.WHITE);
+        font.getData().setScale(1.5f);
 
     }
 
@@ -70,6 +83,23 @@ public class WorldController {
         // Update player and weapons
         Game.getPlayer().update(delta);
         weaponController.update();
+
+        Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + delta);
+        checkVictoryCondition();
+    }
+
+    private void checkVictoryCondition() {
+        if (victoryHandled) return; // prevent multiple triggers
+
+        float elapsed = Game.getElapsedTimeInSeconds();
+        float required = Game.getSelectedGameTimeInMinutes() * 60f;
+
+        if (elapsed >= required) {
+            victoryHandled = true;
+            Main.getMain().getScreen().dispose();
+            Main.getMain().setScreen(new WinGameMenu());
+
+        }
     }
 
     //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getEyeBat_frames();
@@ -114,7 +144,6 @@ public class WorldController {
         }
 
         // Fallback (very rare)
-        System.out.println("⚠️ Couldn't find good spawn location. Spawning off to the right.");
         Animation<Texture> animation = GameAssetManager.getGameAssetManager().getTentacle_frames();
         float fallbackX = playerX + maxDistance;
         float fallbackY = playerY;
@@ -136,6 +165,7 @@ public class WorldController {
             enemy.render(Main.getBatch());
         }
         drawPlayerHP(); // ❤️ draw hearts
+        drawElapsedTime();      // ⏱️ time (top-right)
     }
 
     public void dispose() {
@@ -144,17 +174,46 @@ public class WorldController {
 
     private void drawPlayerHP() {
         int hp = Game.getPlayer().getPlayerHealth();
-        int maxHp = 5; // or Game.getPlayer().getMaxHp();
+        int maxHp = 5;
         int heartSize = 32;
         int spacing = 8;
-        int startX = 20;
-        int startY = Gdx.graphics.getHeight() - 40;
+
+        OrthographicCamera cam = GameView.getCamera();
+        float camLeft = cam.position.x - cam.viewportWidth / 2;
+        float camTop = cam.position.y + cam.viewportHeight / 2;
+
+        float startX = camLeft + 16; // small margin from left
+        float startY = camTop - 16 - heartSize; // small margin from top
 
         for (int i = 0; i < maxHp; i++) {
             if (i < hp) {
                 Main.getBatch().draw(heart, startX + i * (heartSize + spacing), startY, heartSize, heartSize);
             }
         }
+    }
+
+
+    private void drawElapsedTime() {
+        OrthographicCamera cam = GameView.getCamera();
+        float camRight = cam.position.x + cam.viewportWidth / 2;
+        float camTop = cam.position.y + cam.viewportHeight / 2;
+
+        int elapsedSeconds = (int) Game.getElapsedTimeInSeconds();
+        int minutes = elapsedSeconds / 60;
+        int seconds = elapsedSeconds % 60;
+        seconds = 60 - seconds;
+        minutes = Game.getSelectedGameTimeInMinutes() - minutes - 1;
+
+        String timeStr = String.format("%02d:%02d", minutes, seconds);
+        layout.setText(font, timeStr);
+
+        float textWidth = layout.width;
+        float textHeight = layout.height;
+
+        float x = camRight - textWidth - 16; // 16px margin from right
+        float y = camTop - 16; // 16px from top
+
+        font.draw(Main.getBatch(), layout, x, y);
     }
 
 }

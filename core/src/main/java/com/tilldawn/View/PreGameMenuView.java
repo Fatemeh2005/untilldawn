@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.PreGameMenuController;
+import com.tilldawn.Model.Game;
 import com.tilldawn.Model.Weapon.WeaponTypes;
 
 import javax.swing.event.ChangeEvent;
@@ -23,6 +24,7 @@ public class PreGameMenuView implements Screen {
     private final TextButton playButton;
     private final SelectBox selectHero;
     private final SelectBox selectGuns;
+    private final SelectBox<String> selectTime;
     public Table table;
     private PreGameMenuController controller;
 
@@ -30,6 +32,7 @@ public class PreGameMenuView implements Screen {
         this.gameTitle = new Label("Pregame Menu", skin);
         this.selectHero = new SelectBox<>(skin);
         this.selectGuns = new SelectBox<>(skin);
+        this.selectTime = new SelectBox<>(skin);
         this.playButton = new TextButton("Play", skin);
         this.table = new Table();
         this.controller = controller;
@@ -58,6 +61,14 @@ public class PreGameMenuView implements Screen {
         selectGuns.setItems(guns);
         selectHero.setItems(hero);
 
+        Array<String> times = new Array<>();
+        times.add("2 minutes");
+        times.add("5 minutes");
+        times.add("10 minutes");
+        times.add("20 minutes");
+        selectTime.setItems(times);
+
+
         table.setFillParent(true);
         table.center();
         table.add(gameTitle);
@@ -66,15 +77,21 @@ public class PreGameMenuView implements Screen {
         table.row().pad(10, 0 , 10 , 0);
         table.add(selectGuns);
         table.row().pad(10, 0 , 10 , 0);
+        table.add(selectTime);
+        table.row().pad(10, 0 , 10 , 0);
         table.add(playButton);
         table.row().pad(10, 0 , 10 , 0);
 
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                String selectedTimeString = selectTime.getSelected(); // e.g., "5 minutes"
+                int minutes = Integer.parseInt(selectedTimeString.split(" ")[0]);
+                Game.setSelectedGameTimeInMinutes(minutes);
                 controller.handlePlayButton();
             }
         });
+
 
         selectGuns.addListener(new ClickListener() {
             @Override

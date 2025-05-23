@@ -11,6 +11,10 @@ public class Game {
 
     private static User currentUser;
 
+    private static int selectedGameTimeInMinutes = 0;
+    private static float passedTimeInSeconds = 0;
+
+
     public static Player getPlayer() {
         return player;
     }
@@ -34,4 +38,24 @@ public class Game {
     public static void setCurrentUser(User currentUser) {
         Game.currentUser = currentUser;
     }
+    public static int getSelectedGameTimeInMinutes() {
+        return selectedGameTimeInMinutes;
+    }
+
+    public static void setSelectedGameTimeInMinutes(int minutes) {
+        selectedGameTimeInMinutes = minutes;
+    }
+
+    public static float getElapsedTimeInSeconds() {
+        return passedTimeInSeconds;
+    }
+
+    public static void setElapsedTimeInSeconds(float seconds) {
+        passedTimeInSeconds = seconds;
+    }
+
+    public static void addElapsedTime(float delta) {
+        passedTimeInSeconds += delta;
+    }
+
 }

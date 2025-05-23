@@ -15,12 +15,11 @@ import com.tilldawn.View.PreGameMenuView;
 
 public class PreGameMenuController {
     private PreGameMenuView view;
-    private Pregame pregame;
+    private int selectedGameTimeInMinutes;
 
 
     public void setView(PreGameMenuView view) {
         this.view = view;
-        this.pregame = new Pregame();
     }
 
     public void handlePlayButton() {
@@ -62,5 +61,7 @@ public class PreGameMenuController {
         }
     }
 
-
+    public int getSelectedGameTimeInMinutes() {
+        return selectedGameTimeInMinutes;
+    }
 }
