@@ -87,7 +87,7 @@ public class ProfileMenuController {
                 Main.getMain().setScreen(new LoginMenuView(
                     new LoginMenuController(),
                     GameAssetManager.getGameAssetManager().getSkin(),
-                    PlayerTypes.findPlayerTypeWithAddress(currentUser.getAvatarImageAddress())));
+                    currentUser.getPlayerTypes()));
             } else {
                 view.showError("Failed to save changes.");
             }

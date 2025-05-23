@@ -22,14 +22,14 @@ public class WeaponController {
     }
 
     public void update(){
-        Game.getPlayer().getWeapon().getSmgSprite().setX(Game.getPlayer().getPosX() + 30);
-        Game.getPlayer().getWeapon().getSmgSprite().setY(Game.getPlayer().getPosY() + 30);
-        Game.getPlayer().getWeapon().getSmgSprite().draw(Main.getBatch());
+        Game.getPlayer().getWeapon().getSprite().setX(Game.getPlayer().getPosX() + 30);
+        Game.getPlayer().getWeapon().getSprite().setY(Game.getPlayer().getPosY() + 30);
+        Game.getPlayer().getWeapon().getSprite().draw(Main.getBatch());
         updateBullets();
     }
 
     public void handleWeaponRotation(int x, int y) {
-        Sprite weaponSprite = Game.getPlayer().getWeapon().getSmgSprite();
+        Sprite weaponSprite = Game.getPlayer().getWeapon().getSprite();
 
         float weaponCenterX = (float) Gdx.graphics.getWidth() / 2;
         float weaponCenterY = (float) Gdx.graphics.getHeight() / 2;
@@ -46,7 +46,7 @@ public void handleWeaponShoot(int mouseX, int mouseY) {
     camera.unproject(mouseWorld);
 
     // Get weapon position
-    Sprite weaponSprite = Game.getPlayer().getWeapon().getSmgSprite();
+    Sprite weaponSprite = Game.getPlayer().getWeapon().getSprite();
     float spawnX = weaponSprite.getX() + weaponSprite.getWidth() / 2;
     float spawnY = weaponSprite.getY() + weaponSprite.getHeight() / 2;
 

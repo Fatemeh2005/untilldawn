@@ -83,7 +83,7 @@ public class ProfileMenuView extends ScreenAdapter {
             Main.getMain().setScreen(new LoginMenuView(
                 new LoginMenuController(),
                 GameAssetManager.getGameAssetManager().getSkin(),
-                PlayerTypes.findPlayerTypeWithAddress(user.getAvatarImageAddress())));
+                user.getPlayerTypes()));
             return true;
         });
 

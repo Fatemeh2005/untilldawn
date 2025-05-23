@@ -42,30 +42,8 @@ public class LoginMenuController {
             } else if (!user.getAnswerOfSecurity().equals(answerOfSecurity)) {
                 view.showError("security answer is incorrect!");
             } else {
-                Animation<Texture>animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
-                switch (user.getAvatarImageAddress()) {
-                    case "Diamond/Idle_0.png":
-                        animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
-                        break;
-                    case "Shana/Idle_0.png":
 
-                        animations = GameAssetManager.getGameAssetManager().getShana_idle_frames();
-                        break;
-                    case "Dasher/Idle_0.png":
-
-                        animations = GameAssetManager.getGameAssetManager().getDasher_idle_frames();
-                        break;
-                    case "Scarlet/Idle_0.png":
-
-                        animations = GameAssetManager.getGameAssetManager().getScarlet_idle_frames();
-                        break;
-                    case "Lilith/Idle_0.png":
-
-                        animations = GameAssetManager.getGameAssetManager().getLilith_idle_frames();
-                        break;
-
-                }
-                Player newPlayer = new Player(animations, PlayerTypes.findPlayerTypeWithAddress(user.getAvatarImageAddress()));
+                Player newPlayer = new Player(user.getPlayerTypes());
                 Game.setPlayer(newPlayer);
                 view.hideError();
 
@@ -81,6 +59,7 @@ public class LoginMenuController {
 
     public void handleGuestLogin() {
         String name = "";
+        PlayerTypes player = PlayerTypes.DASHER;
         Animation<Texture> animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
         Random random = new Random();
         //make it 5
@@ -88,29 +67,23 @@ public class LoginMenuController {
 
         switch (randomNumber) {
             case 0:
-                name = GameAssetManager.getGameAssetManager().getDiamond_idle0();
-                animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
+                player = PlayerTypes.DIAMOND;
                 break;
             case 1:
-                name = GameAssetManager.getGameAssetManager().getShana_idle0();
-                animations = GameAssetManager.getGameAssetManager().getShana_idle_frames();
+                player = PlayerTypes.SHANA;
                 break;
             case 2:
-                name = GameAssetManager.getGameAssetManager().getDasher_idle0();
-                animations = GameAssetManager.getGameAssetManager().getDasher_idle_frames();
+                player = PlayerTypes.DASHER;
                 break;
             case 3:
-                name = GameAssetManager.getGameAssetManager().getScarlet_idle0();
-                animations = GameAssetManager.getGameAssetManager().getScarlet_idle_frames();
+                player = PlayerTypes.SCARLET;
                 break;
             case 4:
-                name = GameAssetManager.getGameAssetManager().getLilith_idle0();
-                animations = GameAssetManager.getGameAssetManager().getLilith_idle_frames();
+                player = PlayerTypes.LILITH;
                 break;
-
         }
         //TODO:null passed here!!
-        Player newPlayer = new Player(animations, PlayerTypes.findPlayerTypeWithAddress(name));
+        Player newPlayer = new Player(player);
         Game.setPlayer(newPlayer);
         view.hideError();
         Main.getMain().getScreen().dispose();

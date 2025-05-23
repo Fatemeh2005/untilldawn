@@ -65,7 +65,7 @@ public class RegisterMenuController {
                             break;
 
                     }
-                    User user = new User(username, password, answerOfSecurity, name.getAvatarImageAddress());
+                    User user = new User(username, password, answerOfSecurity, name);
                     saveUserToJson(user);
 
                     view.hideError();

@@ -45,8 +45,7 @@ public class MainMenuView implements Screen {
         this.table = new Table();
 
         if(currentUser != null) {
-        Texture avatarTexture = new Texture(Gdx.files.internal(currentUser.getAvatarImageAddress()));
-        this.avatarImage = new Image(avatarTexture);
+        this.avatarImage = new Image(currentUser.getPlayerTypes().getAvatarTexture());
         this.usernameLabel = new Label("User: " + currentUser.getUsername(), skin);
         this.scoreLabel = new Label("Score: " + currentUser.getScore(), skin);
         }

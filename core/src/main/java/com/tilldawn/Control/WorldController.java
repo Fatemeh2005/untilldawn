@@ -10,7 +10,6 @@ import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.GameView;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class WorldController {
@@ -154,8 +153,6 @@ public class WorldController {
         for (int i = 0; i < maxHp; i++) {
             if (i < hp) {
                 Main.getBatch().draw(heart, startX + i * (heartSize + spacing), startY, heartSize, heartSize);
-            } else {
-                // Optionally draw an empty heart or skip
             }
         }
     }

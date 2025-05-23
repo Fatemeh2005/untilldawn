@@ -1,27 +1,32 @@
 package com.tilldawn.Model;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+
 public enum PlayerTypes {
-    SHANA(5, 4, GameAssetManager.getGameAssetManager().getShana_idle0()),
+    SHANA(5, 4, GameAssetManager.getGameAssetManager().getShana_idle0_tex(), GameAssetManager.getGameAssetManager().getShana_idle_frames()),
 
-    DIAMOND(7, 1, GameAssetManager.getGameAssetManager().getDiamond_idle0()),
+    DIAMOND(7, 1, GameAssetManager.getGameAssetManager().getDiamond_idle0_tex(), GameAssetManager.getGameAssetManager().getDiamond_idle_frames()),
 
-    SCARLET(4, 5, GameAssetManager.getGameAssetManager().getScarlet_idle0()),
+    SCARLET(4, 5, GameAssetManager.getGameAssetManager().getScarlet_idle0_tex(), GameAssetManager.getGameAssetManager().getScarlet_idle_frames()),
 
-    LILITH(6, 3, GameAssetManager.getGameAssetManager().getLilith_idle0()),
+    LILITH(6, 3, GameAssetManager.getGameAssetManager().getLilith_idle0_tex(), GameAssetManager.getGameAssetManager().getLilith_idle_frames()),
 
-    DASHER(3, 7, GameAssetManager.getGameAssetManager().getDasher_idle0());
+    DASHER(3, 7, GameAssetManager.getGameAssetManager().getDasher_idle0_tex(), GameAssetManager.getGameAssetManager().getDasher_idle_frames()),;
 
 
     private final int health;
 
     private final int speed;
 
-    private final String avatarImageAddress;
+    private final Texture avatarTexture;
+    private final Animation<Texture> animation;
 
-    PlayerTypes(int health, int speed, String avatarImageAddress) {
+    PlayerTypes(int health, int speed, Texture avatarTexture, Animation<Texture> animation) {
         this.health = health;
         this.speed = speed;
-        this.avatarImageAddress = avatarImageAddress;
+        this.avatarTexture = avatarTexture;
+        this.animation = animation;
     }
 
     public int getHealth() {
@@ -32,27 +37,11 @@ public enum PlayerTypes {
         return speed;
     }
 
-    public String getAvatarImageAddress() {
-        return avatarImageAddress;
+    public Texture getAvatarTexture() {
+        return avatarTexture;
     }
-    public static PlayerTypes findPlayerTypeWithAddress(String address) {
-        switch (address) {
-            case "Diamond/Idle_0.png":
-                return DIAMOND;
-            case "Shana/Idle_0.png":
 
-                return SHANA;
-            case "Dasher/Idle_0.png":
-
-                return DASHER;
-            case "Scarlet/Idle_0.png":
-
-                return SCARLET;
-            case "Lilith/Idle_0.png":
-
-                return LILITH;
-
-        }
-        return null;
+    public Animation<Texture> getAnimation() {
+        return animation;
     }
 }

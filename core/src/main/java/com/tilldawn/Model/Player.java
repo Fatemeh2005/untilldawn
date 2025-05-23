@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Weapon.Weapon;
+import com.tilldawn.Model.Weapon.WeaponTypes;
 
 public class Player {
 
@@ -19,7 +20,7 @@ public class Player {
     private float time = 0;
     private int speed ;
     private Animation<Texture>animations;
-    private Weapon weapon = new Weapon();
+    private Weapon weapon = new Weapon(WeaponTypes.SMGDUAL);
 
 
     private float lastDamageTime = 0f; // Time since last damage
@@ -32,8 +33,9 @@ public class Player {
     private boolean isPlayerIdle = true;
     private boolean isPlayerRunning = false;
 
-    public Player(Animation<Texture> animations, PlayerTypes playerType) {
-        playerTexture = new Texture(playerType.getAvatarImageAddress());
+    public Player( PlayerTypes playerType) {
+        playerTexture = playerType.getAvatarTexture();
+        this.animations = playerType.getAnimation();
         this.playerSprite = new Sprite(playerTexture);
 
         // Initialize posX and posY to screen center
@@ -44,7 +46,6 @@ public class Player {
         playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
 
         rect = new CollisionRect(posX, posY, playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
-        this.animations = animations;
         this.playerType = playerType;
         this.speed = playerType.getSpeed();
         this.playerHealth = playerType.getHealth();
@@ -163,5 +164,9 @@ public class Player {
 
     public void setPlayerType(PlayerTypes playerType) {
         this.playerType = playerType;
+    }
+
+    public void setAnimations(Animation<Texture> animations) {
+        this.animations = animations;
     }
 }

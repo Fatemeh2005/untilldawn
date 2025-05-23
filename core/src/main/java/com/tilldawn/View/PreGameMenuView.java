@@ -2,18 +2,19 @@ package com.tilldawn.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.PreGameMenuController;
-import com.tilldawn.Main;
-import com.tilldawn.Model.PlayerTypes;
+import com.tilldawn.Model.Weapon.WeaponTypes;
 
-import java.util.ArrayList;
+import javax.swing.event.ChangeEvent;
 
 public class PreGameMenuView implements Screen {
 
@@ -21,12 +22,14 @@ public class PreGameMenuView implements Screen {
     private final Label gameTitle;
     private final TextButton playButton;
     private final SelectBox selectHero;
+    private final SelectBox selectGuns;
     public Table table;
     private PreGameMenuController controller;
 
     public PreGameMenuView(PreGameMenuController controller, Skin skin) {
         this.gameTitle = new Label("Pregame Menu", skin);
         this.selectHero = new SelectBox<>(skin);
+        this.selectGuns = new SelectBox<>(skin);
         this.playButton = new TextButton("Play", skin);
         this.table = new Table();
         this.controller = controller;
@@ -40,20 +43,55 @@ public class PreGameMenuView implements Screen {
 
         Array<String> hero = new Array<>();
 
-        hero.add("hero1");
-        hero.add("hero2");
-        hero.add("hero3");
+        hero.add("Shana");
+        hero.add("Diamond");
+        hero.add("Scarlet");
+        hero.add("Lilith");
+        hero.add("Dasher");
 
+        Array<String> guns = new Array<>();
+
+        guns.add("Revolver");
+        guns.add("Shot Gun");
+        guns.add("SMGs Dual");
+
+        selectGuns.setItems(guns);
         selectHero.setItems(hero);
 
         table.setFillParent(true);
         table.center();
-        table.row().pad(10, 0 , 10 , 0);
         table.add(gameTitle);
         table.row().pad(10, 0 , 10 , 0);
         table.add(selectHero);
         table.row().pad(10, 0 , 10 , 0);
+        table.add(selectGuns);
+        table.row().pad(10, 0 , 10 , 0);
         table.add(playButton);
+        table.row().pad(10, 0 , 10 , 0);
+
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                controller.handlePlayButton();
+            }
+        });
+
+        selectGuns.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                String selectedWeapon = (String) selectGuns.getSelected();
+                controller.handleWeaponChangeButton(WeaponTypes.findWeaponTypeByName(selectedWeapon));
+            }
+        });
+
+        selectHero.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selectedHero = selectHero.getSelected().toString();
+                System.out.println("Selected Hero: " + selectedHero);
+                controller.handlePlayerChangeButton(selectedHero);
+            }
+        });
 
         stage.addActor(table);
     }
@@ -61,11 +99,8 @@ public class PreGameMenuView implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
-        Main.getBatch().begin();
-        Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        controller.handlePreGameMenuButtons();
     }
 
     @Override

@@ -117,7 +117,11 @@ public class GameAssetManager {
     private final Animation<Texture> elder_frames = new Animation<>(0.1f, elder0_tex, elder1_tex, elder2_tex, elder3_tex, elder4_tex);
 
     private final String smg = "smg/SMGStill.png";
+    private final String Revolver = "smg/Revolver.png";
+    private final String shotGun = "smg/shotGun.png";
     private final Texture smgTexture = new Texture(smg);
+    private final Texture revolverTexture = new Texture(Revolver);
+    private final Texture shotGunTexture = new Texture(shotGun);
 
     private final String bullet = "bullet.png";
 
@@ -203,5 +207,313 @@ public class GameAssetManager {
 
     public Animation<Texture> getElder_frames() {
         return elder_frames;
+    }
+
+    public Texture getRevolverTexture() {
+        return revolverTexture;
+    }
+
+    public Texture getShotGunTexture() {
+        return shotGunTexture;
+    }
+
+    public String getShana_idle1() {
+        return Shana_idle1;
+    }
+
+    public String getShana_idle2() {
+        return Shana_idle2;
+    }
+
+    public String getShana_idle3() {
+        return Shana_idle3;
+    }
+
+    public String getShana_idle4() {
+        return Shana_idle4;
+    }
+
+    public Texture getShana_idle0_tex() {
+        return Shana_idle0_tex;
+    }
+
+    public Texture getShana_idle1_tex() {
+        return Shana_idle1_tex;
+    }
+
+    public Texture getShana_idle2_tex() {
+        return Shana_idle2_tex;
+    }
+
+    public Texture getShana_idle3_tex() {
+        return Shana_idle3_tex;
+    }
+
+    public Texture getShana_idle4_tex() {
+        return Shana_idle4_tex;
+    }
+
+    public String getDiamond_idle1() {
+        return Diamond_idle1;
+    }
+
+    public String getDiamond_idle2() {
+        return Diamond_idle2;
+    }
+
+    public String getDiamond_idle3() {
+        return Diamond_idle3;
+    }
+
+    public String getDiamond_idle4() {
+        return Diamond_idle4;
+    }
+
+    public Texture getDiamond_idle0_tex() {
+        return Diamond_idle0_tex;
+    }
+
+    public Texture getDiamond_idle1_tex() {
+        return Diamond_idle1_tex;
+    }
+
+    public Texture getDiamond_idle2_tex() {
+        return Diamond_idle2_tex;
+    }
+
+    public Texture getDiamond_idle3_tex() {
+        return Diamond_idle3_tex;
+    }
+
+    public Texture getDiamond_idle4_tex() {
+        return Diamond_idle4_tex;
+    }
+
+    public String getDasher_idle1() {
+        return Dasher_idle1;
+    }
+
+    public String getDasher_idle2() {
+        return Dasher_idle2;
+    }
+
+    public String getDasher_idle3() {
+        return Dasher_idle3;
+    }
+
+    public String getDasher_idle4() {
+        return Dasher_idle4;
+    }
+
+    public Texture getDasher_idle0_tex() {
+        return Dasher_idle0_tex;
+    }
+
+    public Texture getDasher_idle1_tex() {
+        return Dasher_idle1_tex;
+    }
+
+    public Texture getDasher_idle2_tex() {
+        return Dasher_idle2_tex;
+    }
+
+    public Texture getDasher_idle3_tex() {
+        return Dasher_idle3_tex;
+    }
+
+    public Texture getDasher_idle4_tex() {
+        return Dasher_idle4_tex;
+    }
+
+    public String getLilith_idle1() {
+        return Lilith_idle1;
+    }
+
+    public String getLilith_idle2() {
+        return Lilith_idle2;
+    }
+
+    public String getLilith_idle3() {
+        return Lilith_idle3;
+    }
+
+    public String getLilith_idle4() {
+        return Lilith_idle4;
+    }
+
+    public Texture getLilith_idle0_tex() {
+        return Lilith_idle0_tex;
+    }
+
+    public Texture getLilith_idle1_tex() {
+        return Lilith_idle1_tex;
+    }
+
+    public Texture getLilith_idle2_tex() {
+        return Lilith_idle2_tex;
+    }
+
+    public Texture getLilith_idle3_tex() {
+        return Lilith_idle3_tex;
+    }
+
+    public Texture getLilith_idle4_tex() {
+        return Lilith_idle4_tex;
+    }
+
+    public String getScarlet_idle1() {
+        return Scarlet_idle1;
+    }
+
+    public String getScarlet_idle2() {
+        return Scarlet_idle2;
+    }
+
+    public String getScarlet_idle3() {
+        return Scarlet_idle3;
+    }
+
+    public String getScarlet_idle4() {
+        return Scarlet_idle4;
+    }
+
+    public Texture getScarlet_idle0_tex() {
+        return Scarlet_idle0_tex;
+    }
+
+    public Texture getScarlet_idle1_tex() {
+        return Scarlet_idle1_tex;
+    }
+
+    public Texture getScarlet_idle2_tex() {
+        return Scarlet_idle2_tex;
+    }
+
+    public Texture getScarlet_idle3_tex() {
+        return Scarlet_idle3_tex;
+    }
+
+    public Texture getScarlet_idle4_tex() {
+        return Scarlet_idle4_tex;
+    }
+
+    public String getTentacle0() {
+        return tentacle0;
+    }
+
+    public String getTentacle1() {
+        return tentacle1;
+    }
+
+    public String getTentacle2() {
+        return tentacle2;
+    }
+
+    public String getTentacle3() {
+        return tentacle3;
+    }
+
+    public Texture getTentacle0_tex() {
+        return tentacle0_tex;
+    }
+
+    public Texture getTentacle1_tex() {
+        return tentacle1_tex;
+    }
+
+    public Texture getTentacle2_tex() {
+        return tentacle2_tex;
+    }
+
+    public Texture getTentacle3_tex() {
+        return tentacle3_tex;
+    }
+
+    public String getEyeBat0() {
+        return eyeBat0;
+    }
+
+    public String getEyeBat1() {
+        return eyeBat1;
+    }
+
+    public String getEyeBat2() {
+        return eyeBat2;
+    }
+
+    public String getEyeBat3() {
+        return eyeBat3;
+    }
+
+    public Texture getEyeBat0_tex() {
+        return eyeBat0_tex;
+    }
+
+    public Texture getEyeBat1_tex() {
+        return eyeBat1_tex;
+    }
+
+    public Texture getEyeBat2_tex() {
+        return eyeBat2_tex;
+    }
+
+    public Texture getEyeBat3_tex() {
+        return eyeBat3_tex;
+    }
+
+    public String getElder0() {
+        return elder0;
+    }
+
+    public String getElder1() {
+        return elder1;
+    }
+
+    public String getElder2() {
+        return elder2;
+    }
+
+    public String getElder3() {
+        return elder3;
+    }
+
+    public String getElder4() {
+        return elder4;
+    }
+
+    public Texture getElder0_tex() {
+        return elder0_tex;
+    }
+
+    public Texture getElder1_tex() {
+        return elder1_tex;
+    }
+
+    public Texture getElder2_tex() {
+        return elder2_tex;
+    }
+
+    public Texture getElder3_tex() {
+        return elder3_tex;
+    }
+
+    public Texture getElder4_tex() {
+        return elder4_tex;
+    }
+
+    public String getTree() {
+        return tree;
+    }
+
+    public Texture getTree_tex() {
+        return tree_tex;
+    }
+
+    public String getRevolver() {
+        return Revolver;
+    }
+
+    public String getShotGun() {
+        return shotGun;
     }
 }

@@ -9,15 +9,15 @@ public class User {
     private String username;
     private String password;
     private String answerOfSecurity;
-    private String avatarImageAddress;
+    private PlayerTypes playerTypes;
     private int score;
 
-    public User(String username, String password, String answerOfSecurity, String avatarImageAddress) {
+    public User(String username, String password, String answerOfSecurity, PlayerTypes playerTypes) {
         this.score = 0;
         this.username = username;
         this.password = password;
         this.answerOfSecurity = answerOfSecurity;
-        this.avatarImageAddress = avatarImageAddress;
+        this.playerTypes = playerTypes;
     }
 
     public String getUsername() {
@@ -44,12 +44,12 @@ public class User {
         this.answerOfSecurity = answerOfSecurity;
     }
 
-    public String getAvatarImageAddress() {
-        return avatarImageAddress;
+    public PlayerTypes getPlayerTypes() {
+        return playerTypes;
     }
 
-    public void setAvatarImageAddress(String avatarImageAddress) {
-        this.avatarImageAddress = avatarImageAddress;
+    public void setPlayerTypes(PlayerTypes playerTypes) {
+        this.playerTypes = playerTypes;
     }
 
     public void setScore(int score) {
