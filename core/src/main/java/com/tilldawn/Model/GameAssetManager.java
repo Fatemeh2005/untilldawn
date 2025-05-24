@@ -125,10 +125,10 @@ public class GameAssetManager {
 
     private final String bullet = "bullet.png";
 
+    //eye bat projectile
+    private final String eyeBatBullet = "eyeBat/eyeBatBullet.png";
+    private final Texture eyeBatBulletTex = new Texture(eyeBatBullet);
 
-    private GameAssetManager(){
-
-    }
 
     public static GameAssetManager getGameAssetManager(){
         if (gameAssetManager == null){
@@ -515,5 +515,9 @@ public class GameAssetManager {
 
     public String getShotGun() {
         return shotGun;
+    }
+
+    public Texture getEyeBatBulletTex() {
+        return eyeBatBulletTex;
     }
 }

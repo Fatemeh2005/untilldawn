@@ -86,7 +86,7 @@ public void handleWeaponShoot(int mouseX, int mouseY) {
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = enemies.get(i);
                 if (sprite.getBoundingRectangle().overlaps(enemy.getRect().getRectangle())) {
-                    enemy.takeDamage(25);
+                    enemy.takeDamage(Game.getPlayer().getWeapon().getWeaponTypes().getDamage());
                     if (enemy.isDead()) {
                         enemies.remove(i);
                         i--;

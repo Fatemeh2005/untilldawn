@@ -12,10 +12,12 @@ import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Enemies.EyeBat;
 import com.tilldawn.Model.Enemies.TentacleMonster;
+import com.tilldawn.Model.Enemies.Tree;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.GameView;
 import com.tilldawn.View.WinGameMenu;
+import com.tilldawn.View.loseGameMenu;
 
 import java.util.Random;
 
@@ -33,6 +35,7 @@ public class WorldController {
     private BitmapFont font = new BitmapFont(); // Default font
     private GlyphLayout layout = new GlyphLayout(); // To calculate text width
 
+    private float treeDamageTimer = 0f;
 
 
     public WorldController(GameView view) {
@@ -41,6 +44,7 @@ public class WorldController {
         font.setColor(Color.WHITE);
         font.getData().setScale(1.5f);
 
+        spawnInitialTrees();
     }
 
     public void update(Camera camera) {
@@ -50,6 +54,7 @@ public class WorldController {
         totalGameTime += delta;
         tentacleSpawnTimer += delta;
         eyeBatSpawnTimer += delta;
+        treeDamageTimer += delta;
 
         // Update camera
         camera.position.set(
@@ -61,14 +66,28 @@ public class WorldController {
 
         // Spawn i/30 enemies every 3 seconds
         if (tentacleSpawnTimer >= 3f) {
-            int enemiesToSpawn = (int)(totalGameTime / 30f);
+            int enemiesToSpawn = (int) (totalGameTime / 30f);
             for (int i = 0; i < enemiesToSpawn; i++) {
                 spawnTentacle();
             }
             tentacleSpawnTimer = 0;
         }
-        if(eyeBatSpawnTimer >= 10f && Game.getElapsedTimeInSeconds() >= Game.getSelectedGameTimeInMinutes()*60f/4f){
-            int enemiesToSpawn = (int)((4 * Game.getElapsedTimeInSeconds() - Game.getSelectedGameTimeInMinutes()*60f + 30f) / 30f);
+
+        if (treeDamageTimer >= 1f) {
+            for (Tree tree : Game.getTrees()) {
+                if (Game.getPlayer().getRect().collidesWith(tree.getRect())) {
+                    Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
+                    treeDamageTimer = 0f;
+                    if (Game.getPlayer().getPlayerHealth() <= 0) {
+                        Main.getMain().getScreen().dispose();
+                        Main.getMain().setScreen(new loseGameMenu());
+                    }
+                    // Optional: Add knockback or other effects
+                }
+            }
+        }
+        if (eyeBatSpawnTimer >= 10f && Game.getElapsedTimeInSeconds() >= Game.getSelectedGameTimeInMinutes() * 60f / 4f) {
+            int enemiesToSpawn = (int) ((4 * Game.getElapsedTimeInSeconds() - Game.getSelectedGameTimeInMinutes() * 60f + 30f) / 30f);
             for (int i = 0; i < enemiesToSpawn; i++) {
                 spawnEyeBat();
             }
@@ -112,8 +131,6 @@ public class WorldController {
         }
     }
 
-    //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getEyeBat_frames();
-    //Animation<Texture>animation = GameAssetManager.getGameAssetManager().getElder_frames();
     private void spawnTentacle() {
         Random rand = new Random();
 
@@ -152,6 +169,7 @@ public class WorldController {
         float speed = 40 + rand.nextFloat() * 60;
         Game.getEnemies().add(new TentacleMonster(spawnX, spawnY, speed, animation));
     }
+
     private void spawnEyeBat() {
         Random rand = new Random();
 
@@ -200,6 +218,12 @@ public class WorldController {
 
     public void render() {
         Main.getBatch().draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
+
+        // Draw trees first (background objects)
+        for (Tree tree : Game.getTrees()) {
+            tree.render(Main.getBatch());
+        }
+
         for (Enemy enemy : Game.getEnemies()) {
             enemy.render(Main.getBatch());
         }
@@ -209,6 +233,7 @@ public class WorldController {
 
     public void dispose() {
         backgroundTexture.dispose();
+        GameAssetManager.getGameAssetManager().getTree_tex().dispose();
     }
 
     private void drawPlayerHP() {
@@ -254,4 +279,13 @@ public class WorldController {
         font.draw(Main.getBatch(), layout, x, y);
     }
 
+    private void spawnInitialTrees() {
+        Random rand = new Random();
+        //always between 25 and 35 trees
+        for (int i = 0; i < rand.nextInt(11) + 25; i++) {
+            float x = rand.nextFloat() * worldWidth;
+            float y = rand.nextFloat() * worldHeight;
+            Game.getTrees().add(new Tree(x, y, GameAssetManager.getGameAssetManager().getTree_tex()));
+        }
+    }
 }

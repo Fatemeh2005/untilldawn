@@ -23,6 +23,7 @@ public class Weapon {
         sprite.setX((float) Gdx.graphics.getWidth() / 2 );
         sprite.setY((float) Gdx.graphics.getHeight() / 2);
         sprite.setSize(50,50);
+        this.weaponTypes = weaponTypes;
     }
 
     public Sprite getSprite() {
@@ -43,5 +44,13 @@ public class Weapon {
 
     public void setBullets(ArrayList<Bullet> bullets) {
         this.bullets = bullets;
+    }
+
+    public WeaponTypes getWeaponTypes() {
+        return weaponTypes;
+    }
+
+    public void setWeaponTypes(WeaponTypes weaponTypes) {
+        this.weaponTypes = weaponTypes;
     }
 }

@@ -1,6 +1,7 @@
 package com.tilldawn.Model;
 
 import com.tilldawn.Model.Enemies.Enemy;
+import com.tilldawn.Model.Enemies.Tree;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,8 @@ public class Game {
 
     private static int selectedGameTimeInMinutes = 0;
     private static float passedTimeInSeconds = 0;
+
+    private static ArrayList<Tree> trees = new ArrayList<>();
 
 
     public static Player getPlayer() {
@@ -58,4 +61,11 @@ public class Game {
         passedTimeInSeconds += delta;
     }
 
+    public static ArrayList<Tree> getTrees() {
+        return trees;
+    }
+
+    public static void setTrees(ArrayList<Tree> trees) {
+        Game.trees = trees;
+    }
 }

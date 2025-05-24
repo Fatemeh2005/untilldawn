@@ -62,6 +62,7 @@ public class PreGameMenuView implements Screen {
         selectHero.setItems(hero);
 
         Array<String> times = new Array<>();
+        times.add("1 minutes");
         times.add("2 minutes");
         times.add("5 minutes");
         times.add("10 minutes");
