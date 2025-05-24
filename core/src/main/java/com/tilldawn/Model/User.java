@@ -11,6 +11,8 @@ public class User {
     private String answerOfSecurity;
     private PlayerTypes playerTypes;
     private int score;
+    private int numberOfKills;
+    private int mostTimeSurvived;
 
     public User(String username, String password, String answerOfSecurity, PlayerTypes playerTypes) {
         this.score = 0;
@@ -18,6 +20,8 @@ public class User {
         this.password = password;
         this.answerOfSecurity = answerOfSecurity;
         this.playerTypes = playerTypes;
+        this.numberOfKills = 0;
+        this.mostTimeSurvived = 0;
     }
 
     public String getUsername() {
@@ -58,5 +62,21 @@ public class User {
 
     public int getScore() {
         return score;
+    }
+
+    public int getNumberOfKills() {
+        return numberOfKills;
+    }
+
+    public void setNumberOfKills(int numberOfKills) {
+        this.numberOfKills = numberOfKills;
+    }
+
+    public int getMostTimeSurvived() {
+        return mostTimeSurvived;
+    }
+
+    public void setMostTimeSurvived(int mostTimeSurvived) {
+        this.mostTimeSurvived = mostTimeSurvived;
     }
 }

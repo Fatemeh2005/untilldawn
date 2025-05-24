@@ -2,6 +2,7 @@ package com.tilldawn.Model.Enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.tilldawn.Main;
+import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Game;
 import com.tilldawn.View.loseGameMenu;
 
@@ -29,6 +30,9 @@ public class TentacleMonster extends Enemy {
                 lastDamageTime = stateTime;
 
                 if (Game.getPlayer().getPlayerHealth() < 0) {
+                    Game.getPlayer().setDeathAnimation();  // Trigger death animation
+                    Game.getPlayer().setDead(true);
+                    AudioManager.getInstance().playLoseSound();
                     Main.getMain().getScreen().dispose();
                     Main.getMain().setScreen(new loseGameMenu());
                 }

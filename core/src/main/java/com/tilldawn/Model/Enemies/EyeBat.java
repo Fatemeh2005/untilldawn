@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.tilldawn.Main;
+import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Game;
 import com.tilldawn.View.loseGameMenu;
 
@@ -39,6 +40,9 @@ public class EyeBat extends Enemy{
                 lastDamageTime = stateTime;
 
                 if (Game.getPlayer().getPlayerHealth() < 0) {
+                    Game.getPlayer().setDeathAnimation();  // Trigger death animation
+                    Game.getPlayer().setDead(true);
+                    AudioManager.getInstance().playLoseSound();
                     Main.getMain().getScreen().dispose();
                     Main.getMain().setScreen(new loseGameMenu());
                 }

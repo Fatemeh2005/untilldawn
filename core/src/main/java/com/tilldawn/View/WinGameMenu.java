@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.MainMenuController;
 import com.tilldawn.Main;
+import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 
@@ -24,10 +25,31 @@ public class WinGameMenu implements Screen {
 
     public Table table;
 
+    private final Label userNameLabel;
+
+    private final Label surviveTitle;
+
+    private final Label numberOfKills;
+
+    private String userName;
+
+    private int surviveTime;
+
     public WinGameMenu() {
+        AudioManager.getInstance().playWinSound();
         this.backToMainButton = new TextButton("go back to main menu", GameAssetManager.getGameAssetManager().getSkin());
         this.loseTitle = new Label("You Won!", GameAssetManager.getGameAssetManager().getSkin());
         this.table = new Table();
+        this.surviveTime = (int) Game.getElapsedTimeInSeconds();
+        if(Game.getCurrentUser() == null){
+            userName = "You are a guest!";
+        } else {
+            userName = Game.getCurrentUser().getUsername();
+        }
+        this.userNameLabel = new Label("User name: "+ userName, GameAssetManager.getGameAssetManager().getSkin());
+        this.surviveTitle = new Label("Survive time: "+surviveTime+" seconds", GameAssetManager.getGameAssetManager().getSkin());
+        this.numberOfKills = new Label("number of Kills in this game : " + Game.getPlayer().getNumberOfKillsInGame(),
+            GameAssetManager.getGameAssetManager().getSkin());
     }
 
     @Override
@@ -39,6 +61,12 @@ public class WinGameMenu implements Screen {
         table.center();
 
         table.add(loseTitle);
+        table.row().pad(10, 0, 10, 0);
+        table.add(userNameLabel);
+        table.row().pad(10, 0, 10, 0);
+        table.add(surviveTitle);
+        table.row().pad(10, 0, 10, 0);
+        table.add(numberOfKills);
         table.row().pad(10, 0, 10, 0);
         table.add(backToMainButton).width(600);
         table.row().pad(10, 0, 10, 0);

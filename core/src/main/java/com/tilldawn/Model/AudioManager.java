@@ -16,11 +16,17 @@ public class AudioManager {
     private float musicVolume;
     private float sfxVolume;
     private Sound shootSound;
+    private Sound winSound;
+    private Sound loseSound;
+    private Sound levelUpSound;
 
     private AudioManager() {
         musicVolume = getStoredVolume("musicVolume", 1f);
         sfxVolume = getStoredVolume("sfxVolume", 1f);
         shootSound = Gdx.audio.newSound(Gdx.files.internal("audio/single_shot.wav"));
+        winSound = Gdx.audio.newSound(Gdx.files.internal("audio/You Win (2).wav"));
+        loseSound = Gdx.audio.newSound(Gdx.files.internal("audio/You Lose (4).wav"));
+        levelUpSound = Gdx.audio.newSound(Gdx.files.internal("audio/Special & Powerup (8).wav"));
 
         tracks = new Music[2];
         for (int i = 0; i < tracks.length; i++) {
@@ -110,6 +116,24 @@ public class AudioManager {
     public void playShootSound() {
         if (!isMuted && shootSound != null) {
             shootSound.play(sfxVolume);
+        }
+    }
+
+    public void playWinSound() {
+        if (!isMuted && winSound != null) {
+            winSound.play(sfxVolume);
+        }
+    }
+
+    public void playLoseSound() {
+        if (!isMuted && loseSound != null) {
+            loseSound.play(sfxVolume);
+        }
+    }
+
+    public void playLevelUpSound() {
+        if (!isMuted && levelUpSound != null) {
+            levelUpSound.play(sfxVolume);
         }
     }
 

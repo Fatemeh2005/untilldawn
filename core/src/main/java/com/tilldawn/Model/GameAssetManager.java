@@ -133,6 +133,12 @@ public class GameAssetManager {
 
     private final Texture TentacleSeedTex = new Texture("Seeds/BrainMonster_Em.png");
 
+    private final Texture playerDeath1Texture = new Texture("deathAnimation/playerDeath1.png");
+    private final Texture playerDeath2Texture = new Texture("deathAnimation/playerDeath2.png");
+    private final Texture playerDeath3Texture = new Texture("deathAnimation/playerDeath3.png");
+
+    private final Animation<Texture>playerDeathAnimation = new Animation<>(0.1f, playerDeath1Texture, playerDeath2Texture, playerDeath3Texture);
+
     public static GameAssetManager getGameAssetManager(){
         if (gameAssetManager == null){
             gameAssetManager = new GameAssetManager();
@@ -266,5 +272,9 @@ public class GameAssetManager {
 
     public Texture getEyeBatSeedTex() {
         return eyeBatSeedTex;
+    }
+
+    public Animation<Texture> getPlayerDeathAnimation() {
+        return playerDeathAnimation;
     }
 }

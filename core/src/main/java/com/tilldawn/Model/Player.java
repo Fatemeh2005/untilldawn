@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Weapon.Weapon;
 import com.tilldawn.Model.Weapon.WeaponTypes;
+import com.tilldawn.View.loseGameMenu;
 
 public class Player {
 
@@ -25,10 +27,22 @@ public class Player {
     //TODO:check if this is right:
     private int xp = 0;
     private boolean levelUp = false;
+    private Animation<Texture> deathAnimation;
+    private boolean isDead = false;  // Track if player is dead
+    private float deathAnimationTime = 0;
+
+    public void setDeathAnimation() {
+
+        isDead = true;
+        deathAnimationTime = 0;  // Reset death animation time to start fresh
+    }
 
 
     private float lastDamageTime = 0f; // Time since last damage
     private final float damageCooldown = 1f; // 1 second between hits
+
+    private int numberOfKillsInGame = 0;
+    private User user;
 
     public int getSpeed() {
         return speed;
@@ -51,6 +65,7 @@ public class Player {
         this.speed = playerType.getSpeed();
         this.playerHealth = playerType.getHealth();
         rect = new CollisionRect(posX, posY, playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
+        this.deathAnimation = GameAssetManager.getGameAssetManager().getPlayerDeathAnimation();
     }
 
     public Texture getPlayerTexture() {
@@ -127,6 +142,20 @@ public class Player {
 
     public void update(float delta) {
         time += delta;
+        if (Game.getPlayer().isDead()) {
+            // If the player is dead, update the death animation frame
+            deathAnimationTime += delta;  // Increment the time for death animation
+            // Set the player sprite to show the death animation frame
+            playerSprite.setRegion(deathAnimation.getKeyFrame(deathAnimationTime));
+
+            // Once the death animation finishes, transition to the lose screen
+            if (deathAnimation.isAnimationFinished(deathAnimationTime)) {
+                Main.getMain().getScreen().dispose(); // Dispose of the current screen
+                Main.getMain().setScreen(new loseGameMenu()); // Transition to lose game menu
+            }
+
+            return; // Skip further updates (e.g., movement, etc.)
+        }
         rect.move(posX, posY);
     }
 
@@ -177,5 +206,32 @@ public class Player {
 
     public void setLevelUp(boolean levelUp) {
         this.levelUp = levelUp;
+    }
+
+    public int getNumberOfKillsInGame() {
+        return numberOfKillsInGame;
+    }
+    public void setNumberOfKillsInGame(int numberOfKillsInGame) {
+        this.numberOfKillsInGame = numberOfKillsInGame;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public Animation<Texture> getDeathAnimation() {
+        return deathAnimation;
+    }
+
+    public float getDeathAnimationTime() {
+        return deathAnimationTime;
+    }
+
+    public void setDeathAnimationTime(float deathAnimationTime) {
+        this.deathAnimationTime = deathAnimationTime;
     }
 }

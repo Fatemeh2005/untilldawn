@@ -98,6 +98,7 @@ public void handleWeaponShoot(int mouseX, int mouseY) {
                     if (enemy.isDead()) {
                         enemies.remove(i);
                         Game.getSeeds().add(new Seed(enemy.getX(), enemy.getY(), seedTexture));
+                        Game.getPlayer().setNumberOfKillsInGame(Game.getPlayer().getNumberOfKillsInGame() + 1);
                         i--;
                     }
                     bulletsToRemove.add(bullet);

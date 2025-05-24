@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.tilldawn.Main;
+import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Enemies.*;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
@@ -48,7 +49,17 @@ public class WorldController {
     }
 
     public void update(Camera camera) {
+
+        if (Game.isGamePaused()){
+            return;
+        }
         float delta = Gdx.graphics.getDeltaTime();
+
+        // Update player and weapons
+        Game.getPlayer().update(delta);
+        if(Game.getPlayer().isDead()){
+            return;
+        }
 
         // Track time
         totalGameTime += delta;
@@ -88,6 +99,9 @@ public class WorldController {
                     Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                     treeDamageTimer = 0f;
                     if (Game.getPlayer().getPlayerHealth() < 0) {
+                        Game.getPlayer().setDeathAnimation();  // Trigger death animation
+                        Game.getPlayer().setDead(true);
+                        AudioManager.getInstance().playLoseSound();
                         Main.getMain().getScreen().dispose();
                         Main.getMain().setScreen(new loseGameMenu());
                     }
@@ -118,14 +132,14 @@ public class WorldController {
             }
         }
 
-        // Update player and weapons
-        Game.getPlayer().update(delta);
+
         weaponController.update();
 
         Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + delta);
         checkVictoryCondition();
         if (Game.getPlayer().isLevelUp()) {
-
+            AudioManager.getInstance().playLevelUpSound();
+            Game.setGamePaused(true);  // Pause the game
            view.printAbilitiesMenu(GameAssetManager.getGameAssetManager().getSkin());
         }
     }
@@ -240,9 +254,10 @@ public class WorldController {
         for (Enemy enemy : Game.getEnemies()) {
             enemy.render(Main.getBatch());
         }
-        drawPlayerHP(); // ❤️ draw hearts
-        drawElapsedTime();      // ⏱️ time (top-right)
+        drawPlayerHP(); //draw hearts
+        drawElapsedTime();      //time (top-right)
         drawLevel();      // level
+        drawNumberOfKills();
         // Render seeds
         for (Seed seed : Game.getSeeds()) {
             seed.render(Main.getBatch());
@@ -309,7 +324,24 @@ public class WorldController {
         float textWidth = layout.width;
 
         float x = camRight - textWidth - 16; // 16px margin from right
-        float y = camTop - 60;
+        float y = camTop - 55;
+
+        font.draw(Main.getBatch(), layout, x, y);
+    }
+
+    private void drawNumberOfKills() {
+        OrthographicCamera cam = GameView.getCamera();
+        float camRight = cam.position.x + cam.viewportWidth / 2;
+        float camTop = cam.position.y + cam.viewportHeight / 2;
+
+        String timeStr = String.format("Kills : %d", Game.getPlayer().getNumberOfKillsInGame());
+        font.getData().setScale(2.5f);
+        layout.setText(font, timeStr);
+
+        float textWidth = layout.width;
+
+        float x = camRight - textWidth - 16; // 16px margin from right
+        float y = camTop - 95;
 
         font.draw(Main.getBatch(), layout, x, y);
     }

@@ -111,6 +111,8 @@ public class GameView implements Screen, InputProcessor {
     }
 
     public void printAbilitiesMenu(Skin skin) {
+
+        Game.setGamePaused(true);
         // Clear any previous UI elements before creating new ones
         stage.clear();
         Gdx.input.setInputProcessor(stage); // Set input processor to the stage
@@ -133,8 +135,9 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Vitality button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase player's max health
-              //  Game.getPlayer().setPlayerHealth(Game.getPlayer().getMaxHp());
-                removeAbilitiesMenu(); // Remove menu after selection
+            //    Game.getPlayer().setPlayerHealth(Game.getPlayer().getMaxHp());
+                removeAbilitiesMenu();
+                Game.setGamePaused(false); // Resume game
             }
         });
 
@@ -144,16 +147,17 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Damager button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase damage multiplier
-               // Game.getPlayer().setDamageMultiplier(1.5f);
+            //    Game.getPlayer().setDamageMultiplier(1.5f);
                 // Reset damage multiplier after 10 seconds (for example)
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                  //      Game.getPlayer().setDamageMultiplier(1f);
+                    //    Game.getPlayer().setDamageMultiplier(1f);
                         this.cancel(); // Stop the timer after resetting
                     }
                 }, 10, 2); // Runs after 10 seconds, repeats every 2 seconds
-                removeAbilitiesMenu(); // Remove menu after selection
+                removeAbilitiesMenu();
+                Game.setGamePaused(false); // Resume game
             }
         });
 
@@ -163,8 +167,9 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Procrease button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase projectile size or count
-             //   Game.getPlayer().setProjectileAddition(3);
-                removeAbilitiesMenu(); // Remove menu after selection
+            //    Game.getPlayer().setProjectileAddition(3);
+                removeAbilitiesMenu();
+                Game.setGamePaused(false); // Resume game
             }
         });
 
@@ -174,8 +179,9 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Amocrease button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase max ammo
-               // Game.getPlayer().setMaxAmmoAddition(5);
-                removeAbilitiesMenu(); // Remove menu after selection
+            //    Game.getPlayer().setMaxAmmoAddition(5);
+                removeAbilitiesMenu();
+                Game.setGamePaused(false); // Resume game
             }
         });
 
@@ -185,16 +191,17 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Speedy button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase speed multiplier
-              //  Game.getPlayer().setSpeedMultiplier(2f);
+             //   Game.getPlayer().setSpeedMultiplier(2f);
                 // Reset speed multiplier after 10 seconds (for example)
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                   //     Game.getPlayer().setSpeedMultiplier(1f);
+                    //    Game.getPlayer().setSpeedMultiplier(1f);
                         this.cancel(); // Stop the timer after resetting
                     }
                 }, 10, 2); // Runs after 10 seconds, repeats every 2 seconds
-                removeAbilitiesMenu(); // Remove menu after selection
+                removeAbilitiesMenu();
+                Game.setGamePaused(false); // Resume game
             }
         });
 
@@ -215,6 +222,7 @@ public class GameView implements Screen, InputProcessor {
         stage.clear();  // Clear the UI stage
         Gdx.input.setInputProcessor(this);  // Return control back to the main game view input processor
     }
+
 
 
 }

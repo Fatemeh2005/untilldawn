@@ -20,6 +20,8 @@ public class Game {
 
     private static ArrayList<Seed>seeds = new ArrayList<>();
 
+    private static boolean gamePaused = false;
+
 
     public static Player getPlayer() {
         return player;
@@ -74,5 +76,13 @@ public class Game {
 
     public static ArrayList<Seed> getSeeds() {
         return seeds;
+    }
+
+    public static boolean isGamePaused() {
+        return gamePaused;
+    }
+
+    public static void setGamePaused(boolean gamePaused) {
+        Game.gamePaused = gamePaused;
     }
 }

@@ -10,6 +10,7 @@ import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.Player;
+import com.tilldawn.View.loseGameMenu;
 
 import java.util.ArrayList;
 
@@ -24,12 +25,24 @@ public class PlayerController {
     private final float PLAYER_HEIGHT = Game.getPlayer().getPlayerSprite().getHeight();
 
     public void update() {
-        handlePlayerInput();
-        Game.getPlayer().getPlayerSprite().setPosition(Game.getPlayer().getPosX() , Game.getPlayer().getPosY());
+        // If player is dead, do not allow any further movement or idle animation
+        if (Game.getPlayer().isDead()) {
+            // Update death animation
+            updateDeathAnimation();
+            return;  // Skip any further updates
+        }
+
+        handlePlayerInput();  // Handle player input for movement
+        Game.getPlayer().getPlayerSprite().setPosition(Game.getPlayer().getPosX(), Game.getPlayer().getPosY());
         Game.getPlayer().getPlayerSprite().draw(Main.getBatch());
     }
 
     public void handlePlayerInput() {
+        // Ensure that movement only happens if the player is alive
+        if (Game.getPlayer().isDead()) {
+            return;  // Skip handling input if the player is dead
+        }
+
         int newX = Game.getPlayer().getPosX();
         int newY = Game.getPlayer().getPosY();
         int speed = Game.getPlayer().getSpeed();
@@ -51,19 +64,18 @@ public class PlayerController {
             idleAnimation(Game.getPlayer().getAnimations());
             Game.getPlayer().getPlayerSprite().flip(true, false);
         }
-        //cheat code
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.H) && Game.getPlayer().getPlayerHealth() == 0){
+        // Cheat codes, etc.
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H) && Game.getPlayer().getPlayerHealth() == 0) {
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
             return;
         }
-        //cheat code for time
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + 60f);
             return;
         }
 
-        //eternity cheat code
+        // Eternity cheat code
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 5);
             return;
@@ -78,62 +90,42 @@ public class PlayerController {
     }
 
     public void render(SpriteBatch batch) {
-        Game.getPlayer().getPlayerSprite().draw(batch);
+        // Render player sprite if not dead
+        if (!Game.getPlayer().isDead()) {
+            Game.getPlayer().getPlayerSprite().draw(batch);
+        }
     }
 
-
-    public void idleAnimation(Animation<Texture> animation){
+    public void idleAnimation(Animation<Texture> animation) {
+        // Only show idle animation if the player is alive
+        if (Game.getPlayer().isDead()) {
+            return;
+        }
 
         Game.getPlayer().getPlayerSprite().setRegion(animation.getKeyFrame(Game.getPlayer().getTime()));
 
         if (!animation.isAnimationFinished(Game.getPlayer().getTime())) {
             Game.getPlayer().setTime(Game.getPlayer().getTime() + Gdx.graphics.getDeltaTime());
-        }
-        else {
+        } else {
             Game.getPlayer().setTime(0);
         }
 
         animation.setPlayMode(Animation.PlayMode.LOOP);
     }
-    public void checkEnemyCollisions() {
-        ArrayList<Enemy> enemies = Game.getEnemies();
-        Player player = Game.getPlayer();
 
-        for (Enemy enemy : enemies) {
-            // Check if enemy rectangle overlaps with player rectangle
-            if (enemy.getRect().getRectangle().overlaps(player.getPlayerSprite().getBoundingRectangle())) {
-                // Player takes damage (adjust damage value as needed)
-                takeDamage(1);
+    private void updateDeathAnimation() {
+        // Update death animation only if the player is dead
+        float delta = Gdx.graphics.getDeltaTime();
 
-                // Optional: Add knockback effect
-//                applyKnockback(player, enemy);
+        // Update death animation time
+        Game.getPlayer().setDeathAnimationTime(Game.getPlayer().getDeathAnimationTime() + delta);
+        Game.getPlayer().getPlayerSprite().setRegion(Game.getPlayer().getDeathAnimation().getKeyFrame(Game.getPlayer().getDeathAnimationTime()));
 
-                // Break after first collision to avoid multiple hits in one frame
-                break;
-            }
+        // If the death animation is finished, trigger the lose screen
+        if (Game.getPlayer().getDeathAnimation().isAnimationFinished(Game.getPlayer().getDeathAnimationTime())) {
+            Main.getMain().getScreen().dispose();  // Dispose the current screen
+            Main.getMain().setScreen(new loseGameMenu());  // Transition to lose game screen
         }
     }
-    public void takeDamage(int damage) {
-        Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - damage);
-        if (Game.getPlayer().getPlayerHealth() <= 0) {
-            // Handle player death
-            Game.getPlayer().setPlayerHealth(0);
-            handleDeath();
-        }
-    }
-    private void handleDeath() {
-        // Optional: Play death animation
-        float deathTime = Gdx.graphics.getDeltaTime();
 
-        // Example: If you have a death animation
-//        if (Game.getPlayer().getDeathAnimation() != null) {
-//            Texture frame = Game.getPlayer().getDeathAnimation().getKeyFrame(deathTime);
-//            Game.getPlayer().getPlayerSprite().setRegion(frame);
-//        }
-
-        // Optional: Restart the game after death animation finishes
-        if (deathTime > 3.0f) { // Wait 3 seconds before restarting
-           // Game.restartGame(); // You'll need to implement this in your Game class
-        }
-    }
 }

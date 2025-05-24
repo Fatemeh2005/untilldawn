@@ -24,12 +24,32 @@ public class loseGameMenu implements Screen {
 
     private final Label loseTitle;
 
+    private final Label userNameLabel;
+
+    private final Label surviveTitle;
+
+    private final Label numberOfKills;
+
     public Table table;
+
+    private String userName;
+
+    private int surviveTime;
 
     public loseGameMenu() {
         this.backToMainButton = new TextButton("go back to main menu", GameAssetManager.getGameAssetManager().getSkin());
         this.loseTitle = new Label("You are such a Loser!", GameAssetManager.getGameAssetManager().getSkin());
         this.table = new Table();
+        this.surviveTime = (int) Game.getElapsedTimeInSeconds();
+        if(Game.getCurrentUser() == null){
+            userName = "You are a guest!";
+        } else {
+            userName = Game.getCurrentUser().getUsername();
+        }
+        this.userNameLabel = new Label("User name: "+ userName, GameAssetManager.getGameAssetManager().getSkin());
+        this.surviveTitle = new Label("Survive time: "+surviveTime+" seconds", GameAssetManager.getGameAssetManager().getSkin());
+        this.numberOfKills = new Label("number of Kills in this game : " + Game.getPlayer().getNumberOfKillsInGame(),
+            GameAssetManager.getGameAssetManager().getSkin());
     }
 
     @Override
@@ -41,6 +61,12 @@ public class loseGameMenu implements Screen {
         table.center();
 
         table.add(loseTitle);
+        table.row().pad(10, 0, 10, 0);
+        table.add(userNameLabel);
+        table.row().pad(10, 0, 10, 0);
+        table.add(surviveTitle);
+        table.row().pad(10, 0, 10, 0);
+        table.add(numberOfKills);
         table.row().pad(10, 0, 10, 0);
         table.add(backToMainButton).width(600);
         table.row().pad(10, 0, 10, 0);
@@ -94,5 +120,21 @@ public class loseGameMenu implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getSurviveTime() {
+        return surviveTime;
+    }
+
+    public void setSurviveTime(int surviveTime) {
+        this.surviveTime = surviveTime;
     }
 }
