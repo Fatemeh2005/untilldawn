@@ -51,6 +51,17 @@ public class PlayerController {
             idleAnimation(Game.getPlayer().getAnimations());
             Game.getPlayer().getPlayerSprite().flip(true, false);
         }
+        //cheat code
+        //TODO:faghat dar soorat khali boodan
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+            Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
+            return;
+        }
+        //cheat code for time
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + 60f);
+            return;
+        }
 
         // Clamp new position to stay within background/world
         newX = (int) MathUtils.clamp(newX, 0, WORLD_WIDTH - PLAYER_WIDTH);

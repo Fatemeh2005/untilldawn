@@ -238,7 +238,6 @@ public class WorldController {
 
     private void drawPlayerHP() {
         int hp = Game.getPlayer().getPlayerHealth();
-        int maxHp = 5;
         int heartSize = 32;
         int spacing = 8;
 
@@ -249,10 +248,8 @@ public class WorldController {
         float startX = camLeft + 16; // small margin from left
         float startY = camTop - 16 - heartSize; // small margin from top
 
-        for (int i = 0; i < maxHp; i++) {
-            if (i < hp) {
-                Main.getBatch().draw(heart, startX + i * (heartSize + spacing), startY, heartSize, heartSize);
-            }
+        for (int i = 0; i < hp; i++) {
+            Main.getBatch().draw(heart, startX + i * (heartSize + spacing), startY, heartSize, heartSize);
         }
     }
 
