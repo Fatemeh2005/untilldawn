@@ -9,16 +9,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.tilldawn.Main;
-import com.tilldawn.Model.Enemies.Enemy;
-import com.tilldawn.Model.Enemies.EyeBat;
-import com.tilldawn.Model.Enemies.TentacleMonster;
-import com.tilldawn.Model.Enemies.Tree;
+import com.tilldawn.Model.Enemies.*;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.GameView;
 import com.tilldawn.View.WinGameMenu;
 import com.tilldawn.View.loseGameMenu;
 
+import java.util.Iterator;
 import java.util.Random;
 
 public class WorldController {
@@ -31,6 +29,7 @@ public class WorldController {
     private float totalGameTime = 0;
     private boolean victoryHandled = false;
     private Texture heart = new Texture("assets/heart.png");
+    GameView view;
 
     private BitmapFont font = new BitmapFont(); // Default font
     private GlyphLayout layout = new GlyphLayout(); // To calculate text width
@@ -41,7 +40,8 @@ public class WorldController {
     public WorldController(GameView view) {
         this.backgroundTexture = new Texture("background.png");
         this.weaponController = new WeaponController(view);
-        font.setColor(Color.WHITE);
+        this.view = view;
+        font.setColor(Color.SKY);
         font.getData().setScale(1.5f);
 
         spawnInitialTrees();
@@ -73,12 +73,21 @@ public class WorldController {
             tentacleSpawnTimer = 0;
         }
 
+        Iterator<Seed> iterator = Game.getSeeds().iterator();
+        while (iterator.hasNext()) {
+            Seed seed = iterator.next();
+            if (Game.getPlayer().getRect().collidesWith(seed.getCollisionRect())) {
+                Game.getPlayer().setXp(Game.getPlayer().getXp() + 3);
+                iterator.remove();  // Safe removal using the iterator
+            }
+        }
+
         if (treeDamageTimer >= 1f) {
             for (Tree tree : Game.getTrees()) {
                 if (Game.getPlayer().getRect().collidesWith(tree.getRect())) {
                     Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                     treeDamageTimer = 0f;
-                    if (Game.getPlayer().getPlayerHealth() <= 0) {
+                    if (Game.getPlayer().getPlayerHealth() < 0) {
                         Main.getMain().getScreen().dispose();
                         Main.getMain().setScreen(new loseGameMenu());
                     }
@@ -115,6 +124,10 @@ public class WorldController {
 
         Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + delta);
         checkVictoryCondition();
+        if (Game.getPlayer().isLevelUp()) {
+
+           view.printAbilitiesMenu(GameAssetManager.getGameAssetManager().getSkin());
+        }
     }
 
     private void checkVictoryCondition() {
@@ -229,11 +242,18 @@ public class WorldController {
         }
         drawPlayerHP(); // ❤️ draw hearts
         drawElapsedTime();      // ⏱️ time (top-right)
+        drawLevel();      // level
+        // Render seeds
+        for (Seed seed : Game.getSeeds()) {
+            seed.render(Main.getBatch());
+        }
     }
 
     public void dispose() {
         backgroundTexture.dispose();
         GameAssetManager.getGameAssetManager().getTree_tex().dispose();
+        GameAssetManager.getGameAssetManager().getEyeBatBulletTex().dispose();
+        GameAssetManager.getGameAssetManager().getTentacleSeedTex().dispose();
     }
 
     private void drawPlayerHP() {
@@ -266,12 +286,30 @@ public class WorldController {
         minutes = Game.getSelectedGameTimeInMinutes() - minutes - 1;
 
         String timeStr = String.format("%02d:%02d", minutes, seconds);
+        font.getData().setScale(2.5f);
         layout.setText(font, timeStr);
 
         float textWidth = layout.width;
 
         float x = camRight - textWidth - 16; // 16px margin from right
         float y = camTop - 16; // 16px from top
+
+        font.draw(Main.getBatch(), layout, x, y);
+    }
+
+    private void drawLevel() {
+        OrthographicCamera cam = GameView.getCamera();
+        float camRight = cam.position.x + cam.viewportWidth / 2;
+        float camTop = cam.position.y + cam.viewportHeight / 2;
+
+        String timeStr = String.format("Level : %d", Game.getPlayer().getLevel());
+        font.getData().setScale(2.5f);
+        layout.setText(font, timeStr);
+
+        float textWidth = layout.width;
+
+        float x = camRight - textWidth - 16; // 16px margin from right
+        float y = camTop - 60;
 
         font.draw(Main.getBatch(), layout, x, y);
     }
@@ -285,4 +323,5 @@ public class WorldController {
             Game.getTrees().add(new Tree(x, y, GameAssetManager.getGameAssetManager().getTree_tex()));
         }
     }
+
 }

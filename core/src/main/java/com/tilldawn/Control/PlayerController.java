@@ -52,14 +52,20 @@ public class PlayerController {
             Game.getPlayer().getPlayerSprite().flip(true, false);
         }
         //cheat code
-        //TODO:faghat dar soorat khali boodan
-        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H) && Game.getPlayer().getPlayerHealth() == 0){
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
             return;
         }
         //cheat code for time
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + 60f);
+            return;
+        }
+
+        //eternity cheat code
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+            Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 5);
             return;
         }
 

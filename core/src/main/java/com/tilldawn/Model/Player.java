@@ -13,14 +13,18 @@ public class Player {
     private Texture playerTexture ;
     private Sprite playerSprite ;
     private PlayerTypes playerType ;
-    private int posX = 0;
-    private int posY = 0;
+    private int posX;
+    private int posY;
     private int playerHealth;
     private CollisionRect rect ;
     private float time = 0;
     private int speed ;
     private Animation<Texture>animations;
     private Weapon weapon = new Weapon(WeaponTypes.SMGDUAL);
+    private int level = 1;
+    //TODO:check if this is right:
+    private int xp = 0;
+    private boolean levelUp = false;
 
 
     private float lastDamageTime = 0f; // Time since last damage
@@ -30,10 +34,7 @@ public class Player {
         return speed;
     }
 
-    private boolean isPlayerIdle = true;
-    private boolean isPlayerRunning = false;
-
-    public Player( PlayerTypes playerType) {
+    public Player(PlayerTypes playerType) {
         playerTexture = playerType.getAvatarTexture();
         this.animations = playerType.getAnimation();
         this.playerSprite = new Sprite(playerTexture);
@@ -87,27 +88,6 @@ public class Player {
 
     public CollisionRect getRect() {
         return rect;
-    }
-
-    public void setRect(CollisionRect rect) {
-        this.rect = rect;
-    }
-
-
-    public boolean isPlayerIdle() {
-        return isPlayerIdle;
-    }
-
-    public void setPlayerIdle(boolean playerIdle) {
-        isPlayerIdle = playerIdle;
-    }
-
-    public boolean isPlayerRunning() {
-        return isPlayerRunning;
-    }
-
-    public void setPlayerRunning(boolean playerRunning) {
-        isPlayerRunning = playerRunning;
     }
 
     public float getTime() {
@@ -168,5 +148,34 @@ public class Player {
 
     public void setAnimations(Animation<Texture> animations) {
         this.animations = animations;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        if (xp > level * 20) {
+            level++;
+            levelUp = true;
+            xp = xp - (level - 1) * 20;
+        }
+        this.xp = xp;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public boolean isLevelUp() {
+        return levelUp;
+    }
+
+    public void setLevelUp(boolean levelUp) {
+        this.levelUp = levelUp;
     }
 }

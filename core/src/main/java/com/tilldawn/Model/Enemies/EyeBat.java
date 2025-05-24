@@ -38,7 +38,7 @@ public class EyeBat extends Enemy{
                 Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                 lastDamageTime = stateTime;
 
-                if (Game.getPlayer().getPlayerHealth() <= 0) {
+                if (Game.getPlayer().getPlayerHealth() < 0) {
                     Main.getMain().getScreen().dispose();
                     Main.getMain().setScreen(new loseGameMenu());
                 }

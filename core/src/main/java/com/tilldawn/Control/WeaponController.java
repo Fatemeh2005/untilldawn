@@ -2,12 +2,16 @@ package com.tilldawn.Control;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
+import com.tilldawn.Model.Enemies.Seed;
+import com.tilldawn.Model.Enemies.TentacleMonster;
+import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.Weapon.Bullet;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
@@ -85,10 +89,15 @@ public void handleWeaponShoot(int mouseX, int mouseY) {
             // Bullet collision with enemies
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = enemies.get(i);
+                Texture seedTexture = GameAssetManager.getGameAssetManager().getEyeBatSeedTex();
+                if(enemy instanceof TentacleMonster){
+                    seedTexture = GameAssetManager.getGameAssetManager().getTentacleSeedTex();
+                }
                 if (sprite.getBoundingRectangle().overlaps(enemy.getRect().getRectangle())) {
                     enemy.takeDamage(Game.getPlayer().getWeapon().getWeaponTypes().getDamage());
                     if (enemy.isDead()) {
                         enemies.remove(i);
+                        Game.getSeeds().add(new Seed(enemy.getX(), enemy.getY(), seedTexture));
                         i--;
                     }
                     bulletsToRemove.add(bullet);

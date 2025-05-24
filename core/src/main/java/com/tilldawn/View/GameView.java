@@ -5,12 +5,16 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
 import com.tilldawn.Control.GameController;
 import com.tilldawn.Main;
-import com.tilldawn.Model.PlayerTypes;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.tilldawn.Model.Game;
 
 public class GameView implements Screen, InputProcessor {
     private GameController controller;
@@ -105,4 +109,112 @@ public class GameView implements Screen, InputProcessor {
     public static OrthographicCamera getCamera() {
         return camera;
     }
+
+    public void printAbilitiesMenu(Skin skin) {
+        // Clear any previous UI elements before creating new ones
+        stage.clear();
+        Gdx.input.setInputProcessor(stage); // Set input processor to the stage
+
+        Table table = new Table();
+        table.setFillParent(true); // Make the table fill the entire screen
+        stage.addActor(table); // Add the table to the stage
+
+        // Create buttons for each ability
+        TextButton vitality = new TextButton("Vitality", skin);
+        TextButton damager = new TextButton("Damager", skin);
+        TextButton procrease = new TextButton("Procrease", skin);
+        TextButton amocrease = new TextButton("Amocrease", skin);
+        TextButton speedy = new TextButton("Speedy", skin);
+
+        // Set up click listeners for each button
+        vitality.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Vitality button clicked");
+                Game.getPlayer().setLevelUp(false); // Disable level-up state
+                // Example: Increase player's max health
+              //  Game.getPlayer().setPlayerHealth(Game.getPlayer().getMaxHp());
+                removeAbilitiesMenu(); // Remove menu after selection
+            }
+        });
+
+        damager.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Damager button clicked");
+                Game.getPlayer().setLevelUp(false); // Disable level-up state
+                // Example: Increase damage multiplier
+               // Game.getPlayer().setDamageMultiplier(1.5f);
+                // Reset damage multiplier after 10 seconds (for example)
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                  //      Game.getPlayer().setDamageMultiplier(1f);
+                        this.cancel(); // Stop the timer after resetting
+                    }
+                }, 10, 2); // Runs after 10 seconds, repeats every 2 seconds
+                removeAbilitiesMenu(); // Remove menu after selection
+            }
+        });
+
+        procrease.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Procrease button clicked");
+                Game.getPlayer().setLevelUp(false); // Disable level-up state
+                // Example: Increase projectile size or count
+             //   Game.getPlayer().setProjectileAddition(3);
+                removeAbilitiesMenu(); // Remove menu after selection
+            }
+        });
+
+        amocrease.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Amocrease button clicked");
+                Game.getPlayer().setLevelUp(false); // Disable level-up state
+                // Example: Increase max ammo
+               // Game.getPlayer().setMaxAmmoAddition(5);
+                removeAbilitiesMenu(); // Remove menu after selection
+            }
+        });
+
+        speedy.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Speedy button clicked");
+                Game.getPlayer().setLevelUp(false); // Disable level-up state
+                // Example: Increase speed multiplier
+              //  Game.getPlayer().setSpeedMultiplier(2f);
+                // Reset speed multiplier after 10 seconds (for example)
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                   //     Game.getPlayer().setSpeedMultiplier(1f);
+                        this.cancel(); // Stop the timer after resetting
+                    }
+                }, 10, 2); // Runs after 10 seconds, repeats every 2 seconds
+                removeAbilitiesMenu(); // Remove menu after selection
+            }
+        });
+
+        // Add buttons to the table (arrange them vertically)
+        table.add(vitality).colspan(2).fillX().pad(10); // Make the buttons fill horizontally
+        table.row(); // Move to the next row
+        table.add(damager).colspan(2).fillX().pad(10);
+        table.row();
+        table.add(procrease).colspan(2).fillX().pad(10);
+        table.row();
+        table.add(amocrease).colspan(2).fillX().pad(10);
+        table.row();
+        table.add(speedy).colspan(2).fillX().pad(10);
+    }
+
+    // Method to remove the abilities menu and return input to the game view
+    private void removeAbilitiesMenu() {
+        stage.clear();  // Clear the UI stage
+        Gdx.input.setInputProcessor(this);  // Return control back to the main game view input processor
+    }
+
+
 }
