@@ -12,8 +12,6 @@ import com.tilldawn.Model.Game;
 import com.tilldawn.Model.Player;
 import com.tilldawn.View.loseGameMenu;
 
-import java.util.ArrayList;
-
 public class PlayerController {
 
     // Constants for background dimensions
@@ -26,11 +24,6 @@ public class PlayerController {
 
     public void update() {
         // If player is dead, do not allow any further movement or idle animation
-        if (Game.getPlayer().isDead()) {
-            // Update death animation
-            updateDeathAnimation();
-            return;  // Skip any further updates
-        }
 
         handlePlayerInput();  // Handle player input for movement
         Game.getPlayer().getPlayerSprite().setPosition(Game.getPlayer().getPosX(), Game.getPlayer().getPosY());
@@ -98,9 +91,6 @@ public class PlayerController {
 
     public void idleAnimation(Animation<Texture> animation) {
         // Only show idle animation if the player is alive
-        if (Game.getPlayer().isDead()) {
-            return;
-        }
 
         Game.getPlayer().getPlayerSprite().setRegion(animation.getKeyFrame(Game.getPlayer().getTime()));
 
@@ -111,21 +101,6 @@ public class PlayerController {
         }
 
         animation.setPlayMode(Animation.PlayMode.LOOP);
-    }
-
-    private void updateDeathAnimation() {
-        // Update death animation only if the player is dead
-        float delta = Gdx.graphics.getDeltaTime();
-
-        // Update death animation time
-        Game.getPlayer().setDeathAnimationTime(Game.getPlayer().getDeathAnimationTime() + delta);
-        Game.getPlayer().getPlayerSprite().setRegion(Game.getPlayer().getDeathAnimation().getKeyFrame(Game.getPlayer().getDeathAnimationTime()));
-
-        // If the death animation is finished, trigger the lose screen
-        if (Game.getPlayer().getDeathAnimation().isAnimationFinished(Game.getPlayer().getDeathAnimationTime())) {
-            Main.getMain().getScreen().dispose();  // Dispose the current screen
-            Main.getMain().setScreen(new loseGameMenu());  // Transition to lose game screen
-        }
     }
 
 }

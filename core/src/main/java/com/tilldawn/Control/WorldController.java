@@ -99,7 +99,7 @@ public class WorldController {
                     Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                     treeDamageTimer = 0f;
                     if (Game.getPlayer().getPlayerHealth() < 0) {
-                        Game.getPlayer().setDeathAnimation();  // Trigger death animation
+                        // Trigger death animation
                         Game.getPlayer().setDead(true);
                         AudioManager.getInstance().playLoseSound();
                         Main.getMain().getScreen().dispose();
@@ -348,8 +348,7 @@ public class WorldController {
 
     private void spawnInitialTrees() {
         Random rand = new Random();
-        //always between 25 and 35 trees
-        for (int i = 0; i < rand.nextInt(11) + 25; i++) {
+        for (int i = 0; i < rand.nextInt(11) + 50; i++) {
             float x = rand.nextFloat() * worldWidth;
             float y = rand.nextFloat() * worldHeight;
             Game.getTrees().add(new Tree(x, y, GameAssetManager.getGameAssetManager().getTree_tex()));

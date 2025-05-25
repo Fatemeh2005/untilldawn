@@ -133,11 +133,14 @@ public class GameAssetManager {
 
     private final Texture TentacleSeedTex = new Texture("Seeds/BrainMonster_Em.png");
 
-    private final Texture playerDeath1Texture = new Texture("deathAnimation/playerDeath1.png");
-    private final Texture playerDeath2Texture = new Texture("deathAnimation/playerDeath2.png");
-    private final Texture playerDeath3Texture = new Texture("deathAnimation/playerDeath3.png");
+    private final Texture playerDeath1Texture = new Texture("deathAnimation/ExplosionFX_0.png");
+    private final Texture playerDeath2Texture = new Texture("deathAnimation/ExplosionFX_1.png");
+    private final Texture playerDeath3Texture = new Texture("deathAnimation/ExplosionFX_2.png");
+    private final Texture playerDeath4Texture = new Texture("deathAnimation/ExplosionFX_3.png");
+    private final Texture playerDeath5Texture = new Texture("deathAnimation/ExplosionFX_4.png");
+    private final Texture playerDeath6Texture = new Texture("deathAnimation/ExplosionFX_5.png");
 
-    private final Animation<Texture>playerDeathAnimation = new Animation<>(0.1f, playerDeath1Texture, playerDeath2Texture, playerDeath3Texture);
+    private final Animation<Texture>playerDeathAnimation = new Animation<>(0.1f, playerDeath1Texture, playerDeath2Texture, playerDeath3Texture, playerDeath4Texture, playerDeath5Texture, playerDeath6Texture);
 
     public static GameAssetManager getGameAssetManager(){
         if (gameAssetManager == null){

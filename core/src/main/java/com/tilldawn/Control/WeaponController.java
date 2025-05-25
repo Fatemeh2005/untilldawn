@@ -96,6 +96,7 @@ public void handleWeaponShoot(int mouseX, int mouseY) {
                 if (sprite.getBoundingRectangle().overlaps(enemy.getRect().getRectangle())) {
                     enemy.takeDamage(Game.getPlayer().getWeapon().getWeaponTypes().getDamage());
                     if (enemy.isDead()) {
+                        enemy.render(Main.getBatch());
                         enemies.remove(i);
                         Game.getSeeds().add(new Seed(enemy.getX(), enemy.getY(), seedTexture));
                         Game.getPlayer().setNumberOfKillsInGame(Game.getPlayer().getNumberOfKillsInGame() + 1);

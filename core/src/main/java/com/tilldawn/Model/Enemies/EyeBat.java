@@ -3,10 +3,12 @@ package com.tilldawn.Model.Enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Game;
+import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.loseGameMenu;
 
 import java.util.ArrayList;
@@ -18,9 +20,13 @@ public class EyeBat extends Enemy{
     private ArrayList<EnemyBullet> bullets = new ArrayList<>();
     private float shootCooldown = 3f;
     private float shootTimer = 0f;
+    private float deathTime;
+    private Animation<Texture> deathAnimation;
 
     public EyeBat(float x, float y, float speed, Animation<Texture> animation) {
         super(x, y, speed, 50, animation);
+        this.deathTime = 0f;
+        this.deathAnimation = GameAssetManager.getGameAssetManager().getPlayerDeathAnimation();
     }
 
     @Override
@@ -29,6 +35,16 @@ public class EyeBat extends Enemy{
         float dx = playerX - x;
         float dy = playerY - y;
         float dist = (float) Math.sqrt(dx * dx + dy * dy);
+
+        if (isDying) {
+            deathTime += delta ;
+            if (deathTime >= 0.6f) {
+                // Once the death animation is finished, remove the enemy from the game
+                isDead = true;
+                Game.getEnemies().remove(this);
+            }
+            return;  // Skip the regular update if the monster is dead
+        }
 
         if (dist > 10f) {
             x += (dx / dist) * speed * delta;
@@ -40,7 +56,6 @@ public class EyeBat extends Enemy{
                 lastDamageTime = stateTime;
 
                 if (Game.getPlayer().getPlayerHealth() < 0) {
-                    Game.getPlayer().setDeathAnimation();  // Trigger death animation
                     Game.getPlayer().setDead(true);
                     AudioManager.getInstance().playLoseSound();
                     Main.getMain().getScreen().dispose();
@@ -68,12 +83,12 @@ public class EyeBat extends Enemy{
 
             // Bullet collision with player
 
-                if (sprite.getBoundingRectangle().overlaps(Game.getPlayer().getRect().getRectangle())) {
-                    Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
+            if (sprite.getBoundingRectangle().overlaps(Game.getPlayer().getRect().getRectangle())) {
+                Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
 
-                    toRemove.add(bullet);
-                    break;
-                }
+                toRemove.add(bullet);
+                break;
+            }
 
         }
         bullets.removeAll(toRemove);
@@ -92,6 +107,19 @@ public class EyeBat extends Enemy{
         EnemyBullet bullet = new EnemyBullet(startX, startY);
         bullet.setDirection(direction);  // 🛠️ Set the direction!
         bullets.add(bullet);
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        if (isDying()) {
+            Texture deathFrame = deathAnimation.getKeyFrame(deathTime);
+            System.out.println("Drawing death animation frame: " + deathFrame.toString());
+            batch.draw(deathFrame, x, y);
+        } else {
+            // Draw the regular animation for the monster
+            Texture currentFrame = animation.getKeyFrame(stateTime, true);
+            batch.draw(currentFrame, x, y);
+        }
     }
 
 }
