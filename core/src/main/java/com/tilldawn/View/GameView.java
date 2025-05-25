@@ -69,6 +69,11 @@ public class GameView implements Screen, InputProcessor {
     }
 
     @Override
+    public boolean touchDown(int i, int i1, int i2, int i3) {
+        return false;
+    }
+
+    @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
         return false;
     }
@@ -91,11 +96,6 @@ public class GameView implements Screen, InputProcessor {
 
     @Override
     public boolean scrolled(float v, float v1) {
-        return false;
-    }
-
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        controller.getWeaponController().handleWeaponShoot(screenX, screenY);
         return false;
     }
 

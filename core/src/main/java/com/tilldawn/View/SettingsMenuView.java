@@ -1,14 +1,19 @@
 package com.tilldawn.View;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.SettingsController;
+import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 
 public class SettingsMenuView implements Screen {
@@ -51,6 +56,138 @@ public class SettingsMenuView implements Screen {
             }
         });
 
+        SelectBox<String> selectUpKey = new SelectBox<>(skin);
+        Array<String> up = new Array<>();
+        up.add("W");
+        up.add("up arrow");
+        selectUpKey.setItems(up);
+
+        SelectBox<String> selectDownKey = new SelectBox<>(skin);
+        Array<String> down = new Array<>();
+        down.add("S");
+        down.add("down arrow");
+        selectDownKey.setItems(down);
+
+        SelectBox<String> selectRightKey = new SelectBox<>(skin);
+        Array<String> right = new Array<>();
+        right.add("D");
+        right.add("right arrow");
+        selectRightKey.setItems(right);
+
+        SelectBox<String> selectLeftKey = new SelectBox<>(skin);
+        Array<String> left = new Array<>();
+        left.add("A");
+        left.add("left arrow");
+        selectLeftKey.setItems(left);
+
+        SelectBox<String> selectShootKey = new SelectBox<>(skin);
+        Array<String> shoot = new Array<>();
+        shoot.add("left mouse click");
+        shoot.add("enter");
+        selectShootKey.setItems(shoot);
+
+        SelectBox<String> selectReloadKey = new SelectBox<>(skin);
+        Array<String> reload = new Array<>();
+        reload.add("R");
+        reload.add("back space");
+        selectReloadKey.setItems(reload);
+
+        // For the "Up" key selection
+        selectUpKey.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selected = selectUpKey.getSelected();
+                switch (selected) {
+                    case "W":
+                        Game.setKeyUp(Input.Keys.W);
+                        break;
+                    case "up arrow":
+                        Game.setKeyUp(Input.Keys.UP);
+                        break;
+                }
+            }
+        });
+
+// For the "Down" key selection
+        selectDownKey.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selected = selectDownKey.getSelected();
+                switch (selected) {
+                    case "S":
+                        Game.setKeyDown(Input.Keys.S);
+                        break;
+                    case "down arrow":
+                        Game.setKeyDown(Input.Keys.DOWN);
+                        break;
+                }
+            }
+        });
+
+// For the "Right" key selection
+        selectRightKey.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selected = selectRightKey.getSelected();
+                switch (selected) {
+                    case "D":
+                        Game.setKeyRight(Input.Keys.D);
+                        break;
+                    case "right arrow":
+                        Game.setKeyRight(Input.Keys.RIGHT);
+                        break;
+                }
+            }
+        });
+
+// For the "Left" key selection
+        selectLeftKey.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selected = selectLeftKey.getSelected();
+                switch (selected) {
+                    case "A":
+                        Game.setKeyLeft(Input.Keys.A);
+                        break;
+                    case "left arrow":
+                        Game.setKeyLeft(Input.Keys.LEFT);
+                        break;
+                }
+            }
+        });
+
+// For the "Shoot" key selection
+        selectShootKey.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selected = selectShootKey.getSelected();
+                switch (selected) {
+                    case "left mouse click":
+                        Game.setShoot(Input.Buttons.LEFT);
+                        break;
+                    case "enter":
+                        Game.setShoot(Input.Keys.ENTER);
+                        break;
+                }
+            }
+        });
+
+// For the "Reload" key selection
+        selectReloadKey.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selected = selectReloadKey.getSelected();
+                switch (selected) {
+                    case "R":
+                        Game.setReloadGun(Input.Keys.R);
+                        break;
+                    case "back space":
+                        Game.setReloadGun(Input.Keys.BACKSPACE);
+                        break;
+                }
+            }
+        });
+
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -60,7 +197,6 @@ public class SettingsMenuView implements Screen {
                 event.stop(); // optional: prevent propagation
             }
         });
-
 
         table.add(musicLabel).pad(10);
         table.row();
@@ -72,8 +208,21 @@ public class SettingsMenuView implements Screen {
         table.row();
         table.add(nextMusicButton).pad(10);
         table.row();
+        table.add(selectUpKey).width(300).pad(10);
+        table.row();
+        table.add(selectDownKey).width(300).pad(10);
+        table.row();
+        table.add(selectRightKey).width(300).pad(10);
+        table.row();
+        table.add(selectLeftKey).width(300).pad(10);
+        table.row();
+        table.add(selectShootKey).width(300).pad(10);
+        table.row();
+        table.add(selectReloadKey).width(300).pad(10);
+        table.row();
         table.add(backButton).pad(10);
     }
+
 
     @Override public void show() {
         Gdx.input.setInputProcessor(stage); // Re-set input each time screen is shown

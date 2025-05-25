@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
@@ -21,6 +22,14 @@ public class PlayerController {
     // Also define your player's sprite dimensions
     private final float PLAYER_WIDTH = Game.getPlayer().getPlayerSprite().getWidth();
     private final float PLAYER_HEIGHT = Game.getPlayer().getPlayerSprite().getHeight();
+    GameController controller;
+
+    private float lastShootTime = 0f;  // Time of the last shot
+    private float shootCooldown = 0.2f;  // Cooldown time between shots (in seconds)
+
+    public PlayerController(GameController controller) {
+        this.controller = controller;
+    }
 
     public void update() {
         // If player is dead, do not allow any further movement or idle animation
@@ -35,27 +44,44 @@ public class PlayerController {
         if (Game.getPlayer().isDead()) {
             return;  // Skip handling input if the player is dead
         }
+        // Get the mouse position
+        int mouseX = Gdx.input.getX();
+        int mouseY = Gdx.input.getY();
 
         int newX = Game.getPlayer().getPosX();
         int newY = Game.getPlayer().getPosY();
         int speed = Game.getPlayer().getSpeed();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Game.getKeyUp())) {
             newY += speed;
             idleAnimation(Game.getPlayer().getAnimations());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Game.getKeyDown())) {
             newY -= speed;
             idleAnimation(Game.getPlayer().getAnimations());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Game.getKeyRight())) {
             newX += speed;
             idleAnimation(Game.getPlayer().getAnimations());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Game.getKeyLeft())) {
             newX -= speed;
             idleAnimation(Game.getPlayer().getAnimations());
             Game.getPlayer().getPlayerSprite().flip(true, false);
+        }
+
+        //reload
+        if (Gdx.input.isKeyPressed(Game.getReloadGun())) {
+            Game.getPlayer().getWeapon().setNumberOfShoots(0);
+            return;
+        }
+
+        if ((Gdx.input.isButtonPressed(Game.getShoot()) || Gdx.input.isKeyJustPressed(Game.getShoot())) &&
+            (TimeUtils.nanoTime() - lastShootTime) / 1000000000f > shootCooldown) {
+            // Handle shooting with the current mouse coordinates
+            controller.getWeaponController().handleWeaponShoot(mouseX, mouseY);
+            lastShootTime = TimeUtils.nanoTime();  // Update last shoot time
+            return;  // Prevent other code from running while shooting
         }
 
         // Cheat codes, etc.

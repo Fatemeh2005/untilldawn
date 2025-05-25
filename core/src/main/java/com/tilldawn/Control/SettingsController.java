@@ -37,4 +37,5 @@ public class SettingsController {
     public void goBackToMainMenu() {
         Main.getMain().setScreen(new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
+
 }

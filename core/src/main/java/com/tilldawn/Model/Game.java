@@ -1,5 +1,6 @@
 package com.tilldawn.Model;
 
+import com.badlogic.gdx.Input;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Enemies.Seed;
 import com.tilldawn.Model.Enemies.Tree;
@@ -21,6 +22,13 @@ public class Game {
     private static ArrayList<Seed>seeds = new ArrayList<>();
 
     private static boolean gamePaused = false;
+
+    private static int keyUp ;
+    private static int keyDown ;
+    private static int keyLeft;
+    private static int keyRight;
+    private static int reloadGun;
+    private static int shoot;
 
 
     public static Player getPlayer() {
@@ -84,5 +92,53 @@ public class Game {
 
     public static void setGamePaused(boolean gamePaused) {
         Game.gamePaused = gamePaused;
+    }
+
+    public static int getKeyUp() {
+        return keyUp;
+    }
+
+    public static void setKeyUp(int keyUp) {
+        Game.keyUp = keyUp;
+    }
+
+    public static int getKeyDown() {
+        return keyDown;
+    }
+
+    public static void setKeyDown(int keyDown) {
+        Game.keyDown = keyDown;
+    }
+
+    public static int getKeyLeft() {
+        return keyLeft;
+    }
+
+    public static void setKeyLeft(int keyLeft) {
+        Game.keyLeft = keyLeft;
+    }
+
+    public static int getKeyRight() {
+        return keyRight;
+    }
+
+    public static void setKeyRight(int keyRight) {
+        Game.keyRight = keyRight;
+    }
+
+    public static int getReloadGun() {
+        return reloadGun;
+    }
+
+    public static void setReloadGun(int reloadGun) {
+        Game.reloadGun = reloadGun;
+    }
+
+    public static int getShoot() {
+        return shoot;
+    }
+
+    public static void setShoot(int shoot) {
+        Game.shoot = shoot;
     }
 }

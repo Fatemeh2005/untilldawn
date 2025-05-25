@@ -1,6 +1,7 @@
 package com.tilldawn.View;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.RegisterMenuController;
+import com.tilldawn.Model.Game;
 
 public class RegisterMenuView implements Screen {
     private Stage stage;
@@ -43,6 +45,7 @@ public class RegisterMenuView implements Screen {
         this.table = new Table();
 
         controller.setView(this);
+        setUpkeys();
     }
 
     @Override
@@ -133,5 +136,14 @@ public class RegisterMenuView implements Screen {
 
     public TextButton getGoToLoginButton() {
         return goToLoginButton;
+    }
+
+    private void setUpkeys(){
+        Game.setKeyUp(Input.Keys.W);
+        Game.setKeyDown(Input.Keys.S);
+        Game.setKeyLeft(Input.Keys.A);
+        Game.setKeyRight(Input.Keys.D);
+        Game.setShoot(Input.Buttons.LEFT);
+        Game.setReloadGun(Input.Keys.R);
     }
 }
