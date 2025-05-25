@@ -23,6 +23,7 @@ public class Main extends Game {
     public void create() {
         main = this;
         batch = new SpriteBatch();
+      //  batch.setColor(0f, 0f, 0f, 0.3f);
         main.setScreen(new RegisterMenuView(new RegisterMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
 

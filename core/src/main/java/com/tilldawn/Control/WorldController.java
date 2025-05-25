@@ -1,13 +1,11 @@
 package com.tilldawn.Control;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.DamagePopup;
@@ -37,6 +35,8 @@ public class WorldController {
     private GlyphLayout layout = new GlyphLayout(); // To calculate text width
 
     private float treeDamageTimer = 0f;
+
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
 
     public WorldController(GameView view) {
@@ -247,8 +247,13 @@ public class WorldController {
     }
 
     public void render() {
-        Main.getBatch().draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
 
+        Main.getBatch().setColor(1f, 1f, 1f, 0.6f);
+        Main.getBatch().draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
+        tileBackground();
+        drawLightAroundPlayer(Game.getPlayer().getPosX(), Game.getPlayer().getPosY());
+
+        Main.getBatch().setColor(1f, 1f, 1f, 0.6f);
         // Draw trees first (background objects)
         for (Tree tree : Game.getTrees()) {
             tree.render(Main.getBatch());
@@ -268,8 +273,31 @@ public class WorldController {
         for(DamagePopup damagePopup : Game.getPlayer().getDamagePopups()){
             damagePopup.render(Main.getBatch());
         }
-    }
+        Main.getBatch().setColor(1f, 1f, 1f, 1f);  // Reset to normal white color
+        Main.getBatch().draw(backgroundTexture, Game.getPlayer().getPosX() - 150, Game.getPlayer().getPosY() - 150, 300, 300);
 
+    }
+    private void drawLightAroundPlayer(float playerX, float playerY) {
+        // Set the color to full white (light color) to "erase" the darkness inside the circle
+        Main.getBatch().setColor(1f, 1f, 1f, 1f);
+
+        // Draw a circle that represents the light area, centered around the player
+        float lightRadius = 150f;  // Radius of the light circle (adjust as needed)
+
+        // Ensure the light circle is drawn in the right position relative to the player's position
+        Main.getBatch().draw(backgroundTexture, playerX - lightRadius, playerY - lightRadius, lightRadius * 2, lightRadius * 2);
+    }
+    private void tileBackground() {
+        float tileWidth = backgroundTexture.getWidth();
+        float tileHeight = backgroundTexture.getHeight();
+
+        // Fill the screen with the background texture
+        for (float x = 0; x < worldWidth; x += tileWidth) {
+            for (float y = 0; y < worldHeight; y += tileHeight) {
+                Main.getBatch().draw(backgroundTexture, x, y);
+            }
+        }
+    }
     public void dispose() {
         backgroundTexture.dispose();
         GameAssetManager.getGameAssetManager().getTree_tex().dispose();
