@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
+import com.tilldawn.Model.DamagePopup;
 import com.tilldawn.Model.Enemies.*;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
@@ -96,6 +97,7 @@ public class WorldController {
         if (treeDamageTimer >= 1f) {
             for (Tree tree : Game.getTrees()) {
                 if (Game.getPlayer().getRect().collidesWith(tree.getRect())) {
+                    Game.getPlayer().takeDamage();
                     Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                     treeDamageTimer = 0f;
                     if (Game.getPlayer().getPlayerHealth() < 0) {
@@ -132,6 +134,7 @@ public class WorldController {
             }
         }
 
+        updatePopUps();
 
         weaponController.update();
 
@@ -262,6 +265,9 @@ public class WorldController {
         for (Seed seed : Game.getSeeds()) {
             seed.render(Main.getBatch());
         }
+        for(DamagePopup damagePopup : Game.getPlayer().getDamagePopups()){
+            damagePopup.render(Main.getBatch());
+        }
     }
 
     public void dispose() {
@@ -355,4 +361,15 @@ public class WorldController {
         }
     }
 
+    private void updatePopUps(){
+        Iterator<DamagePopup> iterator = Game.getPlayer().getDamagePopups().iterator();
+        while (iterator.hasNext()) {
+            DamagePopup popup = iterator.next();
+            popup.update(Gdx.graphics.getDeltaTime());
+            if (popup.isFinished()) {
+                iterator.remove();
+            }
+        }
+
+    }
 }

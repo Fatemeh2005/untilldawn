@@ -3,12 +3,15 @@ package com.tilldawn.Model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Weapon.Weapon;
 import com.tilldawn.Model.Weapon.WeaponTypes;
 import com.tilldawn.View.loseGameMenu;
+
+import java.util.ArrayList;
 
 public class Player {
 
@@ -36,6 +39,9 @@ public class Player {
 
     private int numberOfKillsInGame = 0;
     private User user;
+
+    ArrayList<DamagePopup> damagePopups = new ArrayList<>();
+    BitmapFont font = new BitmapFont(); // initialize somewhere
 
     public int getSpeed() {
         return speed;
@@ -206,4 +212,16 @@ public class Player {
         return deathAnimation;
     }
 
+    public void takeDamage() {
+
+        DamagePopup popup = new DamagePopup(
+            posX, posY + 3 * playerTexture.getHeight(),
+            "-" + 1, font
+        );
+        damagePopups.add(popup);
+    }
+
+    public ArrayList<DamagePopup> getDamagePopups() {
+        return damagePopups;
+    }
 }
