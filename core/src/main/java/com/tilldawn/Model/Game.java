@@ -1,6 +1,5 @@
 package com.tilldawn.Model;
 
-import com.badlogic.gdx.Input;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Enemies.Seed;
 import com.tilldawn.Model.Enemies.Tree;
@@ -16,6 +15,7 @@ public class Game {
 
     private static int selectedGameTimeInMinutes = 0;
     private static float passedTimeInSeconds = 0;
+    private static float reloadGunTimer = 0;
 
     private static ArrayList<Tree> trees = new ArrayList<>();
 
@@ -29,6 +29,9 @@ public class Game {
     private static int keyRight;
     private static int reloadGun;
     private static int shoot;
+
+    private static boolean reloadOn = false;
+    private static boolean autoReloadOn = false;
 
 
     public static Player getPlayer() {
@@ -140,5 +143,29 @@ public class Game {
 
     public static void setShoot(int shoot) {
         Game.shoot = shoot;
+    }
+
+    public static boolean isReloadOn() {
+        return reloadOn;
+    }
+
+    public static void setReloadOn(boolean reloadOn) {
+        Game.reloadOn = reloadOn;
+    }
+
+    public static float getReloadGunTimer() {
+        return reloadGunTimer;
+    }
+
+    public static void setReloadGunTimer(float reloadGunTimer) {
+        Game.reloadGunTimer = reloadGunTimer;
+    }
+
+    public static boolean isAutoReloadOn() {
+        return autoReloadOn;
+    }
+
+    public static void setAutoReloadOn(boolean autoReloadOn) {
+        Game.autoReloadOn = autoReloadOn;
     }
 }

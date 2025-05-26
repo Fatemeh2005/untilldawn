@@ -17,6 +17,7 @@ public class Weapon {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private int numberOfShoots;
     private int projectile;
+    private float reloadTime;
 
     public Weapon(WeaponTypes weaponTypes){
         texture = weaponTypes.getGunTexture();
@@ -28,6 +29,7 @@ public class Weapon {
         this.weaponTypes = weaponTypes;
         this.numberOfShoots = 0;
         this.projectile = weaponTypes.getProjectile();
+        this.reloadTime = weaponTypes.getTimeReload();
     }
 
     public Sprite getSprite() {
@@ -72,5 +74,13 @@ public class Weapon {
 
     public void setProjectile(int projectile) {
         this.projectile = projectile;
+    }
+
+    public float getReloadTime() {
+        return reloadTime;
+    }
+
+    public void setReloadTime(float reloadTime) {
+        this.reloadTime = reloadTime;
     }
 }

@@ -75,6 +75,18 @@ public class WorldController {
         tentacleSpawnTimer += delta;
         eyeBatSpawnTimer += delta;
         treeDamageTimer += delta;
+        if(Game.isAutoReloadOn() && Game.getPlayer().getWeapon().getNumberOfShoots() == Game.getPlayer().getWeapon().getAmmo()){
+            Game.setReloadOn(true);
+        }
+        if(Game.isReloadOn()){
+            Game.setReloadGunTimer(Game.getReloadGunTimer() + delta);
+        }
+
+        if(Game.getReloadGunTimer() >= Game.getPlayer().getWeapon().getReloadTime() && Game.isReloadOn()){
+            Game.getPlayer().getWeapon().setNumberOfShoots(0);
+            Game.setReloadGunTimer(0);
+            Game.setReloadOn(false);
+        }
 
         // Update camera
         camera.position.set(
@@ -290,13 +302,11 @@ public class WorldController {
         // Use additive blending for light effect
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
-        // Begin new batch specifically for light
-       // Main.getBatch().begin();
 
         // Position and draw light
         float px = Game.getPlayer().getPosX();
         float py = Game.getPlayer().getPosY();
-        lightSprite.setPosition(px - lightSprite.getWidth()/2f, py - lightSprite.getHeight()/2f);
+        lightSprite.setPosition(px - lightSprite.getWidth()/2f+10, py - lightSprite.getHeight()/2f+20);
         lightSprite.setColor(1f, 1f, 1f, 0.1f);
         lightSprite.draw(Main.getBatch());
 
@@ -305,8 +315,6 @@ public class WorldController {
 
         // Render UI/stage
         Main.getBatch().begin();
-       // view.getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
-    //    view.getStage().draw();
     }
 
     public void dispose() {

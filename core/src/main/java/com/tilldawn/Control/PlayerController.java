@@ -72,7 +72,7 @@ public class PlayerController {
 
         //reload
         if (Gdx.input.isKeyPressed(Game.getReloadGun())) {
-            Game.getPlayer().getWeapon().setNumberOfShoots(0);
+            Game.setReloadOn(true);
             return;
         }
 

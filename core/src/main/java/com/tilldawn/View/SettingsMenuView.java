@@ -198,29 +198,35 @@ public class SettingsMenuView implements Screen {
             }
         });
 
-        table.add(musicLabel).pad(10);
-        table.row();
-        table.add(musicSlider).width(300).pad(10);
-        table.row();
-        table.add(sfxLabel).pad(10);
-        table.row();
-        table.add(sfxSlider).width(300).pad(10);
-        table.row();
-        table.add(nextMusicButton).pad(10);
-        table.row();
-        table.add(selectUpKey).width(300).pad(10);
-        table.row();
-        table.add(selectDownKey).width(300).pad(10);
-        table.row();
-        table.add(selectRightKey).width(300).pad(10);
-        table.row();
-        table.add(selectLeftKey).width(300).pad(10);
-        table.row();
-        table.add(selectShootKey).width(300).pad(10);
-        table.row();
-        table.add(selectReloadKey).width(300).pad(10);
-        table.row();
-        table.add(backButton).pad(10);
+        TextButton autoReloadButton = new TextButton("enable auto reload", skin);
+        autoReloadButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Game.setAutoReloadOn(true);
+                event.stop(); // stop event propagation!
+            }
+        });
+
+        table.defaults().pad(5);
+
+        table.add(musicLabel).left().padRight(10);
+        table.add(musicSlider).width(250).row();
+
+        table.add(sfxLabel).left().padRight(10);
+        table.add(sfxSlider).width(250).row();
+
+        table.add(nextMusicButton).colspan(2).padTop(8).row();
+
+        table.add(selectUpKey).width(250).padTop(12).row();
+        table.add(selectDownKey).width(250).row();
+        table.add(selectRightKey).width(250).row();
+        table.add(selectLeftKey).width(250).row();
+        table.add(selectShootKey).width(250).row();
+        table.add(selectReloadKey).width(250).padBottom(8).row();
+
+// Options & Back Button
+        table.add(autoReloadButton).width(500).padTop(8).row();
+        table.add(backButton).padTop(15).row();
     }
 
 
