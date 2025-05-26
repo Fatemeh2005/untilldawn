@@ -16,6 +16,7 @@ public class Weapon {
     private int ammo;
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private int numberOfShoots;
+    private int projectile;
 
     public Weapon(WeaponTypes weaponTypes){
         texture = weaponTypes.getGunTexture();
@@ -26,6 +27,7 @@ public class Weapon {
         sprite.setSize(50,50);
         this.weaponTypes = weaponTypes;
         this.numberOfShoots = 0;
+        this.projectile = weaponTypes.getProjectile();
     }
 
     public Sprite getSprite() {
@@ -62,5 +64,13 @@ public class Weapon {
 
     public void setNumberOfShoots(int numberOfShoots) {
         this.numberOfShoots = numberOfShoots;
+    }
+
+    public int getProjectile() {
+        return projectile;
+    }
+
+    public void setProjectile(int projectile) {
+        this.projectile = projectile;
     }
 }

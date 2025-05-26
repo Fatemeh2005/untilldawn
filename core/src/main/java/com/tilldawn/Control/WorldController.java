@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
@@ -36,7 +37,8 @@ public class WorldController {
 
     private float treeDamageTimer = 0f;
 
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private Sprite lightSprite;
+    private ShapeRenderer shapeRenderer= new ShapeRenderer();
 
 
     public WorldController(GameView view) {
@@ -45,6 +47,12 @@ public class WorldController {
         this.view = view;
         font.setColor(Color.SKY);
         font.getData().setScale(1.5f);
+        Texture lightTexture = new Texture(Gdx.files.internal("light.png"));
+        lightTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        lightSprite = new Sprite(lightTexture);
+        float lightRadius = 150f;
+        lightSprite.setSize(lightRadius * 2, lightRadius * 2);
+        lightSprite.setOriginCenter();
 
         spawnInitialTrees();
     }
@@ -145,6 +153,7 @@ public class WorldController {
             Game.setGamePaused(true);  // Pause the game
            view.printAbilitiesMenu(GameAssetManager.getGameAssetManager().getSkin());
         }
+
     }
 
     private void checkVictoryCondition() {
@@ -247,14 +256,10 @@ public class WorldController {
     }
 
     public void render() {
-
-        Main.getBatch().setColor(1f, 1f, 1f, 0.6f);
+        // First render all normal game objects
+        Main.getBatch().setColor(1, 1, 1, 0.8f);
         Main.getBatch().draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-        tileBackground();
-        drawLightAroundPlayer(Game.getPlayer().getPosX(), Game.getPlayer().getPosY());
 
-        Main.getBatch().setColor(1f, 1f, 1f, 0.6f);
-        // Draw trees first (background objects)
         for (Tree tree : Game.getTrees()) {
             tree.render(Main.getBatch());
         }
@@ -262,42 +267,48 @@ public class WorldController {
         for (Enemy enemy : Game.getEnemies()) {
             enemy.render(Main.getBatch());
         }
-        drawPlayerHP(); //draw hearts
-        drawElapsedTime();      //time (top-right)
-        drawLevel();      // level
+
+        drawPlayerHP();
+        drawElapsedTime();
+        drawLevel();
         drawNumberOfKills();
-        // Render seeds
+
         for (Seed seed : Game.getSeeds()) {
             seed.render(Main.getBatch());
         }
-        for(DamagePopup damagePopup : Game.getPlayer().getDamagePopups()){
+
+        for(DamagePopup damagePopup : Game.getPlayer().getDamagePopups()) {
             damagePopup.render(Main.getBatch());
         }
-        Main.getBatch().setColor(1f, 1f, 1f, 1f);  // Reset to normal white color
-        Main.getBatch().draw(backgroundTexture, Game.getPlayer().getPosX() - 150, Game.getPlayer().getPosY() - 150, 300, 300);
 
+        // End the normal rendering batch
+        Main.getBatch().end();
+        Main.getBatch().begin();
+
+        // Prepare for light rendering
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        // Use additive blending for light effect
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+
+        // Begin new batch specifically for light
+       // Main.getBatch().begin();
+
+        // Position and draw light
+        float px = Game.getPlayer().getPosX();
+        float py = Game.getPlayer().getPosY();
+        lightSprite.setPosition(px - lightSprite.getWidth()/2f, py - lightSprite.getHeight()/2f);
+        lightSprite.setColor(1f, 1f, 1f, 0.1f);
+        lightSprite.draw(Main.getBatch());
+
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Main.getBatch().end();
+
+        // Render UI/stage
+        Main.getBatch().begin();
+       // view.getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
+    //    view.getStage().draw();
     }
-    private void drawLightAroundPlayer(float playerX, float playerY) {
-        // Set the color to full white (light color) to "erase" the darkness inside the circle
-        Main.getBatch().setColor(1f, 1f, 1f, 1f);
 
-        // Draw a circle that represents the light area, centered around the player
-        float lightRadius = 150f;  // Radius of the light circle (adjust as needed)
-
-        // Ensure the light circle is drawn in the right position relative to the player's position
-        Main.getBatch().draw(backgroundTexture, playerX - lightRadius, playerY - lightRadius, lightRadius * 2, lightRadius * 2);
-    }
-    private void tileBackground() {
-        float tileWidth = backgroundTexture.getWidth();
-        float tileHeight = backgroundTexture.getHeight();
-
-        // Fill the screen with the background texture
-        for (float x = 0; x < worldWidth; x += tileWidth) {
-            for (float y = 0; y < worldHeight; y += tileHeight) {
-                Main.getBatch().draw(backgroundTexture, x, y);
-            }
-        }
-    }
     public void dispose() {
         backgroundTexture.dispose();
         GameAssetManager.getGameAssetManager().getTree_tex().dispose();

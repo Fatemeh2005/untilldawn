@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,6 +24,7 @@ public class GameView implements Screen, InputProcessor {
     private GameController controller;
     private Stage stage;
     private static OrthographicCamera camera = new OrthographicCamera();
+
 
     public GameView(GameController controller) {
         Gdx.input.setInputProcessor(this);
@@ -43,10 +46,8 @@ public class GameView implements Screen, InputProcessor {
 
         controller.updateGame(camera);
 
-        Main.getBatch().end();
-
-        stage.act(delta);
-        stage.draw();
+         Main.getBatch().end();
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
     }
 
@@ -137,7 +138,7 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Vitality button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase player's max health
-            //    Game.getPlayer().setPlayerHealth(Game.getPlayer().getMaxHp());
+                Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -169,7 +170,7 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Procrease button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase projectile size or count
-            //    Game.getPlayer().setProjectileAddition(3);
+                Game.getPlayer().getWeapon().setProjectile(Game.getPlayer().getWeapon().getProjectile() + 1);
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -181,7 +182,7 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Amocrease button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase max ammo
-            //    Game.getPlayer().setMaxAmmoAddition(5);
+                Game.getPlayer().getWeapon().setAmmo(Game.getPlayer().getWeapon().getAmmo() + 5);
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -225,5 +226,12 @@ public class GameView implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);  // Return control back to the main game view input processor
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
 }
