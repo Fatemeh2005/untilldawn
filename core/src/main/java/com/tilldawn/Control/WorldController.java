@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.DamagePopup;
@@ -39,6 +41,7 @@ public class WorldController {
 
     private Sprite lightSprite;
     private ShapeRenderer shapeRenderer= new ShapeRenderer();
+    ProgressBar xpProgressBar;
 
 
     public WorldController(GameView view) {
@@ -53,6 +56,7 @@ public class WorldController {
         float lightRadius = 150f;
         lightSprite.setSize(lightRadius * 2, lightRadius * 2);
         lightSprite.setOriginCenter();
+        initializeXPProgressBar(GameAssetManager.getGameAssetManager().getSkin());
 
         spawnInitialTrees();
     }
@@ -301,8 +305,9 @@ public class WorldController {
 
         drawPlayerHP();
         drawElapsedTime();
-        drawLevel();
+        drawXPProgressBar();
         drawNumberOfKills();
+        drawShotsRemained();
 
         for (Seed seed : Game.getSeeds()) {
             seed.render(Main.getBatch());
@@ -384,19 +389,46 @@ public class WorldController {
         font.draw(Main.getBatch(), layout, x, y);
     }
 
-    private void drawLevel() {
+    public void initializeXPProgressBar(Skin skin) {
+        OrthographicCamera cam = GameView.getCamera();
+        float camRight = cam.position.x + cam.viewportWidth / 2;
+        float camTop = cam.position.y + cam.viewportHeight / 2;
+        // Create the ProgressBar (a range between 0 and 1 for progress)
+        ProgressBar.ProgressBarStyle style = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
+        xpProgressBar = new ProgressBar(0, 1, 0.01f, false, style);  // min, max, step size, vertical, style
+
+        xpProgressBar.setPosition( camTop - 55,camRight - 16); // You can adjust this position based on camera view
+        xpProgressBar.setSize(250, 18);  // Adjust size for XP bar
+    }
+
+    private void drawXPProgressBar() {
         OrthographicCamera cam = GameView.getCamera();
         float camRight = cam.position.x + cam.viewportWidth / 2;
         float camTop = cam.position.y + cam.viewportHeight / 2;
 
-        String timeStr = String.format("Level : %d", Game.getPlayer().getLevel());
-        font.getData().setScale(2.5f);
+        // Calculate the XP progress
+        float progress = (float) Game.getPlayer().getXp() / (Game.getPlayer().getLevel() * 20);
+        progress = Math.min(progress, 1); // Ensure it does not exceed 100%
+
+        xpProgressBar.setValue(progress); // Set the value of the XP progress bar
+
+        float barWidth = 250;  // Width of the progress bar
+
+        float x = camRight - barWidth - 20;
+        float y = camTop - 80;
+
+        xpProgressBar.setPosition(x, y); // Set position of the XP progress bar
+
+        xpProgressBar.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        xpProgressBar.draw(Main.getBatch(), 1);
+        drawProcessLevel(x-240 ,y+20);
+    }
+
+    private void drawProcessLevel(float x, float y) {
+
+        String timeStr = String.format("Process Level:");
+        font.getData().setScale(2.3f);
         layout.setText(font, timeStr);
-
-        float textWidth = layout.width;
-
-        float x = camRight - textWidth - 16; // 16px margin from right
-        float y = camTop - 55;
 
         font.draw(Main.getBatch(), layout, x, y);
     }
@@ -413,7 +445,24 @@ public class WorldController {
         float textWidth = layout.width;
 
         float x = camRight - textWidth - 16; // 16px margin from right
-        float y = camTop - 95;
+        float y = camTop - 110;
+
+        font.draw(Main.getBatch(), layout, x, y);
+    }
+
+    private void drawShotsRemained() {
+        OrthographicCamera cam = GameView.getCamera();
+        float camRight = cam.position.x + cam.viewportWidth / 2;
+        float camTop = cam.position.y + cam.viewportHeight / 2;
+
+        String timeStr = String.format("shots remained : %d", Game.getPlayer().getWeapon().getAmmo() - Game.getPlayer().getWeapon().getNumberOfShoots());
+        font.getData().setScale(2.5f);
+        layout.setText(font, timeStr);
+
+        float textWidth = layout.width;
+
+        float x = camRight - textWidth - 16; // 16px margin from right
+        float y = camTop - 145;
 
         font.draw(Main.getBatch(), layout, x, y);
     }

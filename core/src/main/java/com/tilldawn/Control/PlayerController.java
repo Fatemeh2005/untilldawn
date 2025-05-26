@@ -101,6 +101,13 @@ public class PlayerController {
             return;
         }
 
+        //level up cheat code
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+            Game.getPlayer().setLevel(Game.getPlayer().getLevel() + 1);
+            Game.getPlayer().setLevelUp(true);
+            return;
+        }
+
         //xp cheat code
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             Game.getPlayer().setXp(Game.getPlayer().getXp() + 3);
