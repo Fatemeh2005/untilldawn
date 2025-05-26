@@ -18,6 +18,11 @@ public class Weapon {
     private int numberOfShoots;
     private int projectile;
     private float reloadTime;
+    private int damage;
+
+    //for ability
+    private float powerBoostTimer = 0f;
+    private boolean isPowerBoostActive = false;
 
     public Weapon(WeaponTypes weaponTypes){
         texture = weaponTypes.getGunTexture();
@@ -30,6 +35,7 @@ public class Weapon {
         this.numberOfShoots = 0;
         this.projectile = weaponTypes.getProjectile();
         this.reloadTime = weaponTypes.getTimeReload();
+        this.damage = weaponTypes.getDamage();
     }
 
     public Sprite getSprite() {
@@ -82,5 +88,29 @@ public class Weapon {
 
     public void setReloadTime(float reloadTime) {
         this.reloadTime = reloadTime;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public float getPowerBoostTimer() {
+        return powerBoostTimer;
+    }
+
+    public void setPowerBoostTimer(float powerBoostTimer) {
+        this.powerBoostTimer = powerBoostTimer;
+    }
+
+    public boolean isPowerBoostActive() {
+        return isPowerBoostActive;
+    }
+
+    public void setPowerBoostActive(boolean powerBoostActive) {
+        isPowerBoostActive = powerBoostActive;
     }
 }

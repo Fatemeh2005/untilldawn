@@ -98,7 +98,8 @@ public class WeaponController {
                     seedTexture = GameAssetManager.getGameAssetManager().getTentacleSeedTex();
                 }
                 if (sprite.getBoundingRectangle().overlaps(enemy.getRect().getRectangle())) {
-                    enemy.takeDamage(Game.getPlayer().getWeapon().getWeaponTypes().getDamage());
+                    int damage = Game.getPlayer().getWeapon().isPowerBoostActive()? Game.getPlayer().getWeapon().getDamage()*2 : Game.getPlayer().getWeapon().getDamage();
+                    enemy.takeDamage(damage);
                     if (enemy.isDying()) {
                         Game.getSeeds().add(new Seed(enemy.getX(), enemy.getY(), seedTexture));
                         Game.getPlayer().setNumberOfKillsInGame(Game.getPlayer().getNumberOfKillsInGame() + 1);

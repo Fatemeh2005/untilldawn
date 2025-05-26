@@ -69,6 +69,25 @@ public class WorldController {
         if(Game.getPlayer().isDead()){
             return;
         }
+        if (Game.getPlayer().isSpeedBoostActive()) {
+            Game.getPlayer().setSpeedBoostTimer(Game.getPlayer().getSpeedBoostTimer() + delta);
+
+            // Reset the speed boost after the duration ends
+            if (Game.getPlayer().getSpeedBoostTimer() >= 10f) {
+                Game.getPlayer().setSpeedBoostActive(false);
+                Game.getPlayer().setSpeedBoostTimer(0);
+            }
+        }
+
+        if (Game.getPlayer().getWeapon().isPowerBoostActive()) {
+            Game.getPlayer().getWeapon().setPowerBoostTimer(Game.getPlayer().getWeapon().getPowerBoostTimer() + delta);
+
+            // Reset the speed boost after the duration ends
+            if (Game.getPlayer().getWeapon().getPowerBoostTimer() >= 10f) {
+                Game.getPlayer().getWeapon().setPowerBoostActive(false);
+                Game.getPlayer().getWeapon().setPowerBoostTimer(0);
+            }
+        }
 
         // Track time
         totalGameTime += delta;

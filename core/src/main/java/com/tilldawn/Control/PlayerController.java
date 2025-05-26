@@ -44,13 +44,14 @@ public class PlayerController {
         if (Game.getPlayer().isDead()) {
             return;  // Skip handling input if the player is dead
         }
+
+        int speed = Game.getPlayer().isSpeedBoostActive() ? Game.getPlayer().getSpeed()*2 : Game.getPlayer().getSpeed();
         // Get the mouse position
         int mouseX = Gdx.input.getX();
         int mouseY = Gdx.input.getY();
 
         int newX = Game.getPlayer().getPosX();
         int newY = Game.getPlayer().getPosY();
-        int speed = Game.getPlayer().getSpeed();
 
         if (Gdx.input.isKeyPressed(Game.getKeyUp())) {
             newY += speed;
@@ -97,6 +98,12 @@ public class PlayerController {
         // Eternity cheat code
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 5);
+            return;
+        }
+
+        //xp cheat code
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+            Game.getPlayer().setXp(Game.getPlayer().getXp() + 3);
             return;
         }
 

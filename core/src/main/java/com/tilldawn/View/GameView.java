@@ -48,6 +48,8 @@ public class GameView implements Screen, InputProcessor {
 
          Main.getBatch().end();
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        stage.act(delta);
+        stage.draw();
 
     }
 
@@ -149,16 +151,8 @@ public class GameView implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Damager button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
-                // Example: Increase damage multiplier
-            //    Game.getPlayer().setDamageMultiplier(1.5f);
-                // Reset damage multiplier after 10 seconds (for example)
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                    //    Game.getPlayer().setDamageMultiplier(1f);
-                        this.cancel(); // Stop the timer after resetting
-                    }
-                }, 10, 2); // Runs after 10 seconds, repeats every 2 seconds
+                Game.getPlayer().getWeapon().setPowerBoostActive(true);
+
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -193,16 +187,7 @@ public class GameView implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Speedy button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
-                // Example: Increase speed multiplier
-             //   Game.getPlayer().setSpeedMultiplier(2f);
-                // Reset speed multiplier after 10 seconds (for example)
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                    //    Game.getPlayer().setSpeedMultiplier(1f);
-                        this.cancel(); // Stop the timer after resetting
-                    }
-                }, 10, 2); // Runs after 10 seconds, repeats every 2 seconds
+                Game.getPlayer().setSpeedBoostActive(true);
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }

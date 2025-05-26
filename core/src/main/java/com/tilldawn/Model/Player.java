@@ -37,6 +37,10 @@ public class Player {
     private float lastDamageTime = 0f; // Time since last damage
     private final float damageCooldown = 1f; // 1 second between hits
 
+    //for ability
+    private float speedBoostTimer = 0f;
+    private boolean isSpeedBoostActive = false;
+
     private int numberOfKillsInGame = 0;
     private User user;
 
@@ -223,5 +227,21 @@ public class Player {
 
     public ArrayList<DamagePopup> getDamagePopups() {
         return damagePopups;
+    }
+
+    public float getSpeedBoostTimer() {
+        return speedBoostTimer;
+    }
+
+    public void setSpeedBoostTimer(float speedBoostTimer) {
+        this.speedBoostTimer = speedBoostTimer;
+    }
+
+    public boolean isSpeedBoostActive() {
+        return isSpeedBoostActive;
+    }
+
+    public void setSpeedBoostActive(boolean speedBoostActive) {
+        isSpeedBoostActive = speedBoostActive;
     }
 }
