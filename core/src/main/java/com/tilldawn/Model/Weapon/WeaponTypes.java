@@ -51,6 +51,7 @@ public enum WeaponTypes {
         return gunTexture;
     }
     public static WeaponTypes findWeaponTypeByName(String name) {
+        System.out.println(name);
         switch (name) {
             case "Revolver":
                 return REVOLVER;

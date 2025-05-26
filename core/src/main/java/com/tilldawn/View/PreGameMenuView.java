@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.PreGameMenuController;
 import com.tilldawn.Model.Game;
+import com.tilldawn.Model.Weapon.Weapon;
 import com.tilldawn.Model.Weapon.WeaponTypes;
 
 import javax.swing.event.ChangeEvent;
@@ -94,11 +95,11 @@ public class PreGameMenuView implements Screen {
         });
 
 
-        selectGuns.addListener(new ClickListener() {
+        selectGuns.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                String selectedWeapon = (String) selectGuns.getSelected();
-                controller.handleWeaponChangeButton(WeaponTypes.findWeaponTypeByName(selectedWeapon));
+            public void changed(ChangeEvent event, Actor actor) {
+                String selectedGun = selectGuns.getSelected().toString();
+                Game.getPlayer().setWeapon(new Weapon(WeaponTypes.findWeaponTypeByName(selectedGun)));
             }
         });
 

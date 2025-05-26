@@ -15,6 +15,7 @@ import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.Weapon.Bullet;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
+import com.tilldawn.Model.Weapon.Weapon;
 import com.tilldawn.View.GameView;
 
 import java.util.ArrayList;
@@ -49,32 +50,50 @@ public class WeaponController {
         if (Game.getPlayer().getWeapon().getNumberOfShoots() >= Game.getPlayer().getWeapon().getAmmo()) {
             return;
         }
-        // Convert screen coordinates to world coordinates
-        Vector3 mouseWorld = new Vector3(mouseX, mouseY, 0);
 
+        Vector3 mouseWorld = new Vector3(mouseX, mouseY, 0);
         camera.unproject(mouseWorld);
 
-        // Get weapon position
         Sprite weaponSprite = Game.getPlayer().getWeapon().getSprite();
         float spawnX = weaponSprite.getX() + weaponSprite.getWidth() / 2;
         float spawnY = weaponSprite.getY() + weaponSprite.getHeight() / 2;
 
-        // Create bullet at weapon position
-        Bullet bullet = new Bullet((int) spawnX, (int) spawnY);
+        Weapon weapon = Game.getPlayer().getWeapon();
+        int projectileCount = weapon.getProjectile();
+        System.out.println(projectileCount);
 
-        // Calculate direction toward mouse (in world coords now!)
-        Vector2 direction = new Vector2(
-            mouseWorld.x - spawnX,
-            mouseWorld.y - spawnY
-        ).nor();
+        // Base direction toward mouse
+        Vector2 baseDirection = new Vector2(mouseWorld.x - spawnX, mouseWorld.y - spawnY).nor();
 
-        bullet.setDirection(direction);
+        float spreadAngle = 10f; // degrees between each bullet (adjust as needed)
+        float baseAngle = baseDirection.angleDeg();
 
-        Game.getPlayer().getWeapon().getBullets().add(bullet);
-        // Play shooting sound
-        AudioManager.getInstance().playShootSound();
-        Game.getPlayer().getWeapon().setNumberOfShoots(Game.getPlayer().getWeapon().getNumberOfShoots() + 1);
+        if (projectileCount == 1) {
+            Bullet bullet = new Bullet((int) spawnX, (int) spawnY);
+            bullet.setDirection(baseDirection);
+            weapon.getBullets().add(bullet);
+        }
+        else {
+
+            for (int i = 0; i < projectileCount; i++) {
+
+                float angleOffset = (-(projectileCount - 1) / 2f + i) * spreadAngle;
+                float finalAngle = baseAngle + angleOffset;
+
+                Vector2 shootDirection = new Vector2(1, 0).setAngleDeg(finalAngle).nor();
+
+                Bullet bullet = new Bullet((int) spawnX, (int) spawnY);
+                bullet.setDirection(shootDirection);
+
+                weapon.getBullets().add(bullet);
+            }
+        }
+
+            AudioManager.getInstance().playShootSound();
+            weapon.setNumberOfShoots(weapon.getNumberOfShoots() + 1);
+
     }
+
 
 
     public void updateBullets() {

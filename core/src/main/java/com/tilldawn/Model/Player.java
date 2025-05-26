@@ -25,7 +25,7 @@ public class Player {
     private float time = 0;
     private int speed ;
     private Animation<Texture>animations;
-    private Weapon weapon = new Weapon(WeaponTypes.SMGDUAL);
+    private Weapon weapon ;
     private int level = 1;
     //TODO:check if this is right:
     private int xp = 0;
@@ -69,6 +69,7 @@ public class Player {
         this.playerHealth = playerType.getHealth();
         rect = new CollisionRect(posX, posY, playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
         this.deathAnimation = GameAssetManager.getGameAssetManager().getPlayerDeathAnimation();
+        this.weapon = new Weapon(WeaponTypes.SMGDUAL);
     }
 
     public Texture getPlayerTexture() {
