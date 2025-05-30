@@ -9,12 +9,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import com.tilldawn.Control.GameController;
@@ -40,6 +42,11 @@ public class GameView implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        if (Main.isGrayscaleEnabled()) {
+            Main.getBatch().setShader(Main.getGrayShader());
+        } else {
+            Main.getBatch().setShader(null);  // default shader
+        }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Main.getBatch().setProjectionMatrix(camera.combined);
@@ -279,10 +286,21 @@ public class GameView implements Screen, InputProcessor {
                 "Comma = +28 seconds", skin);
         cheatsLabel.setWrap(true);
 
+        TextButton blackWhite = new TextButton("make it black and white", skin);
+        blackWhite.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                Main.setGrayscaleEnabled(true);
+            }
+        });
+
         // 🎯 Add UI elements to the table
         table.add(resume).colspan(2).fillX().pad(10);
         table.row();
         table.add(giveUp).colspan(2).fillX().pad(10);
+        table.row();
+        table.add(blackWhite).colspan(2).fillX().pad(10);
         table.row();
         table.add(abilitiesLabel).colspan(2).width(400).padTop(20);
         table.row();

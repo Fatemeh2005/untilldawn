@@ -25,6 +25,7 @@ public class MainMenuView implements Screen {
     private final TextButton scoreBoardMenuButton;
     private final TextButton hintBoardMenuButton;
     private final TextButton resumeSavedGameButton;
+    private final TextButton exitFromAccount;
     private final Label gameTitle;
     public Table table;
     private final MainMenuController controller;
@@ -41,6 +42,7 @@ public class MainMenuView implements Screen {
         this.pregameMenuButton = new TextButton("Go To pregame", skin);
         this.resumeSavedGameButton = new TextButton("resume saved game", skin);
         this.scoreBoardMenuButton = new TextButton("Go To scoreboard menu", skin);
+        this.exitFromAccount = new TextButton("log out", skin);
         this.hintBoardMenuButton = new TextButton("Go To hint", skin);
         this.gameTitle = new Label("Main menu", skin);
         this.table = new Table();
@@ -61,11 +63,11 @@ public class MainMenuView implements Screen {
         table.center();
 
         table.add(gameTitle);
-        table.row().pad(10, 0, 10, 0);
+        table.row().pad(5, 0, 5, 0);
         table.add(avatarImage).width(100).height(100);
         table.row().pad(5, 0, 5, 0);
         table.add(usernameLabel);
-        table.row().pad(5, 0, 15, 0);
+        table.row().pad(5, 0, 5, 0);
         table.add(scoreLabel);
         table.row().pad(10, 0, 10, 0);
         table.add(SettingsMenuButton).width(600);
@@ -77,6 +79,8 @@ public class MainMenuView implements Screen {
         table.add(scoreBoardMenuButton).width(600);
         table.row().pad(10, 0, 10, 0);
         table.add(hintBoardMenuButton).width(600);
+        table.row().pad(10, 0, 10, 0);
+        table.add(exitFromAccount).width(600);
         table.row().pad(10, 0, 10, 0);
         table.add(resumeSavedGameButton).width(600);
         table.row().pad(10, 0, 10, 0);
@@ -120,6 +124,13 @@ public class MainMenuView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //    controller.resumeSavedGame();
+            }
+        });
+
+        exitFromAccount.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                controller.exitFromAccount();
             }
         });
 

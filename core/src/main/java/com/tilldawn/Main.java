@@ -3,10 +3,8 @@ package com.tilldawn;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.tilldawn.Control.MainMenuController;
 import com.tilldawn.Control.RegisterMenuController;
@@ -18,12 +16,23 @@ import com.tilldawn.View.RegisterMenuView;
 public class Main extends Game {
     private static Main main;
     private static SpriteBatch batch;
+    private static ShaderProgram grayShader;
+    private static boolean grayscaleEnabled = false;
 
     @Override
     public void create() {
         main = this;
         batch = new SpriteBatch();
-      //  batch.setColor(0f, 0f, 0f, 0.3f);
+
+       // ShaderProgram.pedantic = false;
+        grayShader = new ShaderProgram(
+            Gdx.files.internal("gray.vert"),
+            Gdx.files.internal("gray.frag")
+        );
+
+        if (!grayShader.isCompiled()) {
+            Gdx.app.error("ShaderError", grayShader.getLog());
+        }
         main.setScreen(new RegisterMenuView(new RegisterMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
 
@@ -35,6 +44,7 @@ public class Main extends Game {
     @Override
     public void dispose() {
         batch.dispose();
+        grayShader.dispose();
     }
 
     public static Main getMain() {
@@ -51,5 +61,21 @@ public class Main extends Game {
 
     public static void setBatch(SpriteBatch batch) {
         Main.batch = batch;
+    }
+
+    public static ShaderProgram getGrayShader() {
+        return grayShader;
+    }
+
+    public static void setGrayShader(ShaderProgram grayShader) {
+        Main.grayShader = grayShader;
+    }
+
+    public static boolean isGrayscaleEnabled() {
+        return grayscaleEnabled;
+    }
+
+    public static void setGrayscaleEnabled(boolean grayscaleEnabled) {
+        Main.grayscaleEnabled = grayscaleEnabled;
     }
 }

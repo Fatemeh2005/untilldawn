@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.SettingsController;
+import com.tilldawn.Main;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 
@@ -53,6 +54,15 @@ public class SettingsMenuView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 controller.playNextMusic();
                 event.stop(); // stop event propagation!
+            }
+        });
+
+        TextButton blackWhite = new TextButton("make it black and white", skin);
+        blackWhite.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                Main.setGrayscaleEnabled(true);
             }
         });
 
@@ -226,6 +236,7 @@ public class SettingsMenuView implements Screen {
 
 // Options & Back Button
         table.add(autoReloadButton).width(500).padTop(8).row();
+        table.add(blackWhite).width(500).padTop(8).row();
         table.add(backButton).padTop(15).row();
     }
 

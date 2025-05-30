@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.tilldawn.Main;
-import com.tilldawn.Model.GameAssetManager;
-import com.tilldawn.Model.PlayerTypes;
-import com.tilldawn.Model.Pregame;
-import com.tilldawn.Model.User;
+import com.tilldawn.Model.*;
 import com.tilldawn.View.*;
 
 import java.util.ArrayList;
@@ -41,6 +38,12 @@ public class MainMenuController {
     public void goToScoreboardMenu(){
         Main.getMain().getScreen().dispose();
         Main.getMain().setScreen(new ScoreBoardView(GameAssetManager.getGameAssetManager().getSkin(), new MainMenuController()));
+    }
+
+    public void exitFromAccount(){
+        Game.setCurrentUser(null);
+        Main.getMain().getScreen().dispose();
+        Main.getMain().setScreen(new RegisterMenuView(new RegisterMenuController() ,GameAssetManager.getGameAssetManager().getSkin()));
     }
 
 }
