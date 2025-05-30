@@ -23,6 +23,8 @@ public class Game {
 
     private static boolean gamePaused = false;
 
+    private static boolean pausePressed = false;
+
     private static int keyUp ;
     private static int keyDown ;
     private static int keyLeft;
@@ -167,5 +169,13 @@ public class Game {
 
     public static void setAutoReloadOn(boolean autoReloadOn) {
         Game.autoReloadOn = autoReloadOn;
+    }
+
+    public static boolean isPausePressed() {
+        return pausePressed;
+    }
+
+    public static void setPausePressed(boolean pausePressed) {
+        Game.pausePressed = pausePressed;
     }
 }

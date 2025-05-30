@@ -8,10 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.tilldawn.Main;
-import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
-import com.tilldawn.Model.Player;
-import com.tilldawn.View.loseGameMenu;
+import com.tilldawn.Model.GameAssetManager;
+import com.tilldawn.View.GameView;
 
 public class PlayerController {
 
@@ -31,15 +30,15 @@ public class PlayerController {
         this.controller = controller;
     }
 
-    public void update() {
+    public void update(GameView view) {
         // If player is dead, do not allow any further movement or idle animation
 
-        handlePlayerInput();  // Handle player input for movement
+        handlePlayerInput(view);  // Handle player input for movement
         Game.getPlayer().getPlayerSprite().setPosition(Game.getPlayer().getPosX(), Game.getPlayer().getPosY());
         Game.getPlayer().getPlayerSprite().draw(Main.getBatch());
     }
 
-    public void handlePlayerInput() {
+    public void handlePlayerInput(GameView view) {
         // Ensure that movement only happens if the player is alive
         if (Game.getPlayer().isDead()) {
             return;  // Skip handling input if the player is dead
@@ -88,6 +87,11 @@ public class PlayerController {
         // Cheat codes, etc.
         if (Gdx.input.isKeyJustPressed(Input.Keys.H) && Game.getPlayer().getPlayerHealth() == 0) {
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
+            return;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !Game.isPausePressed()) {
+            Game.setPausePressed(true);
+            view.PauseMenu(GameAssetManager.getGameAssetManager().getSkin());
             return;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {

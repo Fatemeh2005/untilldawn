@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.tilldawn.Control.GameController;
 import com.tilldawn.Control.WorldController;
 import com.tilldawn.Main;
+import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Game;
 
 public class GameView implements Screen, InputProcessor {
@@ -143,6 +145,9 @@ public class GameView implements Screen, InputProcessor {
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase player's max health
                 Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
+                if (!Game.getPlayer().getAbilitiesGained().contains("Vitality")) {
+                    Game.getPlayer().getAbilitiesGained().add("Vitality");
+                }
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -154,6 +159,9 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Damager button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 Game.getPlayer().getWeapon().setPowerBoostActive(true);
+                if(!Game.getPlayer().getAbilitiesGained().contains("Damager")) {
+                    Game.getPlayer().getAbilitiesGained().add("Damager");
+                }
 
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
@@ -167,6 +175,9 @@ public class GameView implements Screen, InputProcessor {
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase projectile size or count
                 Game.getPlayer().getWeapon().setProjectile(Game.getPlayer().getWeapon().getProjectile() + 1);
+                if(!Game.getPlayer().getAbilitiesGained().contains("Procrease")) {
+                    Game.getPlayer().getAbilitiesGained().add("Procrease");
+                }
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -179,6 +190,9 @@ public class GameView implements Screen, InputProcessor {
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 // Example: Increase max ammo
                 Game.getPlayer().getWeapon().setAmmo(Game.getPlayer().getWeapon().getAmmo() + 5);
+                if(!Game.getPlayer().getAbilitiesGained().contains("Amocrease")) {
+                    Game.getPlayer().getAbilitiesGained().add("Amocrease");
+                }
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -190,6 +204,9 @@ public class GameView implements Screen, InputProcessor {
                 System.out.println("Speedy button clicked");
                 Game.getPlayer().setLevelUp(false); // Disable level-up state
                 Game.getPlayer().setSpeedBoostActive(true);
+                if(!Game.getPlayer().getAbilitiesGained().contains("Speedy")) {
+                    Game.getPlayer().getAbilitiesGained().add("Speedy");
+                }
                 removeAbilitiesMenu();
                 Game.setGamePaused(false); // Resume game
             }
@@ -209,6 +226,72 @@ public class GameView implements Screen, InputProcessor {
 
     // Method to remove the abilities menu and return input to the game view
     private void removeAbilitiesMenu() {
+        stage.clear();  // Clear the UI stage
+        Gdx.input.setInputProcessor(this);  // Return control back to the main game view input processor
+    }
+
+    public void PauseMenu(Skin skin) {
+        stage.clear();
+        Gdx.input.setInputProcessor(stage);
+
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        TextButton resume = new TextButton("Resume", skin);
+        TextButton giveUp = new TextButton("Give Up", skin);
+
+        resume.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                removePauseMenu();
+                Game.setPausePressed(false);
+            }
+        });
+
+        giveUp.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Game.getPlayer().setDead(true);
+                AudioManager.getInstance().playLoseSound();
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new loseGameMenu());
+                Game.setGamePaused(false);
+            }
+        });
+
+        // 🎯 Get abilities gained
+        String abilities = Game.getPlayer().getAbilitiesGained().isEmpty()
+            ? "None"
+            : String.join(", ", Game.getPlayer().getAbilitiesGained());
+
+        Label abilitiesLabel = new Label("Abilities Gained:\n" + abilities, skin);
+        abilitiesLabel.setWrap(true);
+
+        // 🎯 Add cheat codes info
+        Label cheatsLabel = new Label(
+            "Cheat Codes:\n" +
+                "H = Survive when about to die\n" +
+                "L = Level up\n" +
+                "Alt Left = Increase HP anytime\n" +
+                "T = Pass one minute\n" +
+                "X = Increase XP\n" +
+                "Comma = +28 seconds", skin);
+        cheatsLabel.setWrap(true);
+
+        // 🎯 Add UI elements to the table
+        table.add(resume).colspan(2).fillX().pad(10);
+        table.row();
+        table.add(giveUp).colspan(2).fillX().pad(10);
+        table.row();
+        table.add(abilitiesLabel).colspan(2).width(400).padTop(20);
+        table.row();
+        table.add(cheatsLabel).colspan(2).width(400).padTop(10);
+        table.row();
+    }
+
+
+    private void removePauseMenu() {
         stage.clear();  // Clear the UI stage
         Gdx.input.setInputProcessor(this);  // Return control back to the main game view input processor
     }

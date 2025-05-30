@@ -26,7 +26,7 @@
         public void updateGame(Camera camera) {
             if (view != null) {
                 worldController.update(camera);
-                playerController.update();
+                playerController.update(view);
                 weaponController.update();
             }
         }

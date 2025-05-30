@@ -45,7 +45,6 @@ public class UserDAO {
             pstmt.setInt(6, user.getMostTimeSurvived());
 
             pstmt.executeUpdate();
-            System.out.println("✅ SQL Save Successful!");
 
         } catch (SQLException e) {
             System.err.println("❌ SQL Error: " + e.getMessage());

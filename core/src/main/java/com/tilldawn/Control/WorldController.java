@@ -66,7 +66,7 @@ public class WorldController {
 
     public void update(Camera camera) {
 
-        if (Game.isGamePaused()){
+        if (Game.isGamePaused() || Game.isPausePressed()){
             return;
         }
         float delta = Gdx.graphics.getDeltaTime();

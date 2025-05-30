@@ -46,6 +46,7 @@ public class Player {
 
     ArrayList<DamagePopup> damagePopups = new ArrayList<>();
     BitmapFont font = new BitmapFont(); // initialize somewhere
+    private ArrayList<String>abilitiesGained = new ArrayList<>();
 
     public int getSpeed() {
         return speed;
@@ -244,5 +245,13 @@ public class Player {
 
     public void setSpeedBoostActive(boolean speedBoostActive) {
         isSpeedBoostActive = speedBoostActive;
+    }
+
+    public ArrayList<String> getAbilitiesGained() {
+        return abilitiesGained;
+    }
+
+    public void setAbilitiesGained(ArrayList<String> abilitiesGained) {
+        this.abilitiesGained = abilitiesGained;
     }
 }
