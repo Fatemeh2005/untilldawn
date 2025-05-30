@@ -38,4 +38,9 @@ public class MainMenuController {
         Main.getMain().setScreen(new HintMenuView(GameAssetManager.getGameAssetManager().getSkin(), new MainMenuController()));
     }
 
+    public void goToScoreboardMenu(){
+        Main.getMain().getScreen().dispose();
+        Main.getMain().setScreen(new ScoreBoardView(GameAssetManager.getGameAssetManager().getSkin(), new MainMenuController()));
+    }
+
 }

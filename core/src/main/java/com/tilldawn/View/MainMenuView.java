@@ -105,7 +105,7 @@ public class MainMenuView implements Screen {
         scoreBoardMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //    controller.goToScoreboardMenu();
+                    controller.goToScoreboardMenu();
             }
         });
 

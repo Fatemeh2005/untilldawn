@@ -214,7 +214,7 @@ public class WorldController {
         for (int i = 0; i < Game.getEnemies().size(); i++) {
             Enemy enemy = Game.getEnemies().get(i);
             enemy.update(delta, playerX, playerY);
-            //Game.getPlayer().takeDamageIfInRange(enemy, 0.5f, 60f);
+            Game.getPlayer().takeDamageIfInRange(enemy, 0.5f, 60f);
 
             if (isFarOffScreen(enemy.getX(), enemy.getY())) {
                 Game.getEnemies().remove(i);

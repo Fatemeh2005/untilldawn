@@ -52,7 +52,7 @@ public class EyeBat extends Enemy{
         } else {
             if (stateTime - lastDamageTime >= DAMAGE_COOLDOWN) {
                 Game.getPlayer().takeDamage();
-                //Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
+                Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                 lastDamageTime = stateTime;
 
                 if (Game.getPlayer().getPlayerHealth() < 0) {
@@ -84,8 +84,8 @@ public class EyeBat extends Enemy{
             // Bullet collision with player
 
             if (sprite.getBoundingRectangle().overlaps(Game.getPlayer().getRect().getRectangle())) {
-                //Game.getPlayer().takeDamage();
-                //Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
+                Game.getPlayer().takeDamage();
+                Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
 
                 toRemove.add(bullet);
                 break;
