@@ -69,20 +69,18 @@ public class PreGameMenuView implements Screen {
         times.add("10 minutes");
         times.add("20 minutes");
         selectTime.setItems(times);
-
-
         table.setFillParent(true);
         table.center();
         table.add(gameTitle);
-        table.row().pad(10, 0 , 10 , 0);
+        table.row().pad(10, 0, 10, 0);
         table.add(selectHero);
-        table.row().pad(10, 0 , 10 , 0);
+        table.row().pad(10, 0, 10, 0);
         table.add(selectGuns);
-        table.row().pad(10, 0 , 10 , 0);
+        table.row().pad(10, 0, 10, 0);
         table.add(selectTime);
-        table.row().pad(10, 0 , 10 , 0);
+        table.row().pad(10, 0, 10, 0);
         table.add(playButton);
-        table.row().pad(10, 0 , 10 , 0);
+        table.row().pad(10, 0, 10, 0);
 
         playButton.addListener(new ClickListener() {
             @Override
@@ -93,8 +91,6 @@ public class PreGameMenuView implements Screen {
                 controller.handlePlayButton();
             }
         });
-
-
         selectGuns.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -102,7 +98,6 @@ public class PreGameMenuView implements Screen {
                 Game.getPlayer().setWeapon(new Weapon(WeaponTypes.findWeaponTypeByName(selectedGun)));
             }
         });
-
         selectHero.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -111,7 +106,6 @@ public class PreGameMenuView implements Screen {
                 controller.handlePlayerChangeButton(selectedHero);
             }
         });
-
         stage.addActor(table);
     }
 

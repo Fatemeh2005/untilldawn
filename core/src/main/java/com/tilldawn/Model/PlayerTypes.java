@@ -2,6 +2,7 @@ package com.tilldawn.Model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.tilldawn.Model.Weapon.WeaponTypes;
 
 public enum PlayerTypes {
     SHANA(5, 4, GameAssetManager.getGameAssetManager().getShana_idle0_tex(), GameAssetManager.getGameAssetManager().getShana_idle_frames()),
@@ -12,7 +13,8 @@ public enum PlayerTypes {
 
     LILITH(6, 3, GameAssetManager.getGameAssetManager().getLilith_idle0_tex(), GameAssetManager.getGameAssetManager().getLilith_idle_frames()),
 
-    DASHER(3, 7, GameAssetManager.getGameAssetManager().getDasher_idle0_tex(), GameAssetManager.getGameAssetManager().getDasher_idle_frames()),;
+    DASHER(3, 7, GameAssetManager.getGameAssetManager().getDasher_idle0_tex(), GameAssetManager.getGameAssetManager().getDasher_idle_frames()),
+    ;
 
 
     private final int health;
@@ -43,5 +45,23 @@ public enum PlayerTypes {
 
     public Animation<Texture> getAnimation() {
         return animation;
+    }
+
+    public static PlayerTypes findplayerTypeByName(String name) {
+        System.out.println(name);
+        switch (name) {
+            case "SHANA":
+                return SHANA;
+            case "DIAMOND":
+                return DIAMOND;
+            case "SCARLET":
+                return SCARLET;
+            case "LILITH":
+                return LILITH;
+            case "DASHER":
+                return DASHER;
+
+        }
+        return null;
     }
 }

@@ -231,10 +231,9 @@ public class GameView implements Screen, InputProcessor {
         table.add(speedy).colspan(2).fillX().pad(10);
     }
 
-    // Method to remove the abilities menu and return input to the game view
     private void removeAbilitiesMenu() {
-        stage.clear();  // Clear the UI stage
-        Gdx.input.setInputProcessor(this);  // Return control back to the main game view input processor
+        stage.clear();
+        Gdx.input.setInputProcessor(this);
     }
 
     public void PauseMenu(Skin skin) {
@@ -263,11 +262,10 @@ public class GameView implements Screen, InputProcessor {
                 AudioManager.getInstance().playLoseSound();
                 Main.getMain().getScreen().dispose();
                 Main.getMain().setScreen(new loseGameMenu());
-                Game.setGamePaused(false);
+                Game.setPausePressed(false);
             }
         });
 
-        // 🎯 Get abilities gained
         String abilities = Game.getPlayer().getAbilitiesGained().isEmpty()
             ? "None"
             : String.join(", ", Game.getPlayer().getAbilitiesGained());
@@ -292,6 +290,18 @@ public class GameView implements Screen, InputProcessor {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 Main.setGrayscaleEnabled(true);
+                Game.setPausePressed(false);
+            }
+        });
+
+        TextButton save = new TextButton("save and exit", skin);
+        save.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+
+                controller.saveAndExit();
+                Game.setPausePressed(false);
             }
         });
 
@@ -301,6 +311,8 @@ public class GameView implements Screen, InputProcessor {
         table.add(giveUp).colspan(2).fillX().pad(10);
         table.row();
         table.add(blackWhite).colspan(2).fillX().pad(10);
+        table.row();
+        table.add(save).colspan(2).fillX().pad(10);
         table.row();
         table.add(abilitiesLabel).colspan(2).width(400).padTop(20);
         table.row();

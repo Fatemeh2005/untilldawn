@@ -44,7 +44,6 @@ public class WeaponController {
     }
 
     public void handleWeaponShoot(int mouseX, int mouseY) {
-
         if (Game.getPlayer().getWeapon().getNumberOfShoots() >= Game.getPlayer().getWeapon().getAmmo()) {
             return;
         }
@@ -70,8 +69,7 @@ public class WeaponController {
             Bullet bullet = new Bullet((int) spawnX, (int) spawnY);
             bullet.setDirection(baseDirection);
             weapon.getBullets().add(bullet);
-        }
-        else {
+        } else {
 
             for (int i = 0; i < projectileCount; i++) {
 
@@ -87,11 +85,9 @@ public class WeaponController {
             }
         }
 
-            AudioManager.getInstance().playShootSound();
-            weapon.setNumberOfShoots(weapon.getNumberOfShoots() + 1);
-
+        AudioManager.getInstance().playShootSound();
+        weapon.setNumberOfShoots(weapon.getNumberOfShoots() + 1);
     }
-
 
 
     public void updateBullets() {
@@ -115,12 +111,12 @@ public class WeaponController {
                     seedTexture = GameAssetManager.getGameAssetManager().getEyeBatSeedTex();
                 }
                 if (sprite.getBoundingRectangle().overlaps(enemy.getRect().getRectangle())) {
-                    int damage = Game.getPlayer().getWeapon().isPowerBoostActive()? Game.getPlayer().getWeapon().getDamage()*2 : Game.getPlayer().getWeapon().getDamage();
+                    int damage = Game.getPlayer().getWeapon().isPowerBoostActive() ? Game.getPlayer().getWeapon().getDamage() * 2 : Game.getPlayer().getWeapon().getDamage();
                     enemy.takeDamage(damage);
                     if (enemy.isDying()) {
                         Game.getSeeds().add(new Seed(enemy.getX(), enemy.getY(), seedTexture));
                         Game.getPlayer().setNumberOfKillsInGame(Game.getPlayer().getNumberOfKillsInGame() + 1);
-                        if(enemy instanceof Elder) {
+                        if (enemy instanceof Elder) {
                             WorldController.setShieldActive(false);
                         }
 

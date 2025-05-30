@@ -25,8 +25,8 @@ public class ProfileMenuView extends ScreenAdapter {
     private TextField newPasswordField;
     private Label errorLabel;
     private Label currentUserLabel;
-    TextButton saveButton ;
-    TextButton backButton ;
+    TextButton saveButton;
+    TextButton backButton;
 
     public ProfileMenuView(ProfileMenuController controller, Skin skin, User user) {
         if (user == null || user.getUsername() == null)
@@ -60,7 +60,6 @@ public class ProfileMenuView extends ScreenAdapter {
         oldPasswordField.setMessageText("Old Password");
         oldPasswordField.setPasswordMode(true);
         oldPasswordField.setPasswordCharacter('*');
-
         newPasswordField = new TextField("", skin);
         newPasswordField.setMessageText("New Password");
         newPasswordField.setPasswordMode(true);
@@ -68,7 +67,6 @@ public class ProfileMenuView extends ScreenAdapter {
 
         saveButton = new TextButton("Save Changes", skin);
         backButton = new TextButton("Back to Login", skin);
-
         errorLabel = new Label("", skin);
         errorLabel.setWrap(true);
         errorLabel.setAlignment(Align.center);

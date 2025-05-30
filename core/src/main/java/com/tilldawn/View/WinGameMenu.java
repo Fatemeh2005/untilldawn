@@ -10,11 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tilldawn.Control.MainMenuController;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
+import com.tilldawn.Model.User;
+
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class WinGameMenu implements Screen {
     private Stage stage;
@@ -50,6 +56,15 @@ public class WinGameMenu implements Screen {
         this.surviveTitle = new Label("Survive time: "+surviveTime+" seconds", GameAssetManager.getGameAssetManager().getSkin());
         this.numberOfKills = new Label("number of Kills in this game : " + Game.getPlayer().getNumberOfKillsInGame(),
             GameAssetManager.getGameAssetManager().getSkin());
+        if(Game.getCurrentUser() != null){
+            User currentUser = Game.getCurrentUser();
+            currentUser.setNumberOfKills(Game.getPlayer().getNumberOfKillsInGame() + currentUser.getNumberOfKills());
+            currentUser.setScore(currentUser.getScore() + surviveTime * Game.getPlayer().getNumberOfKillsInGame());
+            if(surviveTime > currentUser.getMostTimeSurvived()) {
+                currentUser.setMostTimeSurvived(surviveTime);
+            }
+            saveUserToJson(Game.getCurrentUser());
+        }
     }
 
     @Override
@@ -120,5 +135,15 @@ public class WinGameMenu implements Screen {
     @Override
     public void dispose() {
 
+    }
+    private boolean saveUserToJson(User user) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter("users/" + user.getUsername() + ".json")) {
+            gson.toJson(user, writer);
+            return true;
+        } catch (IOException e) {
+            System.out.println("Failed to save user: " + e.getMessage());
+            return false;
+        }
     }
 }

@@ -39,7 +39,6 @@ public class SettingsMenuView implements Screen {
             controller.setMusicVolume(musicSlider.getValue());
             return false;
         });
-
         Label sfxLabel = new Label("SFX Volume", skin);
         final Slider sfxSlider = new Slider(0f, 1f, 0.01f, false, skin);
         sfxSlider.setValue(controller.getSfxVolume());
@@ -47,7 +46,6 @@ public class SettingsMenuView implements Screen {
             controller.setSfxVolume(sfxSlider.getValue());
             return false;
         });
-
         TextButton nextMusicButton = new TextButton("Next Music", skin);
         nextMusicButton.addListener(new ClickListener() {
             @Override
@@ -59,37 +57,31 @@ public class SettingsMenuView implements Screen {
 
         TextButton blackWhite = new TextButton("make it black and white", skin);
         blackWhite.addListener(new ChangeListener() {
-
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 Main.setGrayscaleEnabled(true);
             }
         });
-
         SelectBox<String> selectUpKey = new SelectBox<>(skin);
         Array<String> up = new Array<>();
         up.add("W");
         up.add("up arrow");
         selectUpKey.setItems(up);
-
         SelectBox<String> selectDownKey = new SelectBox<>(skin);
         Array<String> down = new Array<>();
         down.add("S");
         down.add("down arrow");
         selectDownKey.setItems(down);
-
         SelectBox<String> selectRightKey = new SelectBox<>(skin);
         Array<String> right = new Array<>();
         right.add("D");
         right.add("right arrow");
         selectRightKey.setItems(right);
-
         SelectBox<String> selectLeftKey = new SelectBox<>(skin);
         Array<String> left = new Array<>();
         left.add("A");
         left.add("left arrow");
         selectLeftKey.setItems(left);
-
         SelectBox<String> selectShootKey = new SelectBox<>(skin);
         Array<String> shoot = new Array<>();
         shoot.add("left mouse click");
@@ -101,8 +93,6 @@ public class SettingsMenuView implements Screen {
         reload.add("R");
         reload.add("back space");
         selectReloadKey.setItems(reload);
-
-        // For the "Up" key selection
         selectUpKey.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -117,8 +107,6 @@ public class SettingsMenuView implements Screen {
                 }
             }
         });
-
-// For the "Down" key selection
         selectDownKey.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -133,8 +121,6 @@ public class SettingsMenuView implements Screen {
                 }
             }
         });
-
-// For the "Right" key selection
         selectRightKey.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -149,8 +135,6 @@ public class SettingsMenuView implements Screen {
                 }
             }
         });
-
-// For the "Left" key selection
         selectLeftKey.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -165,8 +149,6 @@ public class SettingsMenuView implements Screen {
                 }
             }
         });
-
-// For the "Shoot" key selection
         selectShootKey.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -181,8 +163,6 @@ public class SettingsMenuView implements Screen {
                 }
             }
         });
-
-// For the "Reload" key selection
         selectReloadKey.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -197,8 +177,6 @@ public class SettingsMenuView implements Screen {
                 }
             }
         });
-
-
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
@@ -207,7 +185,6 @@ public class SettingsMenuView implements Screen {
                 event.stop(); // optional: prevent propagation
             }
         });
-
         TextButton autoReloadButton = new TextButton("enable auto reload", skin);
         autoReloadButton.addListener(new ClickListener() {
             @Override
@@ -216,17 +193,13 @@ public class SettingsMenuView implements Screen {
                 event.stop(); // stop event propagation!
             }
         });
-
         table.defaults().pad(5);
 
         table.add(musicLabel).left().padRight(10);
         table.add(musicSlider).width(250).row();
-
         table.add(sfxLabel).left().padRight(10);
         table.add(sfxSlider).width(250).row();
-
         table.add(nextMusicButton).colspan(2).padTop(8).row();
-
         table.add(selectUpKey).width(250).padTop(12).row();
         table.add(selectDownKey).width(250).row();
         table.add(selectRightKey).width(250).row();
@@ -234,7 +207,6 @@ public class SettingsMenuView implements Screen {
         table.add(selectShootKey).width(250).row();
         table.add(selectReloadKey).width(250).padBottom(8).row();
 
-// Options & Back Button
         table.add(autoReloadButton).width(500).padTop(8).row();
         table.add(blackWhite).width(500).padTop(8).row();
         table.add(backButton).padTop(15).row();

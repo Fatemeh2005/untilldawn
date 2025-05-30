@@ -27,23 +27,26 @@ public class PreGameMenuController {
             Main.getMain().setScreen(new GameView(new GameController()));
         }
     }
-    public void handleWeaponChangeButton(WeaponTypes type) {
-        if (view != null) {
-            if(type != null) {
-                Game.getPlayer().setWeapon(new Weapon(type));
-            }
-        }
-    }
 
     public void handlePlayerChangeButton(String type) {
         if (view != null) {
             PlayerTypes player = null;
             switch (type) {
-                case "Shana": player = PlayerTypes.SHANA; break;
-                case "Diamond": player = PlayerTypes.DIAMOND; break;
-                case "Scarlet": player = PlayerTypes.SCARLET; break;
-                case "Lilith": player = PlayerTypes.LILITH; break;
-                case "Dasher": player = PlayerTypes.DASHER; break;
+                case "Shana":
+                    player = PlayerTypes.SHANA;
+                    break;
+                case "Diamond":
+                    player = PlayerTypes.DIAMOND;
+                    break;
+                case "Scarlet":
+                    player = PlayerTypes.SCARLET;
+                    break;
+                case "Lilith":
+                    player = PlayerTypes.LILITH;
+                    break;
+                case "Dasher":
+                    player = PlayerTypes.DASHER;
+                    break;
             }
 
             if (player != null) {

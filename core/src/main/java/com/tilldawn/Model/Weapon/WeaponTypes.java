@@ -10,7 +10,8 @@ public enum WeaponTypes {
 
     SHOTGUN(10, 4, 2, 2, GameAssetManager.getGameAssetManager().getShotGunTexture()),
 
-    SMGDUAL(8, 1, 3, 24, GameAssetManager.getGameAssetManager().getSmgTexture()),;
+    SMGDUAL(8, 1, 3, 24, GameAssetManager.getGameAssetManager().getSmgTexture()),
+    ;
 
 
     private final int damage;
@@ -50,6 +51,7 @@ public enum WeaponTypes {
     public Texture getGunTexture() {
         return gunTexture;
     }
+
     public static WeaponTypes findWeaponTypeByName(String name) {
         System.out.println(name);
         switch (name) {
@@ -57,8 +59,14 @@ public enum WeaponTypes {
                 return REVOLVER;
             case "Shot Gun":
                 return SHOTGUN;
-                case "SMGs Dual":
-                    return SMGDUAL;
+            case "SMGs Dual":
+                return SMGDUAL;
+            case "SHOTGUN":
+                return SHOTGUN;
+            case "SMGDUAL":
+                return SMGDUAL;
+            case "REVOLVER":
+                return REVOLVER;
 
         }
         return null;

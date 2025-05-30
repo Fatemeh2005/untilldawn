@@ -123,7 +123,7 @@ public class MainMenuView implements Screen {
         resumeSavedGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //    controller.resumeSavedGame();
+                    controller.resumeSavedGame();
             }
         });
 

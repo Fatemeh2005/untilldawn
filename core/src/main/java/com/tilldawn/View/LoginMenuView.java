@@ -105,10 +105,21 @@ public class LoginMenuView implements Screen {
         stage.draw();
     }
 
-    @Override public void resize(int i, int i1) {}
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
+    @Override
+    public void resize(int i, int i1) {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
@@ -116,12 +127,29 @@ public class LoginMenuView implements Screen {
     }
 
     // Getters
-    public TextField getUsernameField() { return usernameField; }
-    public TextField getPasswordField() { return passwordField; }
-    public TextField getAnswerSecurityQuestionField() { return answerSecurityQuestionField; }
-    public Button getLoginButton() { return loginButton; }
-    public TextButton getPlayAsGuestButton() { return playAsGuestButton; }
-    public TextButton getForgotPasswordButton() { return forgotPasswordButton; }
+    public TextField getUsernameField() {
+        return usernameField;
+    }
+
+    public TextField getPasswordField() {
+        return passwordField;
+    }
+
+    public TextField getAnswerSecurityQuestionField() {
+        return answerSecurityQuestionField;
+    }
+
+    public Button getLoginButton() {
+        return loginButton;
+    }
+
+    public TextButton getPlayAsGuestButton() {
+        return playAsGuestButton;
+    }
+
+    public TextButton getForgotPasswordButton() {
+        return forgotPasswordButton;
+    }
 
     public void showError(String message) {
         errorLabel.setText(message);

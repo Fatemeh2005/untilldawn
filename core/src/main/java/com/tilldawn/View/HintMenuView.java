@@ -39,8 +39,6 @@ public class HintMenuView implements Screen {
         Label title = new Label("Hints & Help", skin, "title");
         root.add(title).padBottom(15);
         root.row();
-
-        /* ------------------------ Hero  tips  ----------------------------- */
         root.add(new Label("Hero tips", skin, "subtitle")).padBottom(8);
         root.row();
         String[] heroHints = {
@@ -52,7 +50,6 @@ public class HintMenuView implements Screen {
             root.add(new Label(h, skin)).padBottom(4);
             root.row();
         }
-
         root.add(new Label("Current key bindings", skin, "subtitle")).padTop(12).padBottom(8);
         root.row();
         java.util.Map<String, String> keyMap = getCurrentKeyBindings();
@@ -60,7 +57,6 @@ public class HintMenuView implements Screen {
             root.add(new Label(action + " : " + key, skin)).padBottom(3);
             root.row();
         });
-
         root.add(new Label("Cheat codes", skin, "subtitle")).padTop(12).padBottom(8);
         root.row();
         java.util.Map<String, String> cheats = java.util.Map.of(
@@ -98,8 +94,6 @@ public class HintMenuView implements Screen {
                 Main.getMain().setScreen(new MainMenuView(controller, skin));
             }
         });
-
-        /* --------------- Stage  plumbing  --------------------------------- */
         ScrollPane scrollPane = new ScrollPane(root, skin);
         scrollPane.setFadeScrollBars(false);
         Table container = new Table();
@@ -121,30 +115,37 @@ public class HintMenuView implements Screen {
         stage.getViewport().update(width, height, true);
     }
 
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
         stage.dispose();
     }
 
-
     private java.util.Map<String, String> getCurrentKeyBindings() {
         String shoot;
-        if(Game.getShoot() == Input.Buttons.LEFT){
+        if (Game.getShoot() == Input.Buttons.LEFT) {
             shoot = "left mouse click";
         } else {
             shoot = "enter";
         }
         return Map.of(
-            "Move Up",    Input.Keys.toString(Game.getKeyUp()),
-            "Move Down",  Input.Keys.toString(Game.getKeyDown()),
-            "Move Left",  Input.Keys.toString(Game.getKeyLeft()),
+            "Move Up", Input.Keys.toString(Game.getKeyUp()),
+            "Move Down", Input.Keys.toString(Game.getKeyDown()),
+            "Move Left", Input.Keys.toString(Game.getKeyLeft()),
             "Move Right", Input.Keys.toString(Game.getKeyRight()),
-            "Reload",     Input.Keys.toString(Game.getReloadGun()),
-            "Shoot",      shoot
+            "Reload", Input.Keys.toString(Game.getReloadGun()),
+            "Shoot", shoot
         );
     }
 }

@@ -3,7 +3,9 @@ package com.tilldawn.Model;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Enemies.Seed;
 import com.tilldawn.Model.Enemies.Tree;
+import com.tilldawn.Model.Weapon.WeaponTypes;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -177,5 +179,122 @@ public class Game {
 
     public static void setPausePressed(boolean pausePressed) {
         Game.pausePressed = pausePressed;
+    }
+
+    public static void setSeeds(ArrayList<Seed> seeds) {
+        Game.seeds = seeds;
+    }
+
+    public static void resetGame() {
+        // Reset all variables to their initial values using setters
+        setPlayer(new Player(PlayerTypes.SHANA));  // Assuming the default state for player is null
+        setEnemies(new ArrayList<Enemy>());
+        //user is not reseted
+        setSelectedGameTimeInMinutes(0);
+        setElapsedTimeInSeconds(0f);
+        setReloadGunTimer(0f);
+        setTrees(new ArrayList<Tree>());
+        setSeeds(new ArrayList<Seed>());
+        setGamePaused(false);
+        setPausePressed(false);
+    }
+
+    public static void savePlayerData(Player player, String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            // Write player data (only ints and strings)
+            writer.write("posX=" + player.getPosX());
+            writer.newLine();
+            writer.write("posY=" + player.getPosY());
+            writer.newLine();
+            writer.write("playerHealth=" + player.getPlayerHealth());
+            writer.newLine();
+            writer.write("level=" + player.getLevel());
+            writer.newLine();
+            writer.write("xp=" + player.getXp());
+            writer.newLine();
+            writer.write("numberOfKillsInGame=" + player.getNumberOfKillsInGame());
+            writer.newLine();
+            writer.write("isDead=" + player.isDead());
+            writer.newLine();
+            writer.write("chosen time=" + Game.getSelectedGameTimeInMinutes());
+            writer.newLine();
+            writer.write("passed time=" + Game.getElapsedTimeInSeconds());
+            writer.newLine();
+            writer.write("number of shoots=" + Game.getPlayer().getWeapon().getNumberOfShoots());
+            writer.newLine();
+            writer.write("reload gun timer=" + Game.getReloadGunTimer());
+            writer.newLine();
+            writer.write("gun type=" + Game.getPlayer().getWeapon().getWeaponTypes().name());
+            writer.newLine();
+            writer.write("player type=" + Game.getPlayer().getPlayerType().name());
+            writer.newLine();
+
+            // Add any other data you want to save here
+            System.out.println("Player data saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Player loadPlayerData(String filename) {
+        Player player = new Player(PlayerTypes.SHANA); // Initialize player with default type
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("="); // Split the key-value pair
+                if (parts.length == 2) {
+                    String key = parts[0].trim();
+                    String value = parts[1].trim();
+
+                    // Set the player attributes based on the key
+                    switch (key) {
+                        case "posX":
+                            player.setPosX(Integer.parseInt(value));
+                            break;
+                        case "posY":
+                            player.setPosY(Integer.parseInt(value));
+                            break;
+                        case "playerHealth":
+                            player.setPlayerHealth(Integer.parseInt(value));
+                            break;
+                        case "level":
+                            player.setLevel(Integer.parseInt(value));
+                            break;
+                        case "xp":
+                            player.setXp(Integer.parseInt(value));
+                            break;
+                        case "numberOfKillsInGame":
+                            player.setNumberOfKillsInGame(Integer.parseInt(value));
+                            break;
+                        case "isDead":
+                            player.setDead(Boolean.parseBoolean(value));
+                            break;
+                            case "passed time":
+                                Game.setElapsedTimeInSeconds(Float.parseFloat(value));
+                                break;
+                        case "chosen time":
+                            Game.setSelectedGameTimeInMinutes(Integer.parseInt(value));
+                            break;
+                        case "number of shoots":
+                            player.getWeapon().setNumberOfShoots(Integer.parseInt(value));
+                            break;
+                        case "reload gun timer":
+                            Game.setReloadGunTimer(Float.parseFloat(value));
+                            break;
+                        case "gun type":
+                            Game.getPlayer().getWeapon().setWeaponTypes(WeaponTypes.findWeaponTypeByName(value));
+                            break;
+
+                            case "player type":
+                                Game.getPlayer().setPlayerType(PlayerTypes.findplayerTypeByName(value));
+                    }
+                }
+            }
+            System.out.println("Player data loaded successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return player;
     }
 }

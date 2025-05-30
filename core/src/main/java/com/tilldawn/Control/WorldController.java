@@ -40,7 +40,7 @@ public class WorldController {
     private float treeDamageTimer = 0f;
 
     private Sprite lightSprite;
-    private ShapeRenderer shapeRenderer= new ShapeRenderer();
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
     ProgressBar xpProgressBar;
     private boolean hasElderEntered = false;
     Shield shield;
@@ -65,19 +65,15 @@ public class WorldController {
     }
 
     public void update(Camera camera) {
-
-        if (Game.isGamePaused() || Game.isPausePressed()){
+        if (Game.isGamePaused() || Game.isPausePressed()) {
             return;
         }
         float delta = Gdx.graphics.getDeltaTime();
-
         // Update player and weapons
         Game.getPlayer().update(delta);
-        if(Game.getPlayer().isDead()){
+        if (Game.getPlayer().isDead()) {
             return;
         }
-
-
         if (Game.getPlayer().isSpeedBoostActive()) {
             Game.getPlayer().setSpeedBoostTimer(Game.getPlayer().getSpeedBoostTimer() + delta);
 
@@ -87,43 +83,35 @@ public class WorldController {
                 Game.getPlayer().setSpeedBoostTimer(0);
             }
         }
-
         if (Game.getPlayer().getWeapon().isPowerBoostActive()) {
             Game.getPlayer().getWeapon().setPowerBoostTimer(Game.getPlayer().getWeapon().getPowerBoostTimer() + delta);
-
-            // Reset the speed boost after the duration ends
             if (Game.getPlayer().getWeapon().getPowerBoostTimer() >= 10f) {
                 Game.getPlayer().getWeapon().setPowerBoostActive(false);
                 Game.getPlayer().getWeapon().setPowerBoostTimer(0);
             }
         }
-
-        // Track time
         totalGameTime += delta;
         tentacleSpawnTimer += delta;
         eyeBatSpawnTimer += delta;
         treeDamageTimer += delta;
-        if(Game.isAutoReloadOn() && Game.getPlayer().getWeapon().getNumberOfShoots() == Game.getPlayer().getWeapon().getAmmo()){
+        if (Game.isAutoReloadOn() && Game.getPlayer().getWeapon().getNumberOfShoots() == Game.getPlayer().getWeapon().getAmmo()) {
             Game.setReloadOn(true);
         }
-        if(Game.isReloadOn()){
+        if (Game.isReloadOn()) {
             Game.setReloadGunTimer(Game.getReloadGunTimer() + delta);
         }
 
-        if(Game.getReloadGunTimer() >= Game.getPlayer().getWeapon().getReloadTime() && Game.isReloadOn()){
+        if (Game.getReloadGunTimer() >= Game.getPlayer().getWeapon().getReloadTime() && Game.isReloadOn()) {
             Game.getPlayer().getWeapon().setNumberOfShoots(0);
             Game.setReloadGunTimer(0);
             Game.setReloadOn(false);
         }
-
-        // Update camera
         camera.position.set(
             Game.getPlayer().getPosX(),
             Game.getPlayer().getPosY(),
             0
         );
         camera.update();
-
         // Spawn i/30 enemies every 3 seconds
         if (tentacleSpawnTimer >= 3f) {
             int enemiesToSpawn = (int) (totalGameTime / 30f);
@@ -132,7 +120,6 @@ public class WorldController {
             }
             tentacleSpawnTimer = 0;
         }
-
         Iterator<Seed> iterator = Game.getSeeds().iterator();
         while (iterator.hasNext()) {
             Seed seed = iterator.next();
@@ -141,7 +128,6 @@ public class WorldController {
                 iterator.remove();  // Safe removal using the iterator
             }
         }
-
         if (treeDamageTimer >= 1f) {
             for (Tree tree : Game.getTrees()) {
                 if (Game.getPlayer().getRect().collidesWith(tree.getRect())) {
@@ -166,32 +152,27 @@ public class WorldController {
             }
             eyeBatSpawnTimer = 0;
         }
-
         if (Game.getElapsedTimeInSeconds() >= Game.getSelectedGameTimeInMinutes() * 60f / 2f && !hasElderEntered) {
-                spawnElder();
-                hasElderEntered = true;
+            spawnElder();
+            hasElderEntered = true;
         }
         if (isShieldActive) {
-            shield.setShieldRadius(shield.getShieldRadius()- (shield.getShieldShrinkRate() * delta));  // Shrink the shield based on delta time
-
+            shield.setShieldRadius(shield.getShieldRadius() - (shield.getShieldShrinkRate() * delta));  // Shrink the shield based on delta time
 
             // If the shield shrinks completely, deactivate it
             if (shield.getShieldRadius() <= 0) {
                 System.out.println("Shield Deactivated");
                 isShieldActive = false;
             }
-
             // Check if the player collides with the shield
             float playerX = Game.getPlayer().getPosX();
             float playerY = Game.getPlayer().getPosY();
 
             float distance = (float) Math.sqrt(Math.pow(playerX - shield.getShildCenterx(), 2) + Math.pow(playerY - shield.getShildCentery(), 2));
-
-
             float tolerance = 5.0f; // Adjust this value if needed (for precision)
             System.out.println("Shield Shrinking: " + shield.getShieldRadius());
-            System.out.println("playerx:" +Game.getPlayer().getPosX() + ", " + "playery:" +Game.getPlayer().getPosY()+"ahmaaagh");
-            System.out.println(distance + ", " + "shield center y:" +shield.getShildCentery() + ", " + "shield center x:" +shield.getShildCenterx() + "olagh");
+            System.out.println("playerx:" + Game.getPlayer().getPosX() + ", " + "playery:" + Game.getPlayer().getPosY() + "ahmaaagh");
+            System.out.println(distance + ", " + "shield center y:" + shield.getShildCentery() + ", " + "shield center x:" + shield.getShildCenterx() + "olagh");
 
             if (Math.abs(distance - shield.getShieldRadius()) <= tolerance) {
                 System.out.println("got hit");
@@ -206,8 +187,6 @@ public class WorldController {
                 }
             }
         }
-
-        // Update enemies
         float playerX = Game.getPlayer().getPosX();
         float playerY = Game.getPlayer().getPosY();
 
@@ -221,19 +200,15 @@ public class WorldController {
                 i--;
             }
         }
-
         updatePopUps();
-
         weaponController.update();
-
         Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + delta);
         checkVictoryCondition();
         if (Game.getPlayer().isLevelUp()) {
             AudioManager.getInstance().playLevelUpSound();
             Game.setGamePaused(true);  // Pause the game
-           view.printAbilitiesMenu(GameAssetManager.getGameAssetManager().getSkin());
+            view.printAbilitiesMenu(GameAssetManager.getGameAssetManager().getSkin());
         }
-
     }
 
     private void checkVictoryCondition() {
@@ -372,7 +347,6 @@ public class WorldController {
     }
 
 
-
     private boolean isFarOffScreen(float x, float y) {
         float margin = 200;
         return x < -margin || x > worldWidth + margin ||
@@ -387,7 +361,6 @@ public class WorldController {
         for (Tree tree : Game.getTrees()) {
             tree.render(Main.getBatch());
         }
-
         for (Enemy enemy : Game.getEnemies()) {
             enemy.render(Main.getBatch());
         }
@@ -402,10 +375,10 @@ public class WorldController {
             seed.render(Main.getBatch());
         }
 
-        for(DamagePopup damagePopup : Game.getPlayer().getDamagePopups()) {
+        for (DamagePopup damagePopup : Game.getPlayer().getDamagePopups()) {
             damagePopup.render(Main.getBatch());
         }
-        if(shield != null) {
+        if (shield != null) {
             shield.render(Main.getBatch());
         }
 
@@ -420,14 +393,12 @@ public class WorldController {
         // Position and draw light
         float px = Game.getPlayer().getPosX();
         float py = Game.getPlayer().getPosY();
-        lightSprite.setPosition(px - lightSprite.getWidth()/2f + 10, py - lightSprite.getHeight()/2f + 20);
+        lightSprite.setPosition(px - lightSprite.getWidth() / 2f + 10, py - lightSprite.getHeight() / 2f + 20);
         lightSprite.setColor(1f, 1f, 1f, 0.1f);
         lightSprite.draw(Main.getBatch());
 
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Main.getBatch().end();
-
-        // Render UI/stage
         Main.getBatch().begin();
     }
 
@@ -437,7 +408,7 @@ public class WorldController {
         GameAssetManager.getGameAssetManager().getTree_tex().dispose();
         GameAssetManager.getGameAssetManager().getEyeBatBulletTex().dispose();
         GameAssetManager.getGameAssetManager().getTentacleSeedTex().dispose();
-        if(shield != null) {
+        if (shield != null) {
             shield.dispose();
         }
     }
@@ -491,7 +462,7 @@ public class WorldController {
         ProgressBar.ProgressBarStyle style = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
         xpProgressBar = new ProgressBar(0, 1, 0.01f, false, style);  // min, max, step size, vertical, style
 
-        xpProgressBar.setPosition( camTop - 55,camRight - 16); // You can adjust this position based on camera view
+        xpProgressBar.setPosition(camTop - 55, camRight - 16); // You can adjust this position based on camera view
         xpProgressBar.setSize(250, 18);  // Adjust size for XP bar
     }
 
@@ -515,7 +486,7 @@ public class WorldController {
 
         xpProgressBar.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         xpProgressBar.draw(Main.getBatch(), 1);
-        drawProcessLevel(x-240 ,y+20);
+        drawProcessLevel(x - 240, y + 20);
     }
 
     private void drawProcessLevel(float x, float y) {
@@ -570,7 +541,7 @@ public class WorldController {
         }
     }
 
-    private void updatePopUps(){
+    private void updatePopUps() {
         Iterator<DamagePopup> iterator = Game.getPlayer().getDamagePopups().iterator();
         while (iterator.hasNext()) {
             DamagePopup popup = iterator.next();

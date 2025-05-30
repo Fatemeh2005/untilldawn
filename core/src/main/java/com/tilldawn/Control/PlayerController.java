@@ -39,19 +39,15 @@ public class PlayerController {
     }
 
     public void handlePlayerInput(GameView view) {
-        // Ensure that movement only happens if the player is alive
         if (Game.getPlayer().isDead()) {
             return;  // Skip handling input if the player is dead
         }
-
-        int speed = Game.getPlayer().isSpeedBoostActive() ? Game.getPlayer().getSpeed()*2 : Game.getPlayer().getSpeed();
-        // Get the mouse position
+        int speed = Game.getPlayer().isSpeedBoostActive() ? Game.getPlayer().getSpeed() * 2 : Game.getPlayer().getSpeed();
         int mouseX = Gdx.input.getX();
         int mouseY = Gdx.input.getY();
 
         int newX = Game.getPlayer().getPosX();
         int newY = Game.getPlayer().getPosY();
-
         if (Gdx.input.isKeyPressed(Game.getKeyUp())) {
             newY += speed;
             idleAnimation(Game.getPlayer().getAnimations());
@@ -69,13 +65,10 @@ public class PlayerController {
             idleAnimation(Game.getPlayer().getAnimations());
             Game.getPlayer().getPlayerSprite().flip(true, false);
         }
-
-        //reload
         if (Gdx.input.isKeyPressed(Game.getReloadGun())) {
             Game.setReloadOn(true);
             return;
         }
-
         if ((Gdx.input.isButtonPressed(Game.getShoot()) || Gdx.input.isKeyJustPressed(Game.getShoot())) &&
             (TimeUtils.nanoTime() - lastShootTime) / 1000000000f > shootCooldown) {
             // Handle shooting with the current mouse coordinates
@@ -83,8 +76,6 @@ public class PlayerController {
             lastShootTime = TimeUtils.nanoTime();  // Update last shoot time
             return;  // Prevent other code from running while shooting
         }
-
-        // Cheat codes, etc.
         if (Gdx.input.isKeyJustPressed(Input.Keys.H) && Game.getPlayer().getPlayerHealth() == 0) {
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
             return;
@@ -102,27 +93,19 @@ public class PlayerController {
             Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + 28f);
             return;
         }
-
-        // Eternity cheat code
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 5);
             return;
         }
-
-        //level up cheat code
         if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
             Game.getPlayer().setLevel(Game.getPlayer().getLevel() + 1);
             Game.getPlayer().setLevelUp(true);
             return;
         }
-
-        //xp cheat code
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             Game.getPlayer().setXp(Game.getPlayer().getXp() + 3);
             return;
         }
-
-        // Clamp new position to stay within background/world
         newX = (int) MathUtils.clamp(newX, 0, WORLD_WIDTH - PLAYER_WIDTH);
         newY = (int) MathUtils.clamp(newY, 0, WORLD_HEIGHT - PLAYER_HEIGHT);
 

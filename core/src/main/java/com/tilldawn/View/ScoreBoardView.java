@@ -44,7 +44,7 @@ public class ScoreBoardView implements Screen {
         loadUsers();
 
         sortSelect = buildSortSelect();
-        dataTable  = new Table();
+        dataTable = new Table();
         // ensure the table has a skin so header shortcuts work
         dataTable.setSkin(skin);
 
@@ -67,7 +67,8 @@ public class ScoreBoardView implements Screen {
 
         TextButton back = new TextButton("Back", skin);
         back.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent e, float x, float y) {
+            @Override
+            public void clicked(InputEvent e, float x, float y) {
                 Main.getMain().setScreen(new MainMenuView(controller, skin));
             }
         });
@@ -85,7 +86,10 @@ public class ScoreBoardView implements Screen {
         SelectBox<String> box = new SelectBox<>(selectSkin);
         box.setItems("Username", "Score", "Kills", "Time survived");
         box.addListener(new ChangeListener() {
-            @Override public void changed(ChangeEvent event, Actor actor) { refreshTable(); }
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                refreshTable();
+            }
         });
         return box;
     }
@@ -106,7 +110,8 @@ public class ScoreBoardView implements Screen {
             try {
                 User u = gson.fromJson(file.readString(), User.class);
                 if (u != null) users.add(u);
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -126,7 +131,6 @@ public class ScoreBoardView implements Screen {
 
         dataTable.clear();
         dataTable.top();
-
         dataTable.add(makeLabel("#", "default-bold")).padRight(10);
         dataTable.add(makeLabel("Username", "default-bold")).padRight(10);
         dataTable.add(makeLabel("Score", "default-bold")).padRight(10);
@@ -136,28 +140,23 @@ public class ScoreBoardView implements Screen {
 
         int rank = 1;
         for (User u : users) {
-            Label rankLabel     = new Label(Integer.toString(rank), skin);
+            Label rankLabel = new Label(Integer.toString(rank), skin);
             Label usernameLabel;
-            if( Game.getCurrentUser() != null && u.getUsername().equals(Game.getCurrentUser().getUsername())) {
-                 usernameLabel = new Label("->" +u.getUsername(), skin);
+            if (Game.getCurrentUser() != null && u.getUsername().equals(Game.getCurrentUser().getUsername())) {
+                usernameLabel = new Label("->" + u.getUsername(), skin);
             } else {
-                 usernameLabel = new Label(u.getUsername(), skin);
+                usernameLabel = new Label(u.getUsername(), skin);
             }
-
-            Label scoreLabel    = new Label(Integer.toString(u.getScore()), skin);
-            Label killsLabel    = new Label(Integer.toString(u.getNumberOfKills()), skin);
-            Label timeLabel     = new Label(formatTime(u.getMostTimeSurvived()), skin);
-
-            // Highlight top 3 users with a custom style or color
+            Label scoreLabel = new Label(Integer.toString(u.getScore()), skin);
+            Label killsLabel = new Label(Integer.toString(u.getNumberOfKills()), skin);
+            Label timeLabel = new Label(formatTime(u.getMostTimeSurvived()), skin);
             if (rank == 1) {
-                setAllColors( 1.0f, 0.84f, 0.0f,rankLabel, usernameLabel, scoreLabel, killsLabel, timeLabel); // Gold
+                setAllColors(1.0f, 0.84f, 0.0f, rankLabel, usernameLabel, scoreLabel, killsLabel, timeLabel); // Gold
             } else if (rank == 2) {
-                setAllColors( 0.75f, 0.75f, 0.75f,rankLabel, usernameLabel, scoreLabel, killsLabel, timeLabel); // Silver
+                setAllColors(0.75f, 0.75f, 0.75f, rankLabel, usernameLabel, scoreLabel, killsLabel, timeLabel); // Silver
             } else if (rank == 3) {
-                setAllColors( 0.80f, 0.5f, 0.2f, rankLabel, usernameLabel, scoreLabel, killsLabel, timeLabel); // Bronze
+                setAllColors(0.80f, 0.5f, 0.2f, rankLabel, usernameLabel, scoreLabel, killsLabel, timeLabel); // Bronze
             }
-
-
             dataTable.add(rankLabel);
             dataTable.add(usernameLabel);
             dataTable.add(scoreLabel);
@@ -167,6 +166,7 @@ public class ScoreBoardView implements Screen {
             rank++;
         }
     }
+
     private void setAllColors(float r, float g, float b, Label... labels) {
         for (Label label : labels) {
             label.setColor(r, g, b, 1.0f);
@@ -180,10 +180,32 @@ public class ScoreBoardView implements Screen {
         return String.format("%02d:%02d", m, s);
     }
 
-    @Override public void render(float delta) { ScreenUtils.clear(0,0,0,1); stage.act(delta); stage.draw(); }
-    @Override public void resize(int w,int h){ stage.getViewport().update(w,h,true);}
-    @Override public void pause(){}
-    @Override public void resume(){}
-    @Override public void hide(){}
-    @Override public void dispose(){ stage.dispose(); }
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0, 1);
+        stage.act(delta);
+        stage.draw();
+    }
+
+    @Override
+    public void resize(int w, int h) {
+        stage.getViewport().update(w, h, true);
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
 }

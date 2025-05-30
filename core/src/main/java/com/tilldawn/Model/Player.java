@@ -11,9 +11,10 @@ import com.tilldawn.Model.Weapon.Weapon;
 import com.tilldawn.Model.Weapon.WeaponTypes;
 import com.tilldawn.View.loseGameMenu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Serializable {
 
     private Texture playerTexture ;
     private Sprite playerSprite ;
@@ -164,6 +165,15 @@ public class Player {
 
     public void setPlayerType(PlayerTypes playerType) {
         this.playerType = playerType;
+        playerTexture = playerType.getAvatarTexture();
+        this.animations = playerType.getAnimation();
+        this.playerSprite = new Sprite(playerTexture);
+
+        playerSprite.setPosition(posX, posY); // Sync sprite position
+        playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
+
+        rect = new CollisionRect(posX, posY, playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
+        this.speed = playerType.getSpeed();
     }
 
     public void setAnimations(Animation<Texture> animations) {

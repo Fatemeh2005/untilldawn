@@ -49,22 +49,22 @@ public class loseGameMenu implements Screen {
         this.loseTitle = new Label("You are such a Loser!", GameAssetManager.getGameAssetManager().getSkin());
         this.table = new Table();
         this.surviveTime = (int) Game.getElapsedTimeInSeconds();
-        if(Game.getCurrentUser() == null){
+        if (Game.getCurrentUser() == null) {
             userName = "You are a guest!";
         } else {
             userName = Game.getCurrentUser().getUsername();
         }
-        this.userNameLabel = new Label("User name: "+ userName, GameAssetManager.getGameAssetManager().getSkin());
-        this.surviveTitle = new Label("Survive time: "+surviveTime+" seconds", GameAssetManager.getGameAssetManager().getSkin());
+        this.userNameLabel = new Label("User name: " + userName, GameAssetManager.getGameAssetManager().getSkin());
+        this.surviveTitle = new Label("Survive time: " + surviveTime + " seconds", GameAssetManager.getGameAssetManager().getSkin());
         this.numberOfKills = new Label("number of Kills in this game : " + Game.getPlayer().getNumberOfKillsInGame(),
             GameAssetManager.getGameAssetManager().getSkin());
-        this.scoreFromGameLabel = new Label("score gained from the game : "+  surviveTime * Game.getPlayer().getNumberOfKillsInGame(),
+        this.scoreFromGameLabel = new Label("score gained from the game : " + surviveTime * Game.getPlayer().getNumberOfKillsInGame(),
             GameAssetManager.getGameAssetManager().getSkin());
-        if(Game.getCurrentUser() != null){
+        if (Game.getCurrentUser() != null) {
             User currentUser = Game.getCurrentUser();
             currentUser.setNumberOfKills(Game.getPlayer().getNumberOfKillsInGame() + currentUser.getNumberOfKills());
             currentUser.setScore(currentUser.getScore() + surviveTime * Game.getPlayer().getNumberOfKillsInGame());
-            if(surviveTime > currentUser.getMostTimeSurvived()) {
+            if (surviveTime > currentUser.getMostTimeSurvived()) {
                 currentUser.setMostTimeSurvived(surviveTime);
             }
             saveUserToJson(Game.getCurrentUser());
@@ -158,6 +158,7 @@ public class loseGameMenu implements Screen {
     public void setSurviveTime(int surviveTime) {
         this.surviveTime = surviveTime;
     }
+
     private boolean saveUserToJson(User user) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter("users/" + user.getUsername() + ".json")) {

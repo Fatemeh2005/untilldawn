@@ -43,7 +43,6 @@ public class ProfileMenuController {
 
     public void handleSaveChanges() {
         if (view == null || currentUser == null) return;
-
         String newUsername = view.getNewUsernameField().getText().trim();
         String oldPassword = view.getOldPasswordField().getText();
         String newPassword = view.getNewPasswordField().getText();
@@ -54,7 +53,6 @@ public class ProfileMenuController {
                 view.showError("Username already taken.");
                 return;
             }
-
             if (!newPassword.isEmpty()) {
                 if (!currentUser.getPassword().equals(oldPassword)) {
                     view.showError("Incorrect old password.");
@@ -68,8 +66,6 @@ public class ProfileMenuController {
 
                 currentUser.setPassword(newPassword);
             }
-
-            // Rename file if needed
             if (usernameChanged) {
                 File oldFile = new File("users/" + currentUser.getUsername() + ".json");
                 File newFile = new File("users/" + newUsername + ".json");
@@ -79,7 +75,6 @@ public class ProfileMenuController {
                     return;
                 }
             }
-
             if (saveUserToJson(currentUser)) {
                 view.showSuccess("Changes saved successfully!");
 

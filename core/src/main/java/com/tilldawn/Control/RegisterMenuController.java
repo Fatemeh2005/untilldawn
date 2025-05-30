@@ -31,7 +31,6 @@ public class RegisterMenuController {
             String username = view.getUsernameField().getText();
             String password = view.getPasswordField().getText();
             String answerOfSecurity = view.getAnswerSecurityQuestionField().getText();
-
             if (view.getPlayButton().isChecked()) {
 
                 if (username.equals("") || password.equals("") || answerOfSecurity.equals("")) {
@@ -42,7 +41,6 @@ public class RegisterMenuController {
                     view.showError("this user has already registered!");
                 }//register successfully
                 else {
-                    // ✅ ذخیره در فایل JSON
                     Animation<Texture> animations = GameAssetManager.getGameAssetManager().getDiamond_idle_frames();
                     Random random = new Random();
                     //make it 5

@@ -4,11 +4,14 @@
     import com.badlogic.gdx.graphics.Texture;
     import com.badlogic.gdx.graphics.g2d.Animation;
     import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+    import com.tilldawn.Main;
     import com.tilldawn.Model.Game;
+    import com.tilldawn.Model.GameAssetManager;
     import com.tilldawn.Model.Player;
     import com.tilldawn.Model.PlayerTypes;
     import com.tilldawn.Model.Weapon.Weapon;
     import com.tilldawn.View.GameView;
+    import com.tilldawn.View.MainMenuView;
 
     public class GameController {
         private PlayerController playerController;
@@ -35,6 +38,13 @@
             worldController.render();
             //playerController.render(batch);
             //weaponController.update();
+        }
+
+        public void saveAndExit() {
+            if(Game.getCurrentUser() != null) {
+                Game.savePlayerData(Game.getPlayer() ,"savedGames/"+"save"+Game.getCurrentUser().getUsername()+".txt");
+            }
+            Main.getMain().setScreen(new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
         }
 
         public PlayerController getPlayerController() {

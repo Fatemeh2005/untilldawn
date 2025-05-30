@@ -46,4 +46,10 @@ public class MainMenuController {
         Main.getMain().setScreen(new RegisterMenuView(new RegisterMenuController() ,GameAssetManager.getGameAssetManager().getSkin()));
     }
 
+    public void resumeSavedGame(){
+        Game.loadPlayerData("savedGames/"+"save"+Game.getCurrentUser().getUsername()+".txt");
+        Main.getMain().getScreen().dispose();
+        Main.getMain().setScreen(new GameView(new GameController()));
+    }
+
 }
