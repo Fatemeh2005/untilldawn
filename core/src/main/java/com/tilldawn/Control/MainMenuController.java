@@ -8,10 +8,7 @@ import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.PlayerTypes;
 import com.tilldawn.Model.Pregame;
 import com.tilldawn.Model.User;
-import com.tilldawn.View.MainMenuView;
-import com.tilldawn.View.PreGameMenuView;
-import com.tilldawn.View.ProfileMenuView;
-import com.tilldawn.View.RegisterMenuView;
+import com.tilldawn.View.*;
 
 import java.util.ArrayList;
 
@@ -35,6 +32,10 @@ public class MainMenuController {
             new ProfileMenuController(),
             GameAssetManager.getGameAssetManager().getSkin(),
             name));
+    }
+    public void goToHintBoard(){
+        Main.getMain().getScreen().dispose();
+        Main.getMain().setScreen(new HintMenuView(GameAssetManager.getGameAssetManager().getSkin(), new MainMenuController()));
     }
 
 }
