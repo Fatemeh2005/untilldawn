@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.tilldawn.Main;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.PlayerTypes;
+import com.tilldawn.Model.SqlSave.UserDAO;
 import com.tilldawn.Model.User;
 import com.tilldawn.View.*;
 import com.tilldawn.View.RegisterMenuView;
@@ -67,6 +68,8 @@ public class RegisterMenuController {
                     }
                     User user = new User(username, password, answerOfSecurity, name);
                     saveUserToJson(user);
+                    UserDAO saveUser = new UserDAO();
+                    saveUser.saveUser(user);
 
                     view.hideError();
                     Main.getMain().getScreen().dispose();
