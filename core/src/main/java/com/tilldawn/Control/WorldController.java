@@ -42,6 +42,9 @@ public class WorldController {
     private Sprite lightSprite;
     private ShapeRenderer shapeRenderer= new ShapeRenderer();
     ProgressBar xpProgressBar;
+    private boolean hasElderEntered = false;
+    Shield shield;
+    private static boolean isShieldActive = false;
 
 
     public WorldController(GameView view) {
@@ -73,6 +76,8 @@ public class WorldController {
         if(Game.getPlayer().isDead()){
             return;
         }
+
+
         if (Game.getPlayer().isSpeedBoostActive()) {
             Game.getPlayer().setSpeedBoostTimer(Game.getPlayer().getSpeedBoostTimer() + delta);
 
@@ -162,6 +167,46 @@ public class WorldController {
             eyeBatSpawnTimer = 0;
         }
 
+        if (Game.getElapsedTimeInSeconds() >= Game.getSelectedGameTimeInMinutes() * 60f / 2f && !hasElderEntered) {
+                spawnElder();
+                hasElderEntered = true;
+        }
+        if (isShieldActive) {
+            shield.setShieldRadius(shield.getShieldRadius()- (shield.getShieldShrinkRate() * delta));  // Shrink the shield based on delta time
+
+
+            // If the shield shrinks completely, deactivate it
+            if (shield.getShieldRadius() <= 0) {
+                System.out.println("Shield Deactivated");
+                isShieldActive = false;
+            }
+
+            // Check if the player collides with the shield
+            float playerX = Game.getPlayer().getPosX();
+            float playerY = Game.getPlayer().getPosY();
+
+            float distance = (float) Math.sqrt(Math.pow(playerX - shield.getShildCenterx(), 2) + Math.pow(playerY - shield.getShildCentery(), 2));
+
+
+            float tolerance = 5.0f; // Adjust this value if needed (for precision)
+            System.out.println("Shield Shrinking: " + shield.getShieldRadius());
+            System.out.println("playerx:" +Game.getPlayer().getPosX() + ", " + "playery:" +Game.getPlayer().getPosY()+"ahmaaagh");
+            System.out.println(distance + ", " + "shield center y:" +shield.getShildCentery() + ", " + "shield center x:" +shield.getShildCenterx() + "olagh");
+
+            if (Math.abs(distance - shield.getShieldRadius()) <= tolerance) {
+                System.out.println("got hit");
+
+                Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
+                if (Game.getPlayer().getPlayerHealth() < 0) {
+                    // Trigger death animation if health is below 0
+                    Game.getPlayer().setDead(true);
+                    AudioManager.getInstance().playLoseSound();
+                    Main.getMain().getScreen().dispose();
+                    Main.getMain().setScreen(new loseGameMenu());
+                }
+            }
+        }
+
         // Update enemies
         float playerX = Game.getPlayer().getPosX();
         float playerY = Game.getPlayer().getPosY();
@@ -169,7 +214,7 @@ public class WorldController {
         for (int i = 0; i < Game.getEnemies().size(); i++) {
             Enemy enemy = Game.getEnemies().get(i);
             enemy.update(delta, playerX, playerY);
-            Game.getPlayer().takeDamageIfInRange(enemy, 0.5f, 60f);
+            //Game.getPlayer().takeDamageIfInRange(enemy, 0.5f, 60f);
 
             if (isFarOffScreen(enemy.getX(), enemy.getY())) {
                 Game.getEnemies().remove(i);
@@ -283,6 +328,50 @@ public class WorldController {
         Game.getEnemies().add(new EyeBat(spawnX, spawnY, speed, animation));
     }
 
+    private void spawnElder() {
+        Random rand = new Random();
+
+        // Camera boundaries
+        Camera cam = GameView.getCamera();
+        float camLeft = cam.position.x - cam.viewportWidth / 2f;
+        float camRight = cam.position.x + cam.viewportWidth / 2f;
+        float camBottom = cam.position.y - cam.viewportHeight / 2f;
+        float camTop = cam.position.y + cam.viewportHeight / 2f;
+
+        float spawnX = 0, spawnY = 0;
+
+        // Choose a random direction to spawn from: 0 = left, 1 = right, 2 = top, 3 = bottom
+        int dir = rand.nextInt(4);
+
+        switch (dir) {
+            case 0: // Left
+                spawnX = camLeft - 100;
+                spawnY = camBottom + rand.nextFloat() * cam.viewportHeight;
+                break;
+            case 1: // Right
+                spawnX = camRight + 100;
+                spawnY = camBottom + rand.nextFloat() * cam.viewportHeight;
+                break;
+            case 2: // Top
+                spawnX = camLeft + rand.nextFloat() * cam.viewportWidth;
+                spawnY = camTop + 100;
+                break;
+            case 3: // Bottom
+                spawnX = camLeft + rand.nextFloat() * cam.viewportWidth;
+                spawnY = camBottom - 100;
+                break;
+        }
+
+        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getElder_frames();
+        float speed = 40 + rand.nextFloat() * 60;
+        Game.getEnemies().add(new Elder(spawnX, spawnY, speed, animation));
+
+        // Trigger the shield
+        isShieldActive = true;
+        shield = new Shield(Game.getPlayer().getPosX(), Game.getPlayer().getPosY());
+    }
+
+
 
     private boolean isFarOffScreen(float x, float y) {
         float margin = 200;
@@ -316,21 +405,22 @@ public class WorldController {
         for(DamagePopup damagePopup : Game.getPlayer().getDamagePopups()) {
             damagePopup.render(Main.getBatch());
         }
+        if(shield != null) {
+            shield.render(Main.getBatch());
+        }
 
         // End the normal rendering batch
         Main.getBatch().end();
         Main.getBatch().begin();
 
-        // Prepare for light rendering
         Gdx.gl.glEnable(GL20.GL_BLEND);
         // Use additive blending for light effect
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
-
         // Position and draw light
         float px = Game.getPlayer().getPosX();
         float py = Game.getPlayer().getPosY();
-        lightSprite.setPosition(px - lightSprite.getWidth()/2f+10, py - lightSprite.getHeight()/2f+20);
+        lightSprite.setPosition(px - lightSprite.getWidth()/2f + 10, py - lightSprite.getHeight()/2f + 20);
         lightSprite.setColor(1f, 1f, 1f, 0.1f);
         lightSprite.draw(Main.getBatch());
 
@@ -341,11 +431,15 @@ public class WorldController {
         Main.getBatch().begin();
     }
 
+
     public void dispose() {
         backgroundTexture.dispose();
         GameAssetManager.getGameAssetManager().getTree_tex().dispose();
         GameAssetManager.getGameAssetManager().getEyeBatBulletTex().dispose();
         GameAssetManager.getGameAssetManager().getTentacleSeedTex().dispose();
+        if(shield != null) {
+            shield.dispose();
+        }
     }
 
     private void drawPlayerHP() {
@@ -486,5 +580,13 @@ public class WorldController {
             }
         }
 
+    }
+
+    public static void setShieldActive(boolean shieldActive) {
+        isShieldActive = shieldActive;
+    }
+
+    public static boolean isIsShieldActive() {
+        return isShieldActive;
     }
 }

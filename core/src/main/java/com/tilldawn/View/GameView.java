@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import com.tilldawn.Control.GameController;
+import com.tilldawn.Control.WorldController;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Game;
 
@@ -32,6 +33,7 @@ public class GameView implements Screen, InputProcessor {
         this.controller.setView(this);
         this.stage = new Stage();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
     }
 
     @Override
@@ -46,7 +48,7 @@ public class GameView implements Screen, InputProcessor {
 
         controller.updateGame(camera);
 
-         Main.getBatch().end();
+        Main.getBatch().end();
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         stage.act(delta);
         stage.draw();

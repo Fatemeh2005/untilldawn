@@ -44,7 +44,7 @@ public class TentacleMonster extends Enemy {
         } else {
             if (stateTime - lastDamageTime >= DAMAGE_COOLDOWN) {
                 Game.getPlayer().takeDamage();
-                Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
+               // Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                 lastDamageTime = stateTime;
 
                 if (Game.getPlayer().getPlayerHealth() < 0) {

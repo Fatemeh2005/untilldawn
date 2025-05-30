@@ -94,6 +94,10 @@ public class PlayerController {
             Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + 60f);
             return;
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.COMMA)) {
+            Game.setElapsedTimeInSeconds(Game.getElapsedTimeInSeconds() + 28f);
+            return;
+        }
 
         // Eternity cheat code
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {

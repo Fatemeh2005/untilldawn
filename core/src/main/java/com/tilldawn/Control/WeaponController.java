@@ -9,11 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tilldawn.Main;
 import com.tilldawn.Model.AudioManager;
-import com.tilldawn.Model.Enemies.Seed;
-import com.tilldawn.Model.Enemies.TentacleMonster;
+import com.tilldawn.Model.Enemies.*;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.Weapon.Bullet;
-import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.Weapon.Weapon;
 import com.tilldawn.View.GameView;
@@ -112,9 +110,9 @@ public class WeaponController {
             // Bullet collision with enemies
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = enemies.get(i);
-                Texture seedTexture = GameAssetManager.getGameAssetManager().getEyeBatSeedTex();
-                if (enemy instanceof TentacleMonster) {
-                    seedTexture = GameAssetManager.getGameAssetManager().getTentacleSeedTex();
+                Texture seedTexture = GameAssetManager.getGameAssetManager().getTentacleSeedTex();
+                if (enemy instanceof EyeBat) {
+                    seedTexture = GameAssetManager.getGameAssetManager().getEyeBatSeedTex();
                 }
                 if (sprite.getBoundingRectangle().overlaps(enemy.getRect().getRectangle())) {
                     int damage = Game.getPlayer().getWeapon().isPowerBoostActive()? Game.getPlayer().getWeapon().getDamage()*2 : Game.getPlayer().getWeapon().getDamage();
@@ -122,6 +120,9 @@ public class WeaponController {
                     if (enemy.isDying()) {
                         Game.getSeeds().add(new Seed(enemy.getX(), enemy.getY(), seedTexture));
                         Game.getPlayer().setNumberOfKillsInGame(Game.getPlayer().getNumberOfKillsInGame() + 1);
+                        if(enemy instanceof Elder) {
+                            WorldController.setShieldActive(false);
+                        }
 
                         i--;
                     }
