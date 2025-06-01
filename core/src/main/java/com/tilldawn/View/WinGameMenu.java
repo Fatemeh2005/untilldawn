@@ -5,12 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tilldawn.Control.MainMenuController;
 import com.tilldawn.Main;
@@ -21,76 +18,83 @@ import com.tilldawn.Model.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.function.BiFunction;
 
 public class WinGameMenu implements Screen {
+
+    private final BiFunction<String,String,String> t =
+        (en, fr) -> Game.isIsFrench() ? fr : en;
+
     private Stage stage;
-
     private final TextButton backToMainButton;
-
-    private final Label loseTitle;
-
-    public Table table;
-
+    private final Label titleLabel;
     private final Label userNameLabel;
+    private final Label surviveLabel;
+    private final Label killsLabel;
+    public  final Table table;
 
-    private final Label surviveTitle;
-
-    private final Label numberOfKills;
-
-    private String userName;
-
-    private int surviveTime;
+    private final String userName;
+    private final int surviveTime;
 
     public WinGameMenu() {
         AudioManager.getInstance().playWinSound();
-        this.backToMainButton = new TextButton("go back to main menu", GameAssetManager.getGameAssetManager().getSkin());
-        this.loseTitle = new Label("You Won!", GameAssetManager.getGameAssetManager().getSkin());
-        this.table = new Table();
+
+        Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+
         this.surviveTime = (int) Game.getElapsedTimeInSeconds();
-        if(Game.getCurrentUser() == null){
-            userName = "You are a guest!";
-        } else {
-            userName = Game.getCurrentUser().getUsername();
-        }
-        this.userNameLabel = new Label("User name: "+ userName, GameAssetManager.getGameAssetManager().getSkin());
-        this.surviveTitle = new Label("Survive time: "+surviveTime+" seconds", GameAssetManager.getGameAssetManager().getSkin());
-        this.numberOfKills = new Label("number of Kills in this game : " + Game.getPlayer().getNumberOfKillsInGame(),
-            GameAssetManager.getGameAssetManager().getSkin());
-        if(Game.getCurrentUser() != null){
-            User currentUser = Game.getCurrentUser();
-            currentUser.setNumberOfKills(Game.getPlayer().getNumberOfKillsInGame() + currentUser.getNumberOfKills());
-            currentUser.setScore(currentUser.getScore() + surviveTime * Game.getPlayer().getNumberOfKillsInGame());
-            if(surviveTime > currentUser.getMostTimeSurvived()) {
-                currentUser.setMostTimeSurvived(surviveTime);
-            }
-            saveUserToJson(Game.getCurrentUser());
+        this.userName = (Game.getCurrentUser() == null)
+            ? t.apply("You are a guest!", "Vous êtes invité !")
+            : Game.getCurrentUser().getUsername();
+
+        this.backToMainButton = new TextButton(
+            t.apply("go back to main menu", "retour au menu principal"), skin);
+
+        this.titleLabel = new Label(t.apply("You Won!", "Victoire !"), skin);
+
+        this.userNameLabel = new Label(
+            t.apply("User name: ", "Nom d’utilisateur : ") + userName, skin);
+
+        this.surviveLabel = new Label(
+            t.apply("Survive time: ", "Temps de survie : ") +
+                surviveTime + t.apply(" seconds", " secondes"), skin);
+
+        this.killsLabel = new Label(
+            t.apply("number of Kills in this game : ",
+                "nombre d’ennemis éliminés : ") +
+                Game.getPlayer().getNumberOfKillsInGame(), skin);
+
+        this.table = new Table();
+
+        /* update user stats */
+        if (Game.getCurrentUser() != null) {
+            int scoreGained = surviveTime * Game.getPlayer().getNumberOfKillsInGame();
+            User u = Game.getCurrentUser();
+            u.setNumberOfKills(u.getNumberOfKills()+Game.getPlayer().getNumberOfKillsInGame());
+            u.setScore(u.getScore()+scoreGained);
+            if (surviveTime>u.getMostTimeSurvived()) u.setMostTimeSurvived(surviveTime);
+            saveUserToJson(u);
         }
     }
 
-    @Override
-    public void show() {
+    @Override public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         table.setFillParent(true);
         table.center();
-
-        table.add(loseTitle);
+        table.add(titleLabel);
         table.row().pad(10, 0, 10, 0);
         table.add(userNameLabel);
         table.row().pad(10, 0, 10, 0);
-        table.add(surviveTitle);
+        table.add(surviveLabel);
         table.row().pad(10, 0, 10, 0);
-        table.add(numberOfKills);
+        table.add(killsLabel);
         table.row().pad(10, 0, 10, 0);
         table.add(backToMainButton).width(600);
         table.row().pad(10, 0, 10, 0);
 
-
-        backToMainButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //TODO:start new game properly move to a new class
+        backToMainButton.addListener(new ClickListener(){
+            @Override public void clicked(InputEvent e,float x,float y){
                 Game.getEnemies().clear();
                 Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerType().getHealth());
                 Main.getMain().getScreen().dispose();
@@ -103,47 +107,20 @@ public class WinGameMenu implements Screen {
         stage.addActor(table);
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1); // Dark background
+    @Override public void render(float d){
+        Gdx.gl.glClearColor(0.1f,0.1f,0.1f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(delta);
-        stage.draw();
+        stage.act(d); stage.draw();
     }
+    @Override public void resize(int w,int h){}
+    @Override public void pause(){}
+    @Override public void resume(){}
+    @Override public void hide(){}
+    @Override public void dispose(){}
 
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
-    private boolean saveUserToJson(User user) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter("users/" + user.getUsername() + ".json")) {
-            gson.toJson(user, writer);
-            return true;
-        } catch (IOException e) {
-            System.out.println("Failed to save user: " + e.getMessage());
-            return false;
-        }
+    private boolean saveUserToJson(User u){
+        try(FileWriter w=new FileWriter("users/"+u.getUsername()+".json")){
+            new GsonBuilder().setPrettyPrinting().create().toJson(u,w); return true;
+        }catch(IOException e){ System.out.println("Failed to save: "+e); return false;}
     }
 }

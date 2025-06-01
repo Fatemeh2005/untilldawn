@@ -140,7 +140,14 @@ public class GameAssetManager {
     private final Texture playerDeath5Texture = new Texture("deathAnimation/ExplosionFX_4.png");
     private final Texture playerDeath6Texture = new Texture("deathAnimation/ExplosionFX_5.png");
 
-    private final Animation<Texture>playerDeathAnimation = new Animation<>(0.1f, playerDeath1Texture, playerDeath2Texture, playerDeath3Texture, playerDeath4Texture, playerDeath5Texture, playerDeath6Texture);
+    private final Animation<Texture>playerDeathAnimation = new Animation<>(0.1f, playerDeath1Texture,
+        playerDeath2Texture, playerDeath3Texture, playerDeath4Texture, playerDeath5Texture, playerDeath6Texture);
+
+    private final Texture avatar1 = new Texture("Avatars/avatar1.png");
+    private final Texture avatar2 = new Texture("Avatars/avatar2.png");
+    private final Texture avatar3 = new Texture("Avatars/avatar3.png");
+    private final Texture avatar4 = new Texture("Avatars/avatar4.png");
+    private final Texture avatar5 = new Texture("Avatars/avatar5.png");
 
     public static GameAssetManager getGameAssetManager(){
         if (gameAssetManager == null){
@@ -279,5 +286,25 @@ public class GameAssetManager {
 
     public Animation<Texture> getPlayerDeathAnimation() {
         return playerDeathAnimation;
+    }
+
+    public Texture getAvatar1() {
+        return avatar1;
+    }
+
+    public Texture getAvatar2() {
+        return avatar2;
+    }
+
+    public Texture getAvatar3() {
+        return avatar3;
+    }
+
+    public Texture getAvatar4() {
+        return avatar4;
+    }
+
+    public Texture getAvatar5() {
+        return avatar5;
     }
 }

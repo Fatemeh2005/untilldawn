@@ -37,22 +37,41 @@ public class MainMenuView implements Screen {
 
     public MainMenuView(MainMenuController controller, Skin skin) {
         this.controller = controller;
-        this.SettingsMenuButton = new TextButton("settings", skin);
-        this.ProfileMenuButton = new TextButton("Go To profile", skin);
-        this.pregameMenuButton = new TextButton("Go To pregame", skin);
-        this.resumeSavedGameButton = new TextButton("resume saved game", skin);
-        this.scoreBoardMenuButton = new TextButton("Go To scoreboard menu", skin);
-        this.exitFromAccount = new TextButton("log out", skin);
-        this.hintBoardMenuButton = new TextButton("Go To hint", skin);
-        this.gameTitle = new Label("Main menu", skin);
-        this.table = new Table();
 
-        if(currentUser != null) {
-        this.avatarImage = new Image(currentUser.getPlayerTypes().getAvatarTexture());
-        this.usernameLabel = new Label("User: " + currentUser.getUsername(), skin);
-        this.scoreLabel = new Label("Score: " + currentUser.getScore(), skin);
+    /* ------------------------------------------------------------------
+       Simple inline helper:  t("English", "French")
+       ------------------------------------------------------------------ */
+        java.util.function.BiFunction<String,String,String> t =
+            (en, fr) -> Game.isIsFrench() ? fr : en;
+
+        /* ------------------------- Buttons ------------------------------ */
+        this.SettingsMenuButton      = new TextButton(t.apply("settings",               "Paramètres"),              skin);
+        this.ProfileMenuButton       = new TextButton(t.apply("Go To profile",          "Profil"),                  skin);
+        this.pregameMenuButton       = new TextButton(t.apply("Go To pregame",          "Prélude"),                 skin);
+        this.resumeSavedGameButton   = new TextButton(t.apply("resume saved game",      "Reprendre la partie"),     skin);
+        this.scoreBoardMenuButton    = new TextButton(t.apply("Go To scoreboard menu",  "Classement"),              skin);
+        this.exitFromAccount         = new TextButton(t.apply("log out",                "Se déconnecter"),          skin);
+        this.hintBoardMenuButton     = new TextButton(t.apply("Go To hint",             "Aide"),                    skin);
+
+        /* ------------------------- Title ------------------------------- */
+        this.gameTitle = new Label(t.apply("Main menu", "Menu principal"), skin);
+
+        /* ------------------------- Avatar & layout ---------------------- */
+        this.table       = new Table();
+        this.avatarImage = new Image(Game.getPlayer().getAvatar());
+
+        /* ------------------------- User info ---------------------------- */
+        if (currentUser != null) {
+            this.usernameLabel = new Label(
+                t.apply("User: ", "Utilisateur : ") + currentUser.getUsername(),
+                skin);
+
+            this.scoreLabel    = new Label(
+                t.apply("Score: ", "Score : ") + currentUser.getScore(),
+                skin);
         }
     }
+
 
     @Override
     public void show() {
@@ -158,4 +177,11 @@ public class MainMenuView implements Screen {
         stage.dispose();
     }
 
+    public Image getAvatarImage() {
+        return avatarImage;
+    }
+
+    public void setAvatarImage(Image avatarImage) {
+        this.avatarImage = avatarImage;
+    }
 }

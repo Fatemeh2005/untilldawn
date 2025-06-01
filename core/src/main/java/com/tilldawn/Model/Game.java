@@ -36,6 +36,7 @@ public class Game {
 
     private static boolean reloadOn = false;
     private static boolean autoReloadOn = false;
+    private static boolean isFrench = false;
 
 
     public static Player getPlayer() {
@@ -296,5 +297,13 @@ public class Game {
             e.printStackTrace();
         }
         return player;
+    }
+
+    public static boolean isIsFrench() {
+        return isFrench;
+    }
+
+    public static void setIsFrench(boolean isFrench) {
+        Game.isFrench = isFrench;
     }
 }

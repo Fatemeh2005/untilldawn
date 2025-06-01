@@ -3,6 +3,7 @@ package com.tilldawn.Control;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tilldawn.Main;
+import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.Model.PlayerTypes;
 import com.tilldawn.Model.User;
@@ -10,6 +11,9 @@ import com.tilldawn.View.LoginMenuView;
 import com.tilldawn.View.ProfileMenuView;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ProfileMenuController {
 
@@ -109,4 +113,14 @@ public class ProfileMenuController {
         return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%&*()_]).{8,}$");
     }
 
+    public boolean deleteAccount() throws IOException {
+        Path userFile = Paths.get("users", currentUser.getUsername() + ".json");
+        deleteSavedGame();
+        return Files.deleteIfExists(userFile);
+    }
+
+    public boolean deleteSavedGame() throws IOException {
+        Path userFile = Paths.get("savedGames/"+"save"+ Game.getCurrentUser().getUsername()+".txt");
+        return Files.deleteIfExists(userFile);
+    }
 }

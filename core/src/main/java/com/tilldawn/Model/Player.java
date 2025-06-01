@@ -48,6 +48,7 @@ public class Player implements Serializable {
     ArrayList<DamagePopup> damagePopups = new ArrayList<>();
     BitmapFont font = new BitmapFont(); // initialize somewhere
     private ArrayList<String>abilitiesGained = new ArrayList<>();
+    private Texture avatar;
 
     public int getSpeed() {
         return speed;
@@ -72,6 +73,7 @@ public class Player implements Serializable {
         rect = new CollisionRect(posX, posY, playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
         this.deathAnimation = GameAssetManager.getGameAssetManager().getPlayerDeathAnimation();
         this.weapon = new Weapon(WeaponTypes.SMGDUAL);
+        this.avatar = playerType.getAvatarTexture();
     }
 
     public Texture getPlayerTexture() {
@@ -263,5 +265,13 @@ public class Player implements Serializable {
 
     public void setAbilitiesGained(ArrayList<String> abilitiesGained) {
         this.abilitiesGained = abilitiesGained;
+    }
+
+    public Texture getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Texture avatar) {
+        this.avatar = avatar;
     }
 }
