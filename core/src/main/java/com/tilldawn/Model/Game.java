@@ -37,7 +37,15 @@ public class Game {
     private static boolean reloadOn = false;
     private static boolean autoReloadOn = false;
     private static boolean isFrench = false;
+    private static boolean autoAimOn = false;
 
+    public static boolean isAutoAimOn() {
+        return autoAimOn;
+    }
+
+    public static void setAutoAimOn(boolean autoAimOn) {
+        Game.autoAimOn = autoAimOn;
+    }
 
     public static Player getPlayer() {
         return player;
@@ -237,7 +245,7 @@ public class Game {
         }
     }
 
-    public static Player loadPlayerData(String filename) {
+    public static void loadPlayerData(String filename) {
         Player player = new Player(PlayerTypes.SHANA); // Initialize player with default type
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -284,19 +292,18 @@ public class Game {
                             Game.setReloadGunTimer(Float.parseFloat(value));
                             break;
                         case "gun type":
-                            Game.getPlayer().getWeapon().setWeaponTypes(WeaponTypes.findWeaponTypeByName(value));
+                            player.getWeapon().setWeaponTypes(WeaponTypes.findWeaponTypeByName(value));
                             break;
 
                             case "player type":
-                                Game.getPlayer().setPlayerType(PlayerTypes.findplayerTypeByName(value));
+                                player.setPlayerType(PlayerTypes.findplayerTypeByName(value));
                     }
                 }
             }
-            System.out.println("Player data loaded successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return player;
+        Game.setPlayer(player);
     }
 
     public static boolean isIsFrench() {

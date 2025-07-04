@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tilldawn.Model.CollisionRect;
+import com.tilldawn.Model.Game;
 
 public abstract class Enemy {
     protected float x, y;
@@ -31,9 +32,11 @@ public abstract class Enemy {
 
     public void takeDamage(int damage) {
         hp -= damage;
-        if(hp <= 0) {
+        if (hp <= 0) {
             isDying = true;
+            return;
         }
+        bounceBack();
     }
 
     public boolean isDead() {
@@ -52,10 +55,35 @@ public abstract class Enemy {
         isDying = dying;
     }
 
-    public float getX() { return x; }
-    public float getY() { return y; }
-    public CollisionRect getRect() { return rect; }
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public CollisionRect getRect() {
+        return rect;
+    }
 
     public void render(SpriteBatch batch) {
+    }
+
+    public void bounceBack() {
+        //bounce back for x
+        int playerX = Game.getPlayer().getPosX();
+        if (playerX < x) {
+            x += 20;
+        } else {
+            x -= 20;
+        }
+        //bounce back for y
+        int playerY = Game.getPlayer().getPosY();
+        if (playerY < y) {
+            y += 20;
+        } else {
+            y -= 20;
+        }
     }
 }

@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.tilldawn.Main;
+import com.tilldawn.Model.Enemies.Elder;
+import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.GameView;
@@ -17,6 +20,9 @@ public class PlayerController {
     // Constants for background dimensions
     private final float WORLD_WIDTH = 20000;
     private final float WORLD_HEIGHT = 20000;
+
+    private int autoAimTargetX = 0;
+    private int autoAimTargetY = 0;
 
     // Also define your player's sprite dimensions
     private final float PLAYER_WIDTH = Game.getPlayer().getPlayerSprite().getWidth();
@@ -69,13 +75,24 @@ public class PlayerController {
             Game.setReloadOn(true);
             return;
         }
-        if ((Gdx.input.isButtonPressed(Game.getShoot()) || Gdx.input.isKeyJustPressed(Game.getShoot())) &&
-            (TimeUtils.nanoTime() - lastShootTime) / 1000000000f > shootCooldown) {
-            // Handle shooting with the current mouse coordinates
-            controller.getWeaponController().handleWeaponShoot(mouseX, mouseY);
-            lastShootTime = TimeUtils.nanoTime();  // Update last shoot time
-            return;  // Prevent other code from running while shooting
+        //turn auto aim on ot off with space
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            System.out.println("done");
+            Game.setAutoAimOn(!Game.isAutoAimOn());
+            return;
         }
+        if ((Gdx.input.isButtonPressed(Game.getShoot()) || Gdx.input.isKeyJustPressed(Game.getShoot())) &&
+            (TimeUtils.nanoTime() - lastShootTime) / 1_000_000_000f > shootCooldown) {
+            if(Game.isAutoAimOn()) {
+                setAutoAim();
+                controller.getWeaponController().handleWeaponShoot(autoAimTargetX, autoAimTargetY);
+            } else {
+                controller.getWeaponController().handleWeaponShoot(mouseX, mouseY);
+            }
+            lastShootTime = TimeUtils.nanoTime();
+            return;
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.H) && Game.getPlayer().getPlayerHealth() == 0) {
             Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() + 1);
             return;
@@ -106,6 +123,10 @@ public class PlayerController {
             Game.getPlayer().setXp(Game.getPlayer().getXp() + 3);
             return;
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+            bossFight();
+            return;
+        }
         newX = (int) MathUtils.clamp(newX, 0, WORLD_WIDTH - PLAYER_WIDTH);
         newY = (int) MathUtils.clamp(newY, 0, WORLD_HEIGHT - PLAYER_HEIGHT);
 
@@ -132,6 +153,53 @@ public class PlayerController {
         }
 
         animation.setPlayMode(Animation.PlayMode.LOOP);
+    }
+
+    public void bossFight() {
+        for(Enemy enemy : Game.getEnemies()) {
+            if(enemy instanceof Elder){
+                return;
+            }
+        }
+        WorldController.spawnElder();
+    }
+
+    private void setAutoAim() {
+        float minDistance = Float.MAX_VALUE;
+        Enemy closestEnemy = null;
+
+        float playerX = Game.getPlayer().getPosX();
+        float playerY = Game.getPlayer().getPosY();
+
+        for (Enemy enemy : Game.getEnemies()) {
+            float dx = enemy.getX() - playerX;
+            float dy = enemy.getY() - playerY;
+            float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestEnemy = enemy;
+            }
+        }
+
+        if (closestEnemy != null) {
+            float enemyCenterX = closestEnemy.getX() + closestEnemy.getRect().getWidth() / 2;
+            float enemyCenterY = closestEnemy.getY() + closestEnemy.getRect().getHeight() / 2;
+
+            Vector3 enemyWorldCenter = new Vector3(enemyCenterX, enemyCenterY, 0);
+            Vector3 screenCoords = GameView.getCamera().project(enemyWorldCenter);
+
+            autoAimTargetX = (int) screenCoords.x;
+            autoAimTargetY = (int) screenCoords.y;
+            Gdx.input.setCursorPosition((int) closestEnemy.getX(), (int)closestEnemy.getY());
+
+            // Optional debug
+            System.out.println("Auto-aim target screen: " + autoAimTargetX + ", " + autoAimTargetY);
+        }
+        else {
+            autoAimTargetX = -1;
+            autoAimTargetY = -1;
+        }
     }
 
 }

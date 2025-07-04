@@ -52,7 +52,6 @@ public class Shield {
     }
     public void render(SpriteBatch batch) {
         if (WorldController.isIsShieldActive()) {
-            System.out.println("Shield Radius: " + shieldRadius);
 
             // Update the sprite's size based on the shield radius
             shieldSprite.setSize(shieldRadius*2 ,shieldRadius*2 );  // Set size based on radius (diameter)

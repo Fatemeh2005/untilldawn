@@ -3,6 +3,8 @@ package com.tilldawn;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -23,6 +25,7 @@ public class Main extends Game {
     public void create() {
         main = this;
         batch = new SpriteBatch();
+        setCustomCursor();
 
        // ShaderProgram.pedantic = false;
         grayShader = new ShaderProgram(
@@ -78,4 +81,18 @@ public class Main extends Game {
     public static void setGrayscaleEnabled(boolean grayscaleEnabled) {
         Main.grayscaleEnabled = grayscaleEnabled;
     }
+
+    private void setCustomCursor() {
+        try {
+            Pixmap pixmap = new Pixmap(Gdx.files.internal("cursor.png")); // put image in assets/
+            int xHotspot = 0; // Adjust this if needed
+            int yHotspot = 0;
+            Cursor customCursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+            Gdx.graphics.setCursor(customCursor);
+            pixmap.dispose(); // safe to dispose Pixmap after creating Cursor
+        } catch (Exception e) {
+            Gdx.app.error("CursorError", "Failed to load custom cursor", e);
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Control.MainMenuController;
+import com.tilldawn.Control.WorldController;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Game;
 import com.tilldawn.Model.PlayerTypes;
@@ -34,16 +36,13 @@ public class MainMenuView implements Screen {
     private Image avatarImage;
     private Label usernameLabel;
     private Label scoreLabel;
+    BitmapFont font = WorldController.generateFont("assets/Michroma.ttf", 10);
 
     public MainMenuView(MainMenuController controller, Skin skin) {
         this.controller = controller;
 
-    /* ------------------------------------------------------------------
-       Simple inline helper:  t("English", "French")
-       ------------------------------------------------------------------ */
         java.util.function.BiFunction<String,String,String> t =
             (en, fr) -> Game.isIsFrench() ? fr : en;
-
         /* ------------------------- Buttons ------------------------------ */
         this.SettingsMenuButton      = new TextButton(t.apply("settings",               "Paramètres"),              skin);
         this.ProfileMenuButton       = new TextButton(t.apply("Go To profile",          "Profil"),                  skin);
@@ -114,7 +113,9 @@ public class MainMenuView implements Screen {
         ProfileMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.goToProfileMenu(currentUser);
+                if(currentUser != null) {
+                    controller.goToProfileMenu(currentUser);
+                }
             }
         });
 

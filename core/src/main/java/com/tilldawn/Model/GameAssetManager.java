@@ -3,11 +3,13 @@ package com.tilldawn.Model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.tilldawn.Control.WorldController;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
-    private final Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+    private Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));;
 
     // Shana assets
     private final String Shana_idle0 = "Shana/Idle_0.png";
@@ -149,6 +151,7 @@ public class GameAssetManager {
     private final Texture avatar4 = new Texture("Avatars/avatar4.png");
     private final Texture avatar5 = new Texture("Avatars/avatar5.png");
 
+
     public static GameAssetManager getGameAssetManager(){
         if (gameAssetManager == null){
             gameAssetManager = new GameAssetManager();
@@ -157,8 +160,22 @@ public class GameAssetManager {
     }
 
     public Skin getSkin() {
+        if (skin == null) {
+            skin = new Skin();
+        }
+
+        BitmapFont font = WorldController.generateFont("Michroma1.ttf", 10);
+        if (font == null) {
+            throw new RuntimeException("Font could not be loaded: Michroma.ttf");
+        }
+
+        skin.add("font", font, BitmapFont.class);
+        skin.getFont("font").getData().markupEnabled = true;
+
         return skin;
     }
+
+
 
     public Animation<Texture> getShana_idle_animation() {
         return Shana_idle_frames;

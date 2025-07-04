@@ -32,6 +32,7 @@ public class TentacleMonster extends Enemy {
             if (deathTime >= 0.6f) {
                 // Once the death animation is finished, remove the enemy from the game
                 isDead = true;
+                Game.getPlayer().setNumberOfKillsInGame(Game.getPlayer().getNumberOfKillsInGame() + 1);
                 Game.getEnemies().remove(this);
             }
             return;  // Skip the regular update if the monster is dead

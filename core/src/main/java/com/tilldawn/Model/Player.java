@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.tilldawn.Control.WeaponController;
+import com.tilldawn.Control.WorldController;
 import com.tilldawn.Main;
 import com.tilldawn.Model.Enemies.Enemy;
 import com.tilldawn.Model.Weapon.Weapon;
@@ -42,11 +44,11 @@ public class Player implements Serializable {
     private float speedBoostTimer = 0f;
     private boolean isSpeedBoostActive = false;
 
-    private int numberOfKillsInGame = 0;
+    private int numberOfKillsInGame;
     private User user;
 
     ArrayList<DamagePopup> damagePopups = new ArrayList<>();
-    BitmapFont font = new BitmapFont(); // initialize somewhere
+    BitmapFont font = WorldController.generateFont("assets/Michroma.ttf", 10); // initialize somewhere
     private ArrayList<String>abilitiesGained = new ArrayList<>();
     private Texture avatar;
 
@@ -55,6 +57,7 @@ public class Player implements Serializable {
     }
 
     public Player(PlayerTypes playerType) {
+        this.numberOfKillsInGame = 0;
         playerTexture = playerType.getAvatarTexture();
         this.animations = playerType.getAnimation();
         this.playerSprite = new Sprite(playerTexture);

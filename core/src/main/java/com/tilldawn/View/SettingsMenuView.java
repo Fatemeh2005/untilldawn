@@ -21,7 +21,6 @@ import java.util.function.BiFunction;
 
 public class SettingsMenuView implements Screen {
 
-    /* helper: t(en, fr) */
     private final BiFunction<String, String, String> t =
         (en, fr) -> Game.isIsFrench() ? fr : en;
 
@@ -147,15 +146,35 @@ public class SettingsMenuView implements Screen {
             }
         });
 
-        TextButton autoReloadButton = new TextButton(t.apply("enable auto reload",
-            "Activer rechargement auto"), skin);
+//        TextButton autoReloadButton = new TextButton(t.apply("enable auto reload",
+//            "Activer rechargement auto"), skin);
+//        autoReloadButton.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent e, float x, float y) {
+//                Game.setAutoReloadOn(true);
+//                e.stop();
+//            }
+//        });
+
+        final TextButton autoReloadButton = new TextButton(
+            Game.isAutoReloadOn() ?
+                t.apply("Disable Auto Reload", "Désactiver rechargement auto") :
+                t.apply("Enable Auto Reload", "Activer rechargement auto"),
+            skin);
+
         autoReloadButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent e, float x, float y) {
-                Game.setAutoReloadOn(true);
+                boolean current = Game.isAutoReloadOn();
+                Game.setAutoReloadOn(!current);
+                autoReloadButton.setText(
+                    !current ?
+                        t.apply("Disable Auto Reload", "Désactiver rechargement auto") :
+                        t.apply("Enable Auto Reload", "Activer rechargement auto"));
                 e.stop();
             }
         });
+
 
         TextButton backButton = new TextButton(t.apply("Back", "Retour"), skin);
         backButton.addListener(new ClickListener() {
@@ -176,7 +195,6 @@ public class SettingsMenuView implements Screen {
                 Main.getMain().setScreen(new SettingsMenuView());
             }
         });
-
 
         table.add(musicLabel).left().padRight(10);
         table.add(musicSlider).width(250).row();

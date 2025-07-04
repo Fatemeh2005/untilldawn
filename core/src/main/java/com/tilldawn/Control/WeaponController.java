@@ -49,7 +49,9 @@ public class WeaponController {
         }
 
         Vector3 mouseWorld = new Vector3(mouseX, mouseY, 0);
-        camera.unproject(mouseWorld);
+        if(!Game.isAutoAimOn()) {
+            camera.unproject(mouseWorld);
+        }
 
         Sprite weaponSprite = Game.getPlayer().getWeapon().getSprite();
         float spawnX = weaponSprite.getX() + weaponSprite.getWidth() / 2;
@@ -57,7 +59,6 @@ public class WeaponController {
 
         Weapon weapon = Game.getPlayer().getWeapon();
         int projectileCount = weapon.getProjectile();
-        System.out.println(projectileCount);
 
         // Base direction toward mouse
         Vector2 baseDirection = new Vector2(mouseWorld.x - spawnX, mouseWorld.y - spawnY).nor();
@@ -115,7 +116,6 @@ public class WeaponController {
                     enemy.takeDamage(damage);
                     if (enemy.isDying()) {
                         Game.getSeeds().add(new Seed(enemy.getX(), enemy.getY(), seedTexture));
-                        Game.getPlayer().setNumberOfKillsInGame(Game.getPlayer().getNumberOfKillsInGame() + 1);
                         if (enemy instanceof Elder) {
                             WorldController.setShieldActive(false);
                         }
@@ -131,5 +131,8 @@ public class WeaponController {
         Game.getPlayer().getWeapon().getBullets().removeAll(bulletsToRemove);
     }
 
+    public Vector3 toScreenCoords(float worldX, float worldY) {
+        return camera.project(new Vector3(worldX, worldY, 0));
+    }
 
 }

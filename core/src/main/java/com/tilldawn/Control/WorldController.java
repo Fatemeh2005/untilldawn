@@ -18,6 +18,11 @@ import com.tilldawn.Model.GameAssetManager;
 import com.tilldawn.View.GameView;
 import com.tilldawn.View.WinGameMenu;
 import com.tilldawn.View.loseGameMenu;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -34,7 +39,7 @@ public class WorldController {
     private Texture heart = new Texture("assets/heart.png");
     GameView view;
 
-    private BitmapFont font = new BitmapFont(); // Default font
+    private BitmapFont font = generateFont("assets/Michroma.ttf", 10); // Default font
     private GlyphLayout layout = new GlyphLayout(); // To calculate text width
 
     private float treeDamageTimer = 0f;
@@ -43,7 +48,7 @@ public class WorldController {
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     ProgressBar xpProgressBar;
     private boolean hasElderEntered = false;
-    Shield shield;
+    static Shield shield;
     private static boolean isShieldActive = false;
 
 
@@ -164,19 +169,13 @@ public class WorldController {
                 System.out.println("Shield Deactivated");
                 isShieldActive = false;
             }
-            // Check if the player collides with the shield
             float playerX = Game.getPlayer().getPosX();
             float playerY = Game.getPlayer().getPosY();
 
             float distance = (float) Math.sqrt(Math.pow(playerX - shield.getShildCenterx(), 2) + Math.pow(playerY - shield.getShildCentery(), 2));
             float tolerance = 5.0f; // Adjust this value if needed (for precision)
-            System.out.println("Shield Shrinking: " + shield.getShieldRadius());
-            System.out.println("playerx:" + Game.getPlayer().getPosX() + ", " + "playery:" + Game.getPlayer().getPosY() + "ahmaaagh");
-            System.out.println(distance + ", " + "shield center y:" + shield.getShildCentery() + ", " + "shield center x:" + shield.getShildCenterx() + "olagh");
 
             if (Math.abs(distance - shield.getShieldRadius()) <= tolerance) {
-                System.out.println("got hit");
-
                 Game.getPlayer().setPlayerHealth(Game.getPlayer().getPlayerHealth() - 1);
                 if (Game.getPlayer().getPlayerHealth() < 0) {
                     // Trigger death animation if health is below 0
@@ -303,7 +302,7 @@ public class WorldController {
         Game.getEnemies().add(new EyeBat(spawnX, spawnY, speed, animation));
     }
 
-    private void spawnElder() {
+    public static void spawnElder() {
         Random rand = new Random();
 
         // Camera boundaries
@@ -462,7 +461,7 @@ public class WorldController {
         ProgressBar.ProgressBarStyle style = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
         xpProgressBar = new ProgressBar(0, 1, 0.01f, false, style);  // min, max, step size, vertical, style
 
-        xpProgressBar.setPosition(camTop - 55, camRight - 16); // You can adjust this position based on camera view
+        xpProgressBar.setPosition(camTop - 35, camRight - 16); // You can adjust this position based on camera view
         xpProgressBar.setSize(250, 18);  // Adjust size for XP bar
     }
 
@@ -479,14 +478,14 @@ public class WorldController {
 
         float barWidth = 250;  // Width of the progress bar
 
-        float x = camRight - barWidth - 20;
+        float x = camRight - barWidth - 10;
         float y = camTop - 80;
 
         xpProgressBar.setPosition(x, y); // Set position of the XP progress bar
 
         xpProgressBar.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         xpProgressBar.draw(Main.getBatch(), 1);
-        drawProcessLevel(x - 240, y + 20);
+        drawProcessLevel(x - 300, y + 20);
     }
 
     private void drawProcessLevel(float x, float y) {
@@ -559,5 +558,19 @@ public class WorldController {
 
     public static boolean isIsShieldActive() {
         return isShieldActive;
+    }
+
+    public static BitmapFont generateFont(String path, int size) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = size;
+        parameter.color = Color.WHITE;
+        parameter.borderWidth = 2;
+        parameter.borderColor = Color.BLACK;
+        parameter.characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:,-+=/ ";
+
+        BitmapFont font = generator.generateFont(parameter);
+        generator.dispose();
+        return font;
     }
 }

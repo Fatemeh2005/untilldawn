@@ -46,24 +46,20 @@ public class PreGameMenuView implements Screen {
         controller.setView(this);   // let the controller know about its view
     }
 
-    /* ──────────────────────────────────────────────────────────────── */
     @Override public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        /* -------------------------- Heroes -------------------------- */
         Array<String> hero = new Array<>();
         hero.addAll("Shana", "Diamond", "Scarlet", "Lilith", "Dasher");
         selectHero.setItems(hero);
 
-        /* -------------------------- Weapons ------------------------- */
         Array<String> guns = new Array<>();
         guns.add(t.apply("Revolver",            "Revolver"));
         guns.add(t.apply("Shot Gun",            "Fusil à pompe"));
         guns.add(t.apply("SMGs Dual",           "Mitraillettes doubles"));
         selectGuns.setItems(guns);
 
-        /* -------------------------- Time limits --------------------- */
         Array<String> times = new Array<>();
         times.add(t.apply("1 minute",  "1 minute"));
         times.add(t.apply("2 minutes", "2 minutes"));
@@ -72,7 +68,6 @@ public class PreGameMenuView implements Screen {
         times.add(t.apply("20 minutes","20 minutes"));
         selectTime.setItems(times);
 
-        /* -------------------------- Layout -------------------------- */
         table.setFillParent(true);
         table.center();
         table.add(gameTitle);
